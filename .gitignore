@@ -3,3 +3,4 @@
 **/.project
 bluej/build.properties
 *.class
+*.ctxt
