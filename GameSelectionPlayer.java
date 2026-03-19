@@ -10,6 +10,7 @@ public class GameSelectionPlayer extends Player {
 
     @Override
     public void act() {
+        super.act();
         if (Greenfoot.isKeyDown("space") && currentMinigame != -1) {
             world.enterMinigame(currentMinigame);
         }

@@ -22,11 +22,11 @@ public abstract class Player extends Actor {
     }
 
     protected void moveUp() {
-        setLocation(getX(), getY() + 1);
+        setLocation(getX(), getY() - 1);
     }
 
     protected void moveDown() {
-        setLocation(getX(), getY() - 1);
+        setLocation(getX(), getY() + 1);
     }
 
     protected void moveLeft() {
