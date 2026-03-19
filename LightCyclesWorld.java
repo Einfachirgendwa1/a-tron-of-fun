@@ -16,6 +16,8 @@ public class LightCyclesWorld extends World
     public LightCyclesWorld()
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
-        super(600, 400, 1); 
+        super(600, 400, 1);
+        LightCyclePlayer player = new LightCyclePlayer();
+        addObject(player, 300, 200);
     }
 }
