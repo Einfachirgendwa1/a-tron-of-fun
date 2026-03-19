@@ -2,11 +2,15 @@ import greenfoot.Greenfoot;
 import greenfoot.World;
 
 public class GameSelection extends World {
-    private final MiniGame[] miniGames = new MiniGame[]{new LightCycles()};
+    public static GameSelection instance;
+
+    private final MiniGame[] miniGames = new MiniGame[]{new LightCycles(), new LightCone()};
     private final GameSelectionPlayer player;
 
     public GameSelection() {
         super(600, 400, 1);
+
+        instance = this;
 
         player = new GameSelectionPlayer(this);
         addObject(player, 300, 200);
@@ -23,6 +27,11 @@ public class GameSelection extends World {
         }
 
         Greenfoot.setWorld(world);
+        miniGame.miniGameStart();
+    }
 
+    public void exitMinigame() {
+        Greenfoot.setWorld(this);
+        player.setLocation(300, 200);
     }
 }

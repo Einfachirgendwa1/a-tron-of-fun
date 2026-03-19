@@ -18,25 +18,25 @@ public class GameSelectionPlayer extends Player {
 
     @Override
     protected void moveLeft() {
-        super.moveLeft();
+        setLocation(150, 200);
         currentMinigame = 0;
     }
 
     @Override
     protected void moveUp() {
-        super.moveUp();
+        setLocation(300, 100);
         currentMinigame = 1;
     }
 
     @Override
     protected void moveRight() {
-        super.moveRight();
+        setLocation(450, 200);
         currentMinigame = 2;
     }
 
     @Override
     protected void moveDown() {
-        super.moveDown();
+        setLocation(300, 300);
         currentMinigame = 3;
     }
 }
