@@ -1,21 +1,8 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.World;
 
-/**
- * Write a description of class TankLabyrinthWorld here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
-public class TankLabyrinthWorld extends World
-{
-
-    /**
-     * Constructor for objects of class TankLabyrinthWorld.
-     * 
-     */
-    public TankLabyrinthWorld()
-    {    
-        // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
-        super(600, 400, 1); 
+public class TankLabyrinthWorld extends World {
+    public TankLabyrinthWorld() {
+        super(600, 400, 1);
+        addObject(new TankLabyrinthPlayer(), 300, 200);
     }
 }
