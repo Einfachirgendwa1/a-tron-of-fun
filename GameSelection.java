@@ -4,7 +4,7 @@ import greenfoot.World;
 public class GameSelection extends World {
     public static GameSelection instance;
 
-    private final MiniGame[] miniGames = new MiniGame[]{new LightCycles(), new LightCone()};
+    private final World[] miniGames = new World[]{new LightCyclesWorld(), new ConeShooterWorld(), new GridBugsWorld(), new TankLabyrinthWorld()};
     private final GameSelectionPlayer player;
 
     public GameSelection() {
@@ -17,17 +17,7 @@ public class GameSelection extends World {
     }
 
     public void enterMinigame(int minigameIndex) {
-        MiniGame miniGame = miniGames[minigameIndex];
-        if (miniGame == null) return;
-
-        World world = miniGame.createWorld();
-        if (world == null) {
-            System.err.println("Error: minigame did not create a world!");
-            return;
-        }
-
-        Greenfoot.setWorld(world);
-        miniGame.miniGameStart();
+        Greenfoot.setWorld(miniGames[minigameIndex]);
     }
 
     public void exitMinigame() {
