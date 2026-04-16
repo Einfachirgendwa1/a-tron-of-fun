@@ -1,25 +1,20 @@
 import greenfoot.Greenfoot;
 import greenfoot.World;
 
-import java.lang.reflect.Constructor;
-
 public class GameSelection extends World {
     public static GameSelection instance;
-    private final ICreateWorld[] miniGames = new Constructor[]{
-            () -> new ConeShooterWorld(),
-            ConeShooterWorld.class.getConstructor(),
-            GridBugsWorld.class.getConstructor(),
-            TankLabyrinthWorld.class.getConstructor()
+    private final ICreateWorld[] miniGames = new ICreateWorld[]{
+            ConeShooterWorld::new,
+            ConeShooterWorld::new,
+            GridBugsWorld::new,
+            TankLabyrinthWorld::new
     };
     private final GameSelectionPlayer player;
 
-    public GameSelection() throws NoSuchMethodException {
+    public GameSelection() {
         super(600, 400, 1);
 
         instance = this;
-
-        TankLabyrinthWorld world = new TankLabyrinthWorld();
-        int x = world.counter;
 
         player = new GameSelectionPlayer(this);
         addObject(player, 300, 200);
@@ -27,7 +22,7 @@ public class GameSelection extends World {
 
     public void enterMinigame(int minigameIndex) {
         try {
-            Greenfoot.setWorld(miniGames[minigameIndex].newInstance());
+            Greenfoot.setWorld(miniGames[minigameIndex].apply());
         } catch (Exception e) {
             System.out.println("Error creating minigame " + minigameIndex);
         }
