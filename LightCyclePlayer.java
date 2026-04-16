@@ -6,16 +6,19 @@ public class LightCyclePlayer extends Player {
         int result = direction % 4;
 
         if        (result == 3 || result == -3) {
-            moveUp();
+            moveDown();
         } else if (result == 2 || result == -2) {
             moveRight();
         } else if (result == 1 || result == -1) {
-            moveDown();
+            moveUp();
         } else if (result == 0) {
             moveLeft();
         }
-
+        
+        boolean isPressed = false;
+        
         if (Greenfoot.isKeyDown ("a")) {
+            isPressed = true;
             direction = direction - 1;
         } 
 
