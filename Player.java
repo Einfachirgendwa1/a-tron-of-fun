@@ -1,9 +1,15 @@
-import greenfoot.Actor;
 import greenfoot.Greenfoot;
+import greenfoot.World;
 
-public abstract class Player extends Actor {
+public abstract class Player extends MultipleImages {
+    public Player(World world) {
+        super(world);
+    }
+
     @Override
     public void act() {
+        updateImages();
+
         if (Greenfoot.isKeyDown("w")) {
             moveUp();
         }

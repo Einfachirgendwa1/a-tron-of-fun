@@ -5,12 +5,21 @@ public class GameSelectionPlayer extends Player {
     private int currentMinigame = -1;
 
     public GameSelectionPlayer(GameSelection world) {
+        super(world);
         this.world = world;
+    }
+
+    @Override
+    protected ImageHolder[] defaultImageHolders() {
+        return new ImageHolder[]{
+                new ImageHolder("man_stand_body.png", 0, 0),
+        };
     }
 
     @Override
     public void act() {
         super.act();
+
         if (Greenfoot.isKeyDown("space") && currentMinigame != -1) {
             world.enterMinigame(currentMinigame);
         }
