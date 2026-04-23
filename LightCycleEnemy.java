@@ -8,13 +8,14 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class LightCycleEnemy extends Enemy
 {
+    private int direction = 4;
     public LightCycleEnemy(World world) {
         super(world);
+        getImage().rotate(-90);
     }
     @Override
     protected ImageHolder[] defaultImageHolders() {
         return new ImageHolder[]{
-                new ImageHolder("man_stand_body.png", 0, 0),
         };
     }
     /**
@@ -23,6 +24,16 @@ public class LightCycleEnemy extends Enemy
      */
     public void act()
     {
-        // Add your action code here.
+        int result = direction % 4;
+
+        if        (result == 3 || result == -1) {
+            moveDown();
+        } else if (result == 2 || result == -2) {
+            moveRight();
+        } else if (result == 1 || result == -3) {
+            moveUp();
+        } else if (result == 0) {
+            moveLeft();
+        }
     }
 }

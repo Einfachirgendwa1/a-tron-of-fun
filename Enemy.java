@@ -21,5 +21,20 @@ public abstract class Enemy extends MultipleImages
     {
         // Add your action code here.
     }
+    protected void moveUp() {
+        setLocation(getX(), getY() - 1);
+    }
+
+    protected void moveDown() {
+        setLocation(getX(), getY() + 1);
+    }
+
+    protected void moveLeft() {
+        setLocation(getX() - 1, getY());
+    }
+
+    protected void moveRight() {
+        setLocation(getX() + 1, getY());
+    }
 }
 
