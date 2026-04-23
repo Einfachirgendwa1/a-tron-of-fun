@@ -5,7 +5,7 @@ public class GameSelection extends World {
     public static GameSelection instance;
     private final ICreateWorld[] miniGames = new ICreateWorld[]{
             ConeShooterWorld::new,
-            ConeShooterWorld::new,
+            LightCyclesWorld::new,
             GridBugsWorld::new,
             TankLabyrinthWorld::new
     };

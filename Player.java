@@ -1,30 +1,18 @@
-import greenfoot.Greenfoot;
+import greenfoot.Actor;
 import greenfoot.World;
 
-public abstract class Player extends MultipleImages {
+public abstract class Player extends Actor {
+    protected MultipleImages multipleImages;
+
     public Player(World world) {
-        super(world);
+        multipleImages = new MultipleImages(world, defaultImages());
     }
+
+    protected abstract ImageHolder[] defaultImages();
 
     @Override
     public void act() {
-        updateImages();
-
-        if (Greenfoot.isKeyDown("w")) {
-            moveUp();
-        }
-
-        if (Greenfoot.isKeyDown("s")) {
-            moveDown();
-        }
-
-        if (Greenfoot.isKeyDown("a")) {
-            moveLeft();
-        }
-
-        if (Greenfoot.isKeyDown("d")) {
-            moveRight();
-        }
+        multipleImages.updateImagesActor(this);
     }
 
     protected void moveUp() {

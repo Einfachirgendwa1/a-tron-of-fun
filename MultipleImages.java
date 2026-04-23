@@ -3,41 +3,38 @@ import greenfoot.World;
 
 import java.util.ArrayList;
 
-public abstract class MultipleImages extends Actor {
-    private final ArrayList<ImageHolder> imageHolders = new ArrayList<>();
+public class MultipleImages {
+    private final ArrayList<ImageHolder> images = new ArrayList<>();
 
-    public MultipleImages(World world) {
-        for (ImageHolder imageHolder : defaultImageHolders()) {
-            world.addObject(imageHolder, imageHolderX(imageHolder), imageHolderY(imageHolder));
-            imageHolders.add(imageHolder);
+    public MultipleImages(World world, ImageHolder[] defaultImages) {
+        for (ImageHolder image : defaultImages) {
+            world.addObject(image, image.getOffsetX(), image.getOffsetY());
+            images.add(image);
         }
     }
 
-    protected abstract ImageHolder[] defaultImageHolders();
-
-    private int getOrDefault(GetInt getInt, int defaultValue) {
+    private static <T> T suppressIllegalState(Producer<T> producer, T fallback) {
         try {
-            return getInt.get();
+            return producer.apply();
         } catch (IllegalStateException e) {
-            return defaultValue;
+            return fallback;
         }
     }
 
-    private int imageHolderX(ImageHolder imageHolder) {
-        return imageHolder.getOffsetX() + getOrDefault(this::getX, 300);
-    }
-
-    private int imageHolderY(ImageHolder imageHolder) {
-        return imageHolder.getOffsetY() + getOrDefault(this::getY, 200);
-    }
-
-    public void updateImages() {
-        for (ImageHolder imageHolder : imageHolders) {
-            imageHolder.setLocation(imageHolderX(imageHolder), imageHolderY(imageHolder));
+    public void updateImages(int x, int y) {
+        for (ImageHolder image : images) {
+            image.setLocation(image.getOffsetX() + x, image.getOffsetY() + y);
         }
     }
 
-    interface GetInt {
-        int get();
+    public void updateImagesActor(Actor actor) {
+        int x = suppressIllegalState(actor::getX, 300);
+        int y = suppressIllegalState(actor::getY, 200);
+
+        updateImages(x, y);
+    }
+
+    private interface Producer<T> {
+        T apply();
     }
 }

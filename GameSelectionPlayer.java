@@ -1,6 +1,6 @@
 import greenfoot.Greenfoot;
 
-public class GameSelectionPlayer extends Player {
+public class GameSelectionPlayer extends PlayerDefaultMovement {
     private final GameSelection world;
     private int currentMinigame = -1;
 
@@ -10,7 +10,7 @@ public class GameSelectionPlayer extends Player {
     }
 
     @Override
-    protected ImageHolder[] defaultImageHolders() {
+    protected ImageHolder[] defaultImages() {
         return new ImageHolder[]{
                 new ImageHolder("man_stand_body.png", 0, 0),
         };

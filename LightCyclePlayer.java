@@ -10,16 +10,15 @@ public class LightCyclePlayer extends Player {
     }
 
     @Override
-    protected ImageHolder[] defaultImageHolders() {
+    protected ImageHolder[] defaultImages() {
         return new ImageHolder[]{
-                new ImageHolder("man_stand_body.png", 0, 0),
         };
     }
 
     public void act() {
         int result = direction % 4;
 
-        if        (result == 3 || result == -1) {
+        if (result == 3 || result == -1) {
             moveDown();
         } else if (result == 2 || result == -2) {
             moveRight();
@@ -28,17 +27,17 @@ public class LightCyclePlayer extends Player {
         } else if (result == 0) {
             moveLeft();
         }
-        
-        if (Greenfoot.isKeyDown ("a") && !isPressed) { 
+
+        if (Greenfoot.isKeyDown("a") && !isPressed) {
             direction = direction - 1;
             getImage().rotate(-90);
             isPressed = true;
-        } 
+        }
 
-        if (Greenfoot.isKeyDown ("d") && !isPressed) {
+        if (Greenfoot.isKeyDown("d") && !isPressed) {
             direction = direction + 1;
             getImage().rotate(90);
-            isPressed = true;   
+            isPressed = true;
         }
 
         /*Die Frames sind zu schnell für die Tasteneingaben, 

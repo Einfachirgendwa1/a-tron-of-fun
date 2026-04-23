@@ -1,12 +1,12 @@
 import greenfoot.World;
 
-public class ConePlayer extends Player {
+public class ConePlayer extends PlayerDefaultMovement {
     public ConePlayer(World world) {
         super(world);
     }
 
     @Override
-    protected ImageHolder[] defaultImageHolders() {
+    protected ImageHolder[] defaultImages() {
         return new ImageHolder[]{
                 new ImageHolder("man_stand_body.png", 0, 0),
         };

@@ -1,25 +1,16 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.Actor;
+import greenfoot.World;
 
-/**
- * Write a description of class GridBugsEnemy here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
-public abstract class Enemy extends MultipleImages
-{
-    
+public abstract class Enemy extends Actor {
+    private final MultipleImages multipleImages;
+
     public Enemy(World world) {
-        super(world);
+        multipleImages = new MultipleImages(world, defaultImages());
     }
 
-    /**
-     * Act - do whatever the GridBugsEnemy wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
-    public void act()
-    {
-        // Add your action code here.
+    protected abstract ImageHolder[] defaultImages();
+
+    public void act() {
+        multipleImages.updateImagesActor(this);
     }
 }
-
