@@ -16,6 +16,11 @@ public class ImageHolder extends Actor {
         this(new GreenfootImage("images/" + image), offsetX, offsetY);
     }
 
+    @Override
+    public boolean intersects(Actor other) {
+        return super.intersects(other);
+    }
+
     public int getOffsetX() {
         return offsetX;
     }

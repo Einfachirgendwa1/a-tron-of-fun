@@ -34,6 +34,12 @@ public class MultipleImages {
         updateImages(x, y);
     }
 
+    public boolean intersects(Actor other) {
+        return images.stream().anyMatch(image -> {
+            return image.intersects(other);
+        });
+    }
+
     private interface Producer<T> {
         T apply();
     }

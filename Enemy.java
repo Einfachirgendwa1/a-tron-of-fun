@@ -8,11 +8,14 @@ public abstract class Enemy extends Actor {
         multipleImages = new MultipleImages(world, defaultImages());
     }
 
-    protected abstract ImageHolder[] defaultImages();
+    protected ImageHolder[] defaultImages() {
+        return new ImageHolder[]{};
+    }
 
     public void act() {
         multipleImages.updateImagesActor(this);
     }
+
     protected void moveUp() {
         setLocation(getX(), getY() - 1);
     }

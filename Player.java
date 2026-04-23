@@ -8,6 +8,11 @@ public abstract class Player extends Actor {
         multipleImages = new MultipleImages(world, defaultImages());
     }
 
+    @Override
+    public boolean intersects(Actor other) {
+        return multipleImages.intersects(other);
+    }
+
     protected ImageHolder[] defaultImages() {
         return new ImageHolder[]{};
     }

@@ -12,6 +12,10 @@ public class GridBugsPlayer extends PlayerDefaultMovement {
         };
     }
 
+    public boolean touchesTarget(GridBugsTarget target) {
+        return intersects(target);
+    }
+
     @Override
     public void act() {
         super.act();

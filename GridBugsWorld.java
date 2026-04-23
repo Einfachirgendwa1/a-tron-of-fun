@@ -1,21 +1,25 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.World;
 
-/**
- * Write a description of class GridBugsWorld here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
-public class GridBugsWorld extends World
-{
+public class GridBugsWorld extends World {
+    private final GridBugsTarget target;
+    private final GridBugsPlayer player;
 
-    /**
-     * Constructor for objects of class GridBugsWorld.
-     * 
-     */
-    public GridBugsWorld()
-    {    
-        // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
-        super(600, 400, 1); 
+    public GridBugsWorld() {
+        super(600, 400, 1);
+
+        target = new GridBugsTarget();
+        addObject(target, 500, 300);
+
+        player = new GridBugsPlayer(this);
+        addObject(player, 100, 100);
+    }
+
+    @Override
+    public void act() {
+        super.act();
+
+        if (player.touchesTarget(target)) {
+            GameSelection.instance.exitMinigame();
+        }
     }
 }
