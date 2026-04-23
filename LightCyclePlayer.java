@@ -2,11 +2,12 @@ import greenfoot.Greenfoot;
 import greenfoot.World;
 
 public class LightCyclePlayer extends Player {
-    private int direction = 1;
+    private int direction = 2;
     private boolean isPressed = false;
 
     public LightCyclePlayer(World world) {
         super(world);
+        getImage().rotate(90);
     }
 
     @Override
@@ -27,8 +28,9 @@ public class LightCyclePlayer extends Player {
         } else if (result == 0) {
             moveLeft();
         }
-
-        if (Greenfoot.isKeyDown("a") && !isPressed) {
+        
+        //Steuerung mit A und D, relativ zur Bewegungsrichtung des Spielers nach links oder Rechts
+        if (Greenfoot.isKeyDown ("a") && !isPressed) { 
             direction = direction - 1;
             getImage().rotate(-90);
             isPressed = true;
