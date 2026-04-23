@@ -10,12 +10,6 @@ public class LightCyclePlayer extends Player {
         getImage().rotate(90);
     }
 
-    @Override
-    protected ImageHolder[] defaultImages() {
-        return new ImageHolder[]{
-        };
-    }
-
     public void act() {
         int result = direction % 4;
 
@@ -28,9 +22,9 @@ public class LightCyclePlayer extends Player {
         } else if (result == 0) {
             moveLeft();
         }
-        
+
         //Steuerung mit A und D, relativ zur Bewegungsrichtung des Spielers nach links oder Rechts
-        if (Greenfoot.isKeyDown ("a") && !isPressed) { 
+        if (Greenfoot.isKeyDown("a") && !isPressed) {
             direction = direction - 1;
             getImage().rotate(-90);
             isPressed = true;

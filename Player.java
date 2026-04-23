@@ -8,7 +8,9 @@ public abstract class Player extends Actor {
         multipleImages = new MultipleImages(world, defaultImages());
     }
 
-    protected abstract ImageHolder[] defaultImages();
+    protected ImageHolder[] defaultImages() {
+        return new ImageHolder[]{};
+    }
 
     @Override
     public void act() {
