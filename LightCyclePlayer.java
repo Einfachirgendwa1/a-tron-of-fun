@@ -4,10 +4,18 @@ import greenfoot.World;
 public class LightCyclePlayer extends Player {
     private int direction = 2;
     private boolean isPressed = false;
+    private boolean crashed = false;
 
     public LightCyclePlayer(World world) {
         super(world);
         getImage().rotate(90);
+    }
+
+    public void pause(int x) {
+        x = x - 1;
+        if (x == 0) {
+            return;
+        }
     }
 
     public void act() {
@@ -40,8 +48,19 @@ public class LightCyclePlayer extends Player {
         weswegen die isPressed Variable zu schnelle Eingaben verhindert, 
         die sonst ein falsches Verhalten verursachen würden.*/
 
-        if (!Greenfoot.isKeyDown("a") && !Greenfoot.isKeyDown("d")) { //Wenn keine der beiden Tasten gedrückt wird, kann die nächste Eingabe registriert werden.
+        //Wenn keine der beiden Tasten gedrückt wird, kann die nächste Eingabe registriert werden.
+        if (!Greenfoot.isKeyDown("a") && !Greenfoot.isKeyDown("d")) {
             isPressed = false;
+        }
+
+        if (direction == 5){
+            setImage("boom_1.png");
+            pause(10);
+            setImage("boom_2.png");
+            pause(10);
+            setImage("boom_3.png");
+            pause(10);
+            setImage("boom_4.png");
         }
     }
 }
