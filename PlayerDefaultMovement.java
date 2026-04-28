@@ -6,6 +6,7 @@ public abstract class PlayerDefaultMovement extends Player {
         super(world);
     }
 
+
     @Override
     public void act() {
         super.act();
