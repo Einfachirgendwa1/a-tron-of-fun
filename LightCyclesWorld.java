@@ -20,4 +20,10 @@ public class LightCyclesWorld extends World {
         LightCycleEnemy enemy = new LightCycleEnemy(this);
         addObject(enemy, 525, 50);
     }
+
+    
+
+    public void gameOver() {
+            GameSelection.instance.exitMinigame();
+    }
 }

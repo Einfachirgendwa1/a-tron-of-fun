@@ -14,6 +14,13 @@ public class LightCycleEnemy extends Enemy {
         getImage().rotate(-90);
     }
 
+    @Override
+    protected ImageHolder[] defaultImages() {
+        return new ImageHolder[]{
+            new ImageHolder("lightcycle_enemy.png", 0, 0)
+        };
+    }
+
     /**
      * Act - do whatever the LightCycleEnemy wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.

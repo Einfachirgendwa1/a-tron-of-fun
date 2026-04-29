@@ -1,5 +1,6 @@
 import greenfoot.Greenfoot;
 import greenfoot.World;
+import greenfoot.Actor;
 
 public class LightCyclePlayer extends Player {
     private int direction = 2;
@@ -11,14 +12,58 @@ public class LightCyclePlayer extends Player {
         getImage().rotate(90);
     }
 
-    public void pause(int x) {
-        x = x - 1;
-        if (x == 0) {
-            return;
+    public boolean touchesTrail(Trail trail) {
+        return intersects(trail);
+    }
+
+    public boolean touchesEnemy(LightCycleEnemy enemy) {
+        return intersects(enemy);
+    }
+
+    private void boomAnimation() {
+        setImage("boom_1.png");
+        Greenfoot.delay(10);
+        setImage("boom_2.png");
+        Greenfoot.delay(10);
+        setImage("boom_3.png");
+        Greenfoot.delay(10);
+        setImage("boom_4.png");
+
+        LightCyclesWorld world = (LightCyclesWorld) getWorld();
+        world.gameOver();
+    }
+
+    public boolean isCrashed() {
+        LightCycleEnemy enemy = (LightCycleEnemy) getOneIntersectingObject(LightCycleEnemy.class);
+        Trail trail = (Trail) getOneIntersectingObject(Trail.class);
+        if (enemy != null || trail != null) {
+            crashed = true;
         }
+        System.out.println(crashed);
+        return crashed;
+    }
+
+    @Override
+    public boolean intersects(Actor other) {
+        return super.intersects(other); // bypass the MultipleImages version
+    }
+
+    @Override
+    protected ImageHolder[] defaultImages() {
+        return new ImageHolder[]{
+            new ImageHolder("lightcycle_player.png",75, 350)
+        };
     }
 
     public void act() {
+
+        isCrashed();
+
+        if (isCrashed()) {
+            boomAnimation();
+            return;
+        }
+
         int result = direction % 4;
 
         if (result == 3 || result == -1) {
@@ -51,16 +96,6 @@ public class LightCyclePlayer extends Player {
         //Wenn keine der beiden Tasten gedrückt wird, kann die nächste Eingabe registriert werden.
         if (!Greenfoot.isKeyDown("a") && !Greenfoot.isKeyDown("d")) {
             isPressed = false;
-        }
-
-        if (direction == 5){
-            setImage("boom_1.png");
-            pause(10);
-            setImage("boom_2.png");
-            pause(10);
-            setImage("boom_3.png");
-            pause(10);
-            setImage("boom_4.png");
         }
     }
 }
