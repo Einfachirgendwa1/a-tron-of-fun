@@ -17,7 +17,7 @@ public class LightCycleEnemy extends Enemy {
     @Override
     protected ImageHolder[] defaultImages() {
         return new ImageHolder[]{
-                new ImageHolder("lightcycle_enemy.png", 0, 0)
+            new ImageHolder("lightcycle_enemy.png",525, 50)
         };
     }
 

@@ -36,16 +36,12 @@ public class LightCyclePlayer extends Player {
     public boolean isCrashed() {
         LightCycleEnemy enemy = (LightCycleEnemy) getOneIntersectingObject(LightCycleEnemy.class);
         Trail trail = (Trail) getOneIntersectingObject(Trail.class);
-        if (enemy != null || trail != null) {
-            crashed = true;
+        if (enemy != null && trail != null) {
+            return crashed;
+        } else {
+            return false;
         }
-        System.out.println(crashed);
-        return crashed;
-    }
 
-    @Override
-    public boolean intersects(Actor other) {
-        return super.intersects(other); // bypass the MultipleImages version
     }
 
     @Override
@@ -57,8 +53,7 @@ public class LightCyclePlayer extends Player {
 
     public void act() {
 
-        isCrashed();
-
+        super.act();
         if (isCrashed()) {
             boomAnimation();
             return;
@@ -72,7 +67,7 @@ public class LightCyclePlayer extends Player {
             moveRight();
         } else if (result == 1 || result == -3) {
             moveUp();
-        } else if (result == 0) {
+        } else {
             moveLeft();
         }
 

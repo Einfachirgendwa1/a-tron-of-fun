@@ -1,5 +1,6 @@
 #Greenfoot project file
 class.ConePlayer.image=blank.png
+class.ConeShooterWorld.image=black_background.png
 class.GameSelection.image=black_background.png
 class.GameSelectionPlayer.image=blank.png
 class.GridBugsEnemy.image=bug_1.png
@@ -278,6 +279,6 @@ target9.x=0
 target9.y=0
 version=3.1.0
 width=1936
-world.lastInstantiated=LightCyclesWorld
+world.lastInstantiated=ConeShooterWorld
 xPosition=0
 yPosition=0
