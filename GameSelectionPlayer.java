@@ -16,7 +16,7 @@ public class GameSelectionPlayer extends PlayerDefaultMovement {
         super.act();
 
         if (Greenfoot.isKeyDown("space") && currentMinigame != -1) {
-            getWorldOfType(GameSelection.class).enterMinigame(currentMinigame);
+            Misc.enterMinigame(currentMinigame);
         }
     }
 

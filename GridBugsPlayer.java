@@ -1,4 +1,4 @@
-import greenfoot.World;
+import greenfoot.Actor;
 
 public class GridBugsPlayer extends PlayerDefaultMovement {
     @Override
@@ -8,7 +8,7 @@ public class GridBugsPlayer extends PlayerDefaultMovement {
         };
     }
 
-    public boolean touchesTarget(GridBugsTarget target) {
+    public boolean touches(Actor target) {
         return intersects(target);
     }
 

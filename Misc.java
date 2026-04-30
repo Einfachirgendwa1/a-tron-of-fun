@@ -16,6 +16,10 @@ public class Misc {
         gameSelection.exitMinigame();
     }
 
+    public static void enterMinigame(int id) {
+        gameSelection.enterMinigame(id);
+    }
+
     public static World getCurrentWorld() {
         return currentWorld;
     }
