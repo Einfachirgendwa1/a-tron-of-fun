@@ -7,8 +7,8 @@ public class LightCyclePlayer extends Player {
     private boolean isPressed = false;
     private boolean crashed = false;
 
-    public LightCyclePlayer(World world) {
-        super(world);
+    public LightCyclePlayer() {
+        super();
         getImage().rotate(90);
     }
 

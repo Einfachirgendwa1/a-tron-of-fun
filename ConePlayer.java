@@ -1,10 +1,6 @@
 import greenfoot.World;
 
 public class ConePlayer extends PlayerDefaultMovement {
-    public ConePlayer(World world) {
-        super(world);
-    }
-
     @Override
     protected ImageHolder[] defaultImages() {
         return new ImageHolder[]{

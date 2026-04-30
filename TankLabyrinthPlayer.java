@@ -1,11 +1,6 @@
 import greenfoot.Greenfoot;
-import greenfoot.World;
 
 public class TankLabyrinthPlayer extends PlayerDefaultMovement {
-    public TankLabyrinthPlayer(World world) {
-        super(world);
-    }
-
     @Override
     protected ImageHolder[] defaultImages() {
         return new ImageHolder[]{
@@ -17,7 +12,7 @@ public class TankLabyrinthPlayer extends PlayerDefaultMovement {
         super.act();
 
         if (Greenfoot.isKeyDown("e")) {
-            GameSelection.instance.exitMinigame();
+            Misc.exitMinigame();
         }
     }
 }

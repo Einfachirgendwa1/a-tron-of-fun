@@ -4,3 +4,4 @@
 bluej/build.properties
 *.class
 *.ctxt
+out/

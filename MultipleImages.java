@@ -1,14 +1,13 @@
 import greenfoot.Actor;
-import greenfoot.World;
 
 import java.util.ArrayList;
 
 public class MultipleImages {
     private final ArrayList<ImageHolder> images = new ArrayList<>();
 
-    public MultipleImages(World world, ImageHolder[] defaultImages) {
+    public MultipleImages(ImageHolder[] defaultImages) {
         for (ImageHolder image : defaultImages) {
-            world.addObject(image, image.getOffsetX(), image.getOffsetY());
+            Misc.getCurrentWorld().addObject(image, image.getOffsetX(), image.getOffsetY());
             images.add(image);
         }
     }

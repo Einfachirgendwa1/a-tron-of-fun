@@ -1,10 +1,6 @@
 import greenfoot.World;
 
 public class GridBugsPlayer extends PlayerDefaultMovement {
-    public GridBugsPlayer(World world) {
-        super(world);
-    }
-
     @Override
     protected ImageHolder[] defaultImages() {
         return new ImageHolder[]{

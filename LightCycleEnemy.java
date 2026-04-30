@@ -10,14 +10,14 @@ public class LightCycleEnemy extends Enemy {
     private final int direction = 4;
 
     public LightCycleEnemy(World world) {
-        super(world);
+        super();
         getImage().rotate(-90);
     }
 
     @Override
     protected ImageHolder[] defaultImages() {
         return new ImageHolder[]{
-            new ImageHolder("lightcycle_enemy.png", 0, 0)
+                new ImageHolder("lightcycle_enemy.png", 0, 0)
         };
     }
 

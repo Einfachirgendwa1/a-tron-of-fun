@@ -2,11 +2,6 @@ import greenfoot.Greenfoot;
 import greenfoot.World;
 
 public abstract class PlayerDefaultMovement extends Player {
-    public PlayerDefaultMovement(World world) {
-        super(world);
-    }
-
-
     @Override
     public void act() {
         super.act();

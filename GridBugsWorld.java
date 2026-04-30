@@ -9,11 +9,12 @@ public class GridBugsWorld extends World {
 
     public GridBugsWorld() {
         super(600, 400, 1);
+        Misc.setWorld(this);
 
         target = new GridBugsTarget();
         addObject(target, 500, 300);
 
-        player = new GridBugsPlayer(this);
+        player = new GridBugsPlayer();
         addObject(player, 100, 100);
 
         spawnGridBugs(new Vector2[]{new Vector2(-200, 100), new Vector2(200, -100)});
@@ -21,7 +22,7 @@ public class GridBugsWorld extends World {
 
     private void spawnGridBugs(Vector2[] locations) {
         for (Vector2 location : locations) {
-            GridBugsEnemy gridBug = new GridBugsEnemy(this);
+            GridBugsEnemy gridBug = new GridBugsEnemy();
             addObject(gridBug, Math.round(location.getX()), Math.round(location.getY()));
             enemies.add(gridBug);
         }
@@ -36,7 +37,7 @@ public class GridBugsWorld extends World {
         }
 
         if (player.touchesTarget(target)) {
-            GameSelection.instance.exitMinigame();
+            Misc.exitMinigame();
         }
     }
 }

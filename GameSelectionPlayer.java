@@ -1,13 +1,8 @@
 import greenfoot.Greenfoot;
 
 public class GameSelectionPlayer extends PlayerDefaultMovement {
-    private final GameSelection world;
     private int currentMinigame = -1;
 
-    public GameSelectionPlayer(GameSelection world) {
-        super(world);
-        this.world = world;
-    }
 
     @Override
     protected ImageHolder[] defaultImages() {
@@ -21,7 +16,7 @@ public class GameSelectionPlayer extends PlayerDefaultMovement {
         super.act();
 
         if (Greenfoot.isKeyDown("space") && currentMinigame != -1) {
-            world.enterMinigame(currentMinigame);
+            getWorldOfType(GameSelection.class).enterMinigame(currentMinigame);
         }
     }
 

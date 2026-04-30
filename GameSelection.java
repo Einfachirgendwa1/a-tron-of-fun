@@ -2,7 +2,6 @@ import greenfoot.Greenfoot;
 import greenfoot.World;
 
 public class GameSelection extends World {
-    public static GameSelection instance;
     private final ICreateWorld[] miniGames = new ICreateWorld[]{
             ConeShooterWorld::new,
             LightCyclesWorld::new,
@@ -13,10 +12,9 @@ public class GameSelection extends World {
 
     public GameSelection() {
         super(600, 400, 1);
+        Misc.setWorld(this);
 
-        instance = this;
-
-        player = new GameSelectionPlayer(this);
+        player = new GameSelectionPlayer();
         addObject(player, 300, 200);
     }
 

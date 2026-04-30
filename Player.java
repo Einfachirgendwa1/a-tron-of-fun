@@ -1,12 +1,7 @@
 import greenfoot.Actor;
-import greenfoot.World;
 
 public abstract class Player extends Actor {
-    protected MultipleImages multipleImages;
-
-    public Player(World world) {
-        multipleImages = new MultipleImages(world, defaultImages());
-    }
+    protected MultipleImages multipleImages = new MultipleImages(defaultImages());
 
     @Override
     public boolean intersects(Actor other) {

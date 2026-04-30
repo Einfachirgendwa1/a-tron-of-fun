@@ -1,5 +1,4 @@
 import greenfoot.Greenfoot;
-import greenfoot.World;
 
 public class GridBugsEnemy extends Enemy {
     private static final float speed = 1;
@@ -7,8 +6,8 @@ public class GridBugsEnemy extends Enemy {
     private Vector2 target;
     private int frameCounter = 0;
 
-    public GridBugsEnemy(World world) {
-        super(world);
+    public GridBugsEnemy() {
+        super();
         setImage("bug_spawn_1.png");
     }
 
