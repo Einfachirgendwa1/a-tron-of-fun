@@ -1,72 +1,49 @@
-import greenfoot.Greenfoot;
-
 public class GridBugsEnemy extends Enemy {
-    private static final float speed = 1;
-    private State state = State.Spawn;
     private Vector2 target;
-    private int frameCounter = 0;
+    private final StateMachine stateMachine = new StateMachine(this::spawn);
 
-    public GridBugsEnemy() {
-        super();
-        setImage("bug_spawn_1.png");
+    {
+        speed = 1;
+        health = 1;
     }
 
-    private void setState(State state, String newImage) {
-        this.state = state;
-        frameCounter = 0;
-        setImage(newImage);
+    private void spawn(StateMachine stateMachine) {
+        stateMachine.addThread()
+                .wait(30)
+                .execute(() -> setImage("bug_spawn_2.png"))
+                .wait(30)
+                .execute(() -> setImage("bug_spawn_3.png"))
+                .wait(30)
+                .switchState(this::run);
     }
 
-    public void setTarget(Vector2 target) {
-        this.target = target;
+    private void run(StateMachine stateMachine) {
+        stateMachine.addThread()
+                .execute(() -> setImage("bug_1.png"))
+                .wait(45)
+                .execute(() -> setImage("bug_2.png"))
+                .wait(45)
+                .repeat();
+
+        stateMachine.addThread()
+                .waitRandom(90, 130)
+                .switchState(this::dance);
+
+        moveWithSpeed(towards(target));
+    }
+
+    public void dance(StateMachine stateMachine) {
+        stateMachine.onStart(() -> setImage("bug_spawn_3.png"));
+        stateMachine.addThread()
+                .waitRandom(80, 130)
+                .switchState(this::run);
+    }
+
+    public void setTarget(IGetVector2 target) {
+        this.target = target.position();
     }
 
     public void act() {
-        frameCounter++;
-        switch (state) {
-            case State.Run:
-                if (frameCounter % 45 == 0 && frameCounter % 2 == 0) {
-                    setImage("bug_1.png");
-                } else if (frameCounter % 45 == 0) {
-                    setImage("bug_2.png");
-                }
-
-                if (frameCounter == 90 && Greenfoot.getRandomNumber(2) == 1 || frameCounter == 130) {
-                    setState(State.Dance, "bug_spawn_3.png");
-                }
-
-                Vector2.towards(target, new Vector2(this)).scale(speed).move(this);
-                break;
-
-            case State.Spawn:
-                if (frameCounter == 30) {
-                    setImage("bug_spawn_2.png");
-                }
-
-                if (frameCounter == 60) {
-                    setImage("bug_spawn_3.png");
-                }
-
-                if (frameCounter == 90) {
-                    setState(State.Run, "bug_2.png");
-                }
-
-                break;
-
-            case State.Dance:
-                if (frameCounter == 80 && Greenfoot.getRandomNumber(2) == 1 || frameCounter == 130) {
-                    setState(State.Run, "bug_2.png");
-                }
-        }
-    }
-
-    public void dance() {
-        setImage("bug_spawn_3.png");
-    }
-
-    enum State {
-        Spawn,
-        Run,
-        Dance
+        stateMachine.update();
     }
 }

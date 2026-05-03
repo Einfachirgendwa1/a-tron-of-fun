@@ -4,7 +4,7 @@ public class GameSelectionPlayer extends HumanoidPlayer {
     private int currentMinigame = -1;
     private int targetMinigame = -1;
 
-    public GameSelectionPlayer() {
+    {
         allowShooting = false;
     }
 
@@ -28,7 +28,7 @@ public class GameSelectionPlayer extends HumanoidPlayer {
         for (int i = 0; i < defaultSpeed; i++) {
             Vector2 movementVector = towards(target);
 
-            if (movementVector.getX() != 0 && movementVector.getY() != 0) {
+            if (movementVector.x() != 0 && movementVector.y() != 0) {
                 target = Vector2.ORIGIN;
                 movementVector = towards(target);
             }
@@ -36,7 +36,7 @@ public class GameSelectionPlayer extends HumanoidPlayer {
             if (movementVector.isZero()) {
                 currentMinigame = targetMinigame;
             } else {
-                movementVector.move(this);
+                moveWithSpeed(movementVector);
             }
         }
 

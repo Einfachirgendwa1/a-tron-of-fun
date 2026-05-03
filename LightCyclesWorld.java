@@ -16,7 +16,7 @@ public class LightCyclesWorld extends BaseWorld {
 
         LightCyclePlayer player = new LightCyclePlayer();
         addObject(player, 75, 350);
-        LightCycleEnemy enemy = new LightCycleEnemy(this);
+        LightCycleEnemy enemy = new LightCycleEnemy();
         addObject(enemy, 525, 50);
     }
 

@@ -5,6 +5,7 @@ import greenfoot.World;
 public class Misc {
     public static final int worldWidth = 600;
     public static final int worldHeight = 400;
+    private static final boolean DEBUG = true;
     private static GameSelection gameSelection;
     private static World currentWorld;
 
@@ -47,4 +48,7 @@ public class Misc {
         return new Vector2(mouseInfo.getX(), mouseInfo.getY());
     }
 
+    public static void debugPrint(String message) {
+        if (DEBUG) System.out.println(message);
+    }
 }

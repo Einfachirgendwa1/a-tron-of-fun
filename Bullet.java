@@ -1,6 +1,4 @@
-import greenfoot.Actor;
-
-public class Bullet extends Actor {
+public class Bullet extends BaseActor {
     private final Vector2 velocity;
     private final boolean canHitPlayer;
 
@@ -10,7 +8,7 @@ public class Bullet extends Actor {
     }
 
     public void act() {
-        velocity.move(this);
+        move(velocity);
 
         if (isAtEdge()) {
             getWorld().removeObject(this);

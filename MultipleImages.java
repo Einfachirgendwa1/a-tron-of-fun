@@ -21,14 +21,6 @@ public class MultipleImages {
         }
     }
 
-    private static <T> T suppressIllegalState(Producer<T> producer, T fallback) {
-        try {
-            return producer.apply();
-        } catch (IllegalStateException e) {
-            return fallback;
-        }
-    }
-
     public static <T extends Actor> T createActor(Supplier<T> supplier) {
         return createActor(supplier, Misc.worldWidth / 2, Misc.worldHeight / 2);
     }
@@ -46,24 +38,16 @@ public class MultipleImages {
         return actor;
     }
 
-    public void updateImages(int x, int y) {
+    public void updateImages(IGetVector2 vector) {
+        int x = (int) vector.position().x();
+        int y = (int) vector.position().y();
+
         for (ImageHolder image : images) {
             image.setLocation(image.getOffsetX() + x, image.getOffsetY() + y);
         }
     }
 
-    public void updateImagesActor(Actor actor) {
-        int x = suppressIllegalState(actor::getX, 300);
-        int y = suppressIllegalState(actor::getY, 200);
-
-        updateImages(x, y);
-    }
-
     public boolean intersects(Actor other) {
         return images.stream().anyMatch(image -> image.intersects(other));
-    }
-
-    private interface Producer<T> {
-        T apply();
     }
 }
