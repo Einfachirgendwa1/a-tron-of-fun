@@ -22,14 +22,14 @@ public class GameSelectionPlayer extends HumanoidPlayer {
             case 1 -> new Vector2(300, 100);
             case 2 -> new Vector2(450, 200);
             case 3 -> new Vector2(300, 300);
-            default -> Vector2.ORIGIN;
+            default -> Vector2.MIDDLE;
         };
 
         for (int i = 0; i < defaultSpeed; i++) {
             Vector2 movementVector = towards(target);
 
             if (movementVector.x() != 0 && movementVector.y() != 0) {
-                target = Vector2.ORIGIN;
+                target = Vector2.MIDDLE;
                 movementVector = towards(target);
             }
 

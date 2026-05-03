@@ -1,6 +1,6 @@
 public record Vector2(float x, float y) implements IGetVector2 {
     public static final Vector2 ZERO = new Vector2(0, 0);
-    public static final Vector2 ORIGIN = new Vector2(Misc.worldWidth / 2f, Misc.worldHeight / 2f);
+    public static final Vector2 MIDDLE = new Vector2(Misc.worldWidth / 2f, Misc.worldHeight / 2f);
     public static final Vector2 UP = new Vector2(0, -1);
     public static final Vector2 DOWN = new Vector2(0, 1);
     public static final Vector2 LEFT = new Vector2(-1, 0);

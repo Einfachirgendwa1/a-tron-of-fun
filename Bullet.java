@@ -12,6 +12,7 @@ public class Bullet extends BaseActor {
 
         if (isAtEdge()) {
             getWorld().removeObject(this);
+            return;
         }
 
         IDamageable target = null;

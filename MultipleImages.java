@@ -38,6 +38,10 @@ public class MultipleImages {
         return actor;
     }
 
+    public boolean hasImages() {
+        return !images.isEmpty();
+    }
+
     public void updateImages(IGetVector2 vector) {
         int x = (int) vector.position().x();
         int y = (int) vector.position().y();

@@ -1,11 +1,13 @@
 import greenfoot.Greenfoot;
+import greenfoot.GreenfootImage;
 import greenfoot.MouseInfo;
 import greenfoot.World;
 
 public class Misc {
     public static final int worldWidth = 600;
     public static final int worldHeight = 400;
-    private static final boolean DEBUG = true;
+    public static final GreenfootImage blank = new GreenfootImage("images/blank.png");
+    private static final boolean debug = false;
     private static GameSelection gameSelection;
     private static World currentWorld;
 
@@ -49,6 +51,6 @@ public class Misc {
     }
 
     public static void debugPrint(String message) {
-        if (DEBUG) System.out.println(message);
+        if (debug) System.out.println(message);
     }
 }
