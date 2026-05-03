@@ -1,6 +1,4 @@
 import greenfoot.Greenfoot;
-import greenfoot.World;
-import greenfoot.Actor;
 
 public class LightCyclePlayer extends Player {
     private int direction = 2;
@@ -45,9 +43,9 @@ public class LightCyclePlayer extends Player {
     }
 
     @Override
-    protected ImageHolder[] defaultImages() {
+    protected ImageHolder[] images() {
         return new ImageHolder[]{
-            new ImageHolder("lightcycle_player.png",75, 350)
+                new ImageHolder("lightcycle_player.png", 75, 350)
         };
     }
 

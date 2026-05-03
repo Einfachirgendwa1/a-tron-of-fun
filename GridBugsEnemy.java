@@ -35,7 +35,7 @@ public class GridBugsEnemy extends Enemy {
                     setState(State.Dance, "bug_spawn_3.png");
                 }
 
-                Vector2.towards(this, target).times(-speed).move(this);
+                Vector2.towards(target, new Vector2(this)).scale(speed).move(this);
                 break;
 
             case State.Spawn:

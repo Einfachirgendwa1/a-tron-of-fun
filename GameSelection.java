@@ -1,37 +1,28 @@
-import greenfoot.Greenfoot;
 import greenfoot.World;
 
-public class GameSelection extends World {
-    private final ICreateWorld[] miniGames = new ICreateWorld[]{
+import java.util.List;
+import java.util.function.Supplier;
+
+public class GameSelection extends BaseWorld {
+    private final List<Supplier<World>> miniGames = List.of(
             ConeShooterWorld::new,
             LightCyclesWorld::new,
             GridBugsWorld::new,
             TankLabyrinthWorld::new
-    };
+    );
     private final GameSelectionPlayer player;
 
     public GameSelection() {
-        super(600, 400, 1);
-        Misc.setWorld(this);
-
-        player = new GameSelectionPlayer();
-        addObject(player, 300, 200);
+        super();
+        player = MultipleImages.createActor(GameSelectionPlayer::new);
     }
 
     public void enterMinigame(int minigameIndex) {
-        try {
-            Greenfoot.setWorld(miniGames[minigameIndex].apply());
-        } catch (Exception e) {
-            System.out.println("Error creating minigame " + minigameIndex);
-        }
+        Misc.loadWorld(miniGames.get(minigameIndex).get());
     }
 
     public void exitMinigame() {
-        Greenfoot.setWorld(this);
+        Misc.loadWorld(this);
         player.setLocation(300, 200);
-    }
-
-    interface ICreateWorld {
-        World apply();
     }
 }

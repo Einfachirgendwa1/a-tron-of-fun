@@ -1,10 +1,24 @@
 import greenfoot.Actor;
 
-public abstract class Enemy extends Actor {
+public abstract class Enemy extends Actor implements IDamageable {
     private final MultipleImages multipleImages;
+    private int health = maxHealth();
 
     public Enemy() {
         multipleImages = new MultipleImages(defaultImages());
+
+        if (health <= 0) {
+            getWorld().removeObject(this);
+        }
+    }
+
+    protected int maxHealth() {
+        return 100;
+    }
+
+    @Override
+    public void takeDamage(int amount) {
+        health -= amount;
     }
 
     protected ImageHolder[] defaultImages() {

@@ -1,6 +1,0 @@
-**/*.iml
-.DS_Store
-**/.project
-bluej/build.properties
-*.class
-*.ctxt

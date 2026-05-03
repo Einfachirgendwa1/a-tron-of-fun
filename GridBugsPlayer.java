@@ -1,13 +1,6 @@
 import greenfoot.Actor;
 
-public class GridBugsPlayer extends PlayerDefaultMovement {
-    @Override
-    protected ImageHolder[] defaultImages() {
-        return new ImageHolder[]{
-                new ImageHolder("man_stand_body.png", 0, 0),
-        };
-    }
-
+public class GridBugsPlayer extends HumanoidPlayer {
     public boolean touches(Actor target) {
         return intersects(target);
     }

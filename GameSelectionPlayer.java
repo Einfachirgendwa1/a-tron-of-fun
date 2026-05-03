@@ -1,19 +1,44 @@
 import greenfoot.Greenfoot;
 
-public class GameSelectionPlayer extends PlayerDefaultMovement {
+public class GameSelectionPlayer extends HumanoidPlayer {
     private int currentMinigame = -1;
+    private int targetMinigame = -1;
 
+    public GameSelectionPlayer() {
+        allowShooting = false;
+    }
 
     @Override
-    protected ImageHolder[] defaultImages() {
-        return new ImageHolder[]{
-                new ImageHolder("man_stand_body.png", 0, 0),
-        };
+    protected boolean isMoving() {
+        return currentMinigame != targetMinigame;
     }
 
     @Override
     public void act() {
         super.act();
+
+        Vector2 target = switch (targetMinigame) {
+            case 0 -> new Vector2(150, 200);
+            case 1 -> new Vector2(300, 100);
+            case 2 -> new Vector2(450, 200);
+            case 3 -> new Vector2(300, 300);
+            default -> Vector2.ORIGIN;
+        };
+
+        for (int i = 0; i < defaultSpeed; i++) {
+            Vector2 movementVector = towards(target);
+
+            if (movementVector.getX() != 0 && movementVector.getY() != 0) {
+                target = Vector2.ORIGIN;
+                movementVector = towards(target);
+            }
+
+            if (movementVector.isZero()) {
+                currentMinigame = targetMinigame;
+            } else {
+                movementVector.move(this);
+            }
+        }
 
         if (Greenfoot.isKeyDown("space") && currentMinigame != -1) {
             Misc.enterMinigame(currentMinigame);
@@ -22,25 +47,21 @@ public class GameSelectionPlayer extends PlayerDefaultMovement {
 
     @Override
     protected void moveLeft() {
-        setLocation(150, 200);
-        currentMinigame = 0;
+        if (!isMoving()) targetMinigame = 0;
     }
 
     @Override
     protected void moveUp() {
-        setLocation(300, 100);
-        currentMinigame = 1;
+        if (!isMoving()) targetMinigame = 1;
     }
 
     @Override
     protected void moveRight() {
-        setLocation(450, 200);
-        currentMinigame = 2;
+        if (!isMoving()) targetMinigame = 2;
     }
 
     @Override
     protected void moveDown() {
-        setLocation(300, 300);
-        currentMinigame = 3;
+        if (!isMoving()) targetMinigame = 3;
     }
 }

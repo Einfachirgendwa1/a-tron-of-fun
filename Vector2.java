@@ -1,29 +1,25 @@
 import greenfoot.Actor;
 
-public class Vector2 {
+public record Vector2(float x, float y) {
     public static final Vector2 ZERO = new Vector2(0, 0);
-    private float x;
-    private float y;
-
-    public Vector2(float x, float y) {
-        this.x = x;
-        this.y = y;
-    }
+    public static final Vector2 ORIGIN = new Vector2(300, 200);
 
     public Vector2(Actor actor) {
-        this.x = actor.getX();
-        this.y = actor.getY();
+        this(actor.getX(), actor.getY());
     }
 
-    public static Vector2 towards(Actor actor, Vector2 b) {
-        Vector2 unorm = new Vector2(actor).minus(b);
-
-        return unorm.normalize();
+    public static Vector2 towards(Vector2 end, Vector2 start) {
+        return end.minus(start).normalize();
     }
 
-    public void move(Actor actor) {
+    public boolean isZero() {
+        return x == 0 && y == 0;
+    }
+
+    public Vector2 move(Actor actor) {
         Vector2 newPos = new Vector2(actor).plus(this);
         actor.setLocation(Math.round(newPos.x), Math.round(newPos.y));
+        return this;
     }
 
     public float magnitude() {
@@ -39,16 +35,8 @@ public class Vector2 {
         return y;
     }
 
-    public void setY(float y) {
-        this.y = y;
-    }
-
     public float getX() {
         return x;
-    }
-
-    public void setX(float x) {
-        this.x = x;
     }
 
     public Vector2 plus(Vector2 other) {
@@ -59,7 +47,7 @@ public class Vector2 {
         return new Vector2(this.x - other.x, this.y - other.y);
     }
 
-    public Vector2 times(float d) {
+    public Vector2 scale(float d) {
         return new Vector2(this.x * d, this.y * d);
     }
 }

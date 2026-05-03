@@ -1,10 +1,10 @@
 import greenfoot.Greenfoot;
 
-public class TankLabyrinthPlayer extends PlayerDefaultMovement {
+public class TankLabyrinthPlayer extends Player {
     @Override
-    protected ImageHolder[] defaultImages() {
+    protected ImageHolder[] images() {
         return new ImageHolder[]{
-                new ImageHolder("man_stand_body.png", 0, 0),
+                new ImageHolder("tank_player.png", 0, 0),
         };
     }
 

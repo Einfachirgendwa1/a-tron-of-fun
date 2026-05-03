@@ -5,7 +5,7 @@ public class ImageHolder extends Actor {
     private final int offsetX;
     private final int offsetY;
 
-    private ImageHolder(GreenfootImage image, int offsetX, int offsetY) {
+    public ImageHolder(GreenfootImage image, int offsetX, int offsetY) {
         this.offsetX = offsetX;
         this.offsetY = offsetY;
 

@@ -1,8 +1,6 @@
-import greenfoot.World;
-
-public class ConePlayer extends PlayerDefaultMovement {
+public class ConePlayer extends HumanoidPlayer {
     @Override
-    protected ImageHolder[] defaultImages() {
+    protected ImageHolder[] images() {
         return new ImageHolder[]{
                 new ImageHolder("man_stand_body.png", 0, 0),
         };

@@ -1,12 +1,10 @@
-import greenfoot.World;
-
 /**
  * Write a description of class LightCyclesWorld here.
  *
  * @author (your name)
  * @version (a version number or a date)
  */
-public class LightCyclesWorld extends World {
+public class LightCyclesWorld extends BaseWorld {
     private static int gameCount = 0;
 
     /**
@@ -14,9 +12,8 @@ public class LightCyclesWorld extends World {
      *
      */
     public LightCyclesWorld() {
-        // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
-        super(600, 400, 1);
-        Misc.setWorld(this);
+        super();
+
         LightCyclePlayer player = new LightCyclePlayer();
         addObject(player, 75, 350);
         LightCycleEnemy enemy = new LightCycleEnemy(this);

@@ -1,8 +1,6 @@
-    import greenfoot.World;
-
-public class TankLabyrinthWorld extends World {
+public class TankLabyrinthWorld extends BaseWorld {
     public TankLabyrinthWorld() {
-        super(600, 400, 1);
-        addObject(new TankLabyrinthPlayer(), 300, 200);
+        super();
+        MultipleImages.createActor(TankLabyrinthPlayer::new);
     }
 }
