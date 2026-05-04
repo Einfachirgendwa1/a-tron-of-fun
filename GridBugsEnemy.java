@@ -44,6 +44,10 @@ public class GridBugsEnemy extends Enemy {
     }
 
     public void act() {
+        // if we have a health value that is less than or equal to zero, super.act() removes us from the world
+        // but if that happens stateMachine.update() would throw an exception, which is why super.act() needs to 
+        // happen last
         stateMachine.update();
+        super.act();
     }
 }

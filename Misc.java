@@ -7,7 +7,7 @@ public class Misc {
     public static final int worldWidth = 600;
     public static final int worldHeight = 400;
     public static final GreenfootImage blank = new GreenfootImage("images/blank.png");
-    private static final boolean debug = true;
+    private static final boolean debug = false;
     private static GameSelection gameSelection;
     private static World currentWorld;
 
