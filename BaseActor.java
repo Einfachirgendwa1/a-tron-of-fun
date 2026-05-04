@@ -8,6 +8,7 @@ public class BaseActor extends Actor implements IGetVector2, IDamageable {
     protected MultipleImages multipleImages = new MultipleImages(images());
     protected int health = 100;
     protected float speed = 1;
+    int lastCountedClicks = 0;
 
     {
         if (multipleImages.hasImages()) {

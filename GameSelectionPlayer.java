@@ -6,6 +6,7 @@ public class GameSelectionPlayer extends HumanoidPlayer {
 
     {
         allowShooting = false;
+        speed = 2f;
     }
 
     @Override
@@ -25,7 +26,7 @@ public class GameSelectionPlayer extends HumanoidPlayer {
             default -> Vector2.MIDDLE;
         };
 
-        for (int i = 0; i < defaultSpeed; i++) {
+        for (int i = 0; i < speed; i++) {
             Vector2 movementVector = towards(target);
 
             if (movementVector.x() != 0 && movementVector.y() != 0) {
@@ -36,7 +37,7 @@ public class GameSelectionPlayer extends HumanoidPlayer {
             if (movementVector.isZero()) {
                 currentMinigame = targetMinigame;
             } else {
-                moveWithSpeed(movementVector);
+                move(movementVector);
             }
         }
 

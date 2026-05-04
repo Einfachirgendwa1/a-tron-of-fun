@@ -22,8 +22,6 @@ public abstract class HumanoidPlayer extends Player {
     }
 
 
-    protected final int defaultSpeed = 2;
-
     protected boolean allowShooting = true;
     private boolean onCooldown = false;
     private ImageHolder body;
@@ -68,15 +66,10 @@ public abstract class HumanoidPlayer extends Player {
                 "d", this::moveRight
         );
 
-        if (isMoving()) {
-            legs.setImage(legsWalk);
-            body.setImage(bodyWalk);
-        } else {
-            legs.setImage(legsStand);
-            body.setImage(bodyStand);
-        }
+        legs.setImage(isMoving() ? legsWalk : legsStand);
+        body.setImage(isMoving() ? bodyWalk : bodyStand);
 
-        if (Misc.mouseClicked() && !onCooldown && allowShooting) {
+        if (Greenfoot.mouseClicked(null) && !onCooldown && allowShooting) {
             shoot();
         }
 

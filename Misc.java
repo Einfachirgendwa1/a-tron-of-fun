@@ -40,11 +40,6 @@ public class Misc {
         return currentWorld;
     }
 
-    public static boolean mouseClicked() {
-        if (Greenfoot.getMouseInfo() == null) return false;
-        return Greenfoot.getMouseInfo().getClickCount() != 0;
-    }
-
     public static Vector2 mousePosition() {
         MouseInfo mouseInfo = Greenfoot.getMouseInfo();
         return new Vector2(mouseInfo.getX(), mouseInfo.getY());
