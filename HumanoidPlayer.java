@@ -76,7 +76,7 @@ public abstract class HumanoidPlayer extends Player {
             body.setImage(bodyStand);
         }
 
-        if (Misc.mouseClicked() && !onCooldown && allowShooting) {
+        if (Greenfoot.mouseClicked(null) && !onCooldown && allowShooting) {
             shoot();
         }
 

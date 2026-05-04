@@ -58,15 +58,12 @@ public class StateMachine {
 
                 @Override
                 public void run() {
-                    Misc.debugPrint("Remaining frames: " + remaining);
-
                     if (remaining <= 0) {
                         currentInstruction++;
                         Misc.debugPrint("Done waiting " + frames + " frames");
                     } else {
                         done = true;
                         remaining--;
-                        Misc.debugPrint("Wait " + (remaining + 1) + " -> " + remaining);
                     }
                 }
 

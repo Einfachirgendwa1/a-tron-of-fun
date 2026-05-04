@@ -7,7 +7,7 @@ public class Misc {
     public static final int worldWidth = 600;
     public static final int worldHeight = 400;
     public static final GreenfootImage blank = new GreenfootImage("images/blank.png");
-    private static final boolean debug = false;
+    private static final boolean debug = true;
     private static GameSelection gameSelection;
     private static World currentWorld;
 
@@ -38,11 +38,6 @@ public class Misc {
 
     public static World getCurrentWorld() {
         return currentWorld;
-    }
-
-    public static boolean mouseClicked() {
-        if (Greenfoot.getMouseInfo() == null) return false;
-        return Greenfoot.getMouseInfo().getClickCount() != 0;
     }
 
     public static Vector2 mousePosition() {
