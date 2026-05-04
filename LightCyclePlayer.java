@@ -1,9 +1,11 @@
 import greenfoot.Greenfoot;
+import greenfoot.GreenfootImage;
 
 public class LightCyclePlayer extends Player {
     private int direction = 2;
     private boolean isPressed = false;
     private boolean crashed = false;
+    private ImageHolder cycleImage;
 
     public LightCyclePlayer() {
         super();
@@ -19,34 +21,33 @@ public class LightCyclePlayer extends Player {
     }
 
     private void boomAnimation() {
-        setImage("boom_1.png");
+        cycleImage.setImage("boom_1.png");
         Greenfoot.delay(10);
-        setImage("boom_2.png");
+        cycleImage.setImage("boom_2.png");
         Greenfoot.delay(10);
-        setImage("boom_3.png");
+        cycleImage.setImage("boom_3.png");
         Greenfoot.delay(10);
-        setImage("boom_4.png");
+        cycleImage.setImage("boom_4.png");
 
         LightCyclesWorld world = (LightCyclesWorld) getWorld();
         world.gameOver();
     }
 
     public boolean isCrashed() {
-        LightCycleEnemy enemy = (LightCycleEnemy) getOneIntersectingObject(LightCycleEnemy.class);
-        Trail trail = (Trail) getOneIntersectingObject(Trail.class);
-        if (enemy != null && trail != null) {
-            return crashed;
-        } else {
-            return false;
+        LightCyclesWorld world = (LightCyclesWorld) getWorld();
+        if (touchesEnemy(world.enemy)) {
+            crashed = true;
         }
-
+        return crashed;
     }
+
 
     @Override
     protected ImageHolder[] images() {
-        return new ImageHolder[]{
-                new ImageHolder("lightcycle_player.png", 75, 350)
-        };
+        GreenfootImage img = new GreenfootImage("images/lightcycle_player.png");
+        img.rotate(90);
+        cycleImage = new ImageHolder(img, 0, 0);
+        return new ImageHolder[]{ cycleImage };
     }
 
     public void act() {
@@ -72,13 +73,13 @@ public class LightCyclePlayer extends Player {
         //Steuerung mit A und D, relativ zur Bewegungsrichtung des Spielers nach links oder Rechts
         if (Greenfoot.isKeyDown("a") && !isPressed) {
             direction = direction - 1;
-            getImage().rotate(-90);
+            cycleImage.rotate(-90);
             isPressed = true;
         }
 
         if (Greenfoot.isKeyDown("d") && !isPressed) {
             direction = direction + 1;
-            getImage().rotate(90);
+            cycleImage.rotate(90);
             isPressed = true;
         }
 

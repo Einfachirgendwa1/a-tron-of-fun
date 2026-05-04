@@ -1,25 +1,14 @@
-/**
- * Write a description of class LightCyclesWorld here.
- *
- * @author (your name)
- * @version (a version number or a date)
- */
 public class LightCyclesWorld extends BaseWorld {
-    private static int gameCount = 0;
+    public final LightCyclePlayer player = MultipleImages.createActor(LightCyclePlayer::new, 75, 350);
+    public final LightCycleEnemy enemy = MultipleImages.createActor(LightCycleEnemy::new, 525, 50);
 
-    /**
-     * Constructor for objects of class LightCyclesWorld.
-     *
-     */
-    public LightCyclesWorld() {
-        super();
-
-        LightCyclePlayer player = new LightCyclePlayer();
-        addObject(player, 75, 350);
-        LightCycleEnemy enemy = new LightCycleEnemy();
-        addObject(enemy, 525, 50);
+    @Override
+    public void act() {
+        super.act();
+        if (player.touchesEnemy(enemy)) {
+            Misc.exitMinigame();
+        }
     }
-
 
     public void gameOver() {
         Misc.exitMinigame();

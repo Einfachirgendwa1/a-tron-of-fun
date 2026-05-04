@@ -28,4 +28,8 @@ public class ImageHolder extends Actor {
     public int getOffsetY() {
         return offsetY;
     }
+
+    public void rotate(int degrees) { // Damit man Bilder rotieren kann
+        getImage().rotate(degrees);
+    }
 }
