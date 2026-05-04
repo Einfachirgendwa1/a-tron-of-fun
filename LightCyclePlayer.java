@@ -1,5 +1,6 @@
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
+import greenfoot.Color;
 
 public class LightCyclePlayer extends Player {
     private int direction = 2;
@@ -7,11 +8,7 @@ public class LightCyclePlayer extends Player {
     private boolean crashed = false;
     private ImageHolder cycleImage;
 
-    public LightCyclePlayer() {
-        super();
-        getImage().rotate(90);
-    }
-
+    //Ermöglichen die Prüfung auf Kollisionen
     public boolean touchesTrail(Trail trail) {
         return intersects(trail);
     }
@@ -20,6 +17,7 @@ public class LightCyclePlayer extends Player {
         return intersects(enemy);
     }
 
+    //Explosionsanimation bei Kollision
     private void boomAnimation() {
         cycleImage.setImage("boom_1.png");
         Greenfoot.delay(10);
@@ -28,22 +26,25 @@ public class LightCyclePlayer extends Player {
         cycleImage.setImage("boom_3.png");
         Greenfoot.delay(10);
         cycleImage.setImage("boom_4.png");
+        Greenfoot.delay(20);
 
-        LightCyclesWorld world = (LightCyclesWorld) getWorld();
+        LightCyclesWorld world = (LightCyclesWorld) getWorld(); 
         world.gameOver();
     }
 
+    // Überprüft, ob der Spieler mit einem Trail oder dem Gegner kollidiert ist
     public boolean isCrashed() {
         LightCyclesWorld world = (LightCyclesWorld) getWorld();
-        if (touchesEnemy(world.enemy)) {
+        Trail trail = (Trail) getOneIntersectingObject(Trail.class);
+        if (touchesEnemy(world.enemy)|| (getOneIntersectingObject(Trail.class) != null && trail.getAge() > 40)) {
             crashed = true;
         }
         return crashed;
     }
 
-
     @Override
     protected ImageHolder[] images() {
+        LightCyclesWorld world = (LightCyclesWorld) getWorld(); 
         GreenfootImage img = new GreenfootImage("images/lightcycle_player.png");
         img.rotate(90);
         cycleImage = new ImageHolder(img, 0, 0);
@@ -58,6 +59,7 @@ public class LightCyclePlayer extends Player {
             return;
         }
 
+        //Bewegung in die aktuelle Richtung
         int result = direction % 4;
 
         if (result == 3 || result == -1) {
@@ -69,6 +71,9 @@ public class LightCyclePlayer extends Player {
         } else {
             moveLeft();
         }
+
+        //Erzeugung eines Schweifs an der aktuellen Position
+        getWorld().addObject(new Trail(Color.YELLOW), getX(), getY());
 
         //Steuerung mit A und D, relativ zur Bewegungsrichtung des Spielers nach links oder Rechts
         if (Greenfoot.isKeyDown("a") && !isPressed) {

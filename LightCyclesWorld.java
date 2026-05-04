@@ -1,13 +1,24 @@
+/**
+ * Write a description of class LightCyclesWorld here.
+ *
+ * @author (your name)
+ * @version (a version number or a date)
+ */
 public class LightCyclesWorld extends BaseWorld {
-    public final LightCyclePlayer player = MultipleImages.createActor(LightCyclePlayer::new, 75, 350);
-    public final LightCycleEnemy enemy = MultipleImages.createActor(LightCycleEnemy::new, 525, 50);
+    private static int gameCount = 0;
+    public LightCycleEnemy enemy;
+    public LightCyclePlayer player;
 
-    @Override
-    public void act() {
-        super.act();
-        if (player.touchesEnemy(enemy)) {
-            Misc.exitMinigame();
-        }
+    /**
+     * Constructor for objects of class LightCyclesWorld.
+     *
+     */
+    public LightCyclesWorld() {
+        super();
+
+        player = MultipleImages.createActor(LightCyclePlayer::new, 75, 350);
+        enemy  = MultipleImages.createActor(LightCycleEnemy::new,  525, 50);
+        // Dunkle Magie, die anscheinend funktioniert 
     }
 
     public void gameOver() {
