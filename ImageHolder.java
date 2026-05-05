@@ -1,7 +1,6 @@
-import greenfoot.Actor;
 import greenfoot.GreenfootImage;
 
-public class ImageHolder extends Actor {
+public class ImageHolder extends Collider {
     private final int offsetX;
     private final int offsetY;
 
@@ -14,11 +13,6 @@ public class ImageHolder extends Actor {
 
     public ImageHolder(String image, int offsetX, int offsetY) {
         this(new GreenfootImage("images/" + image), offsetX, offsetY);
-    }
-
-    @Override
-    public boolean intersects(Actor other) {
-        return super.intersects(other);
     }
 
     public int getOffsetX() {

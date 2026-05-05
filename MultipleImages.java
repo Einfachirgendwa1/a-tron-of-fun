@@ -54,8 +54,4 @@ public class MultipleImages {
             image.setLocation(image.getOffsetX() + x, image.getOffsetY() + y);
         }
     }
-
-    public boolean intersects(Actor other) {
-        return images.stream().anyMatch(image -> image.intersects(other));
-    }
 }

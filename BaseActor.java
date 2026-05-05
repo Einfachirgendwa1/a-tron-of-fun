@@ -3,13 +3,12 @@ import greenfoot.GreenfootImage;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.function.Function;
 
-public class BaseActor extends Actor implements IGetVector2, IDamageable {
+public class BaseActor extends Collider implements IGetVector2, IDamageable {
     protected MultipleImages multipleImages = new MultipleImages(images());
     protected int health = 100;
     protected float speed = 1;
-    int lastCountedClicks = 0;
 
     {
         if (multipleImages.hasImages()) {
@@ -19,12 +18,24 @@ public class BaseActor extends Actor implements IGetVector2, IDamageable {
 
     @Override
     public boolean intersects(Actor other) {
-        List<Actor> otherColliders = other instanceof BaseActor ? ((BaseActor) other).colliders() : List.of(other);
-        for (Actor myCollider : colliders()) {
+        List<Actor> otherColliders = new ArrayList<>();
+
+        if (other instanceof BaseActor) {
+            otherColliders.addAll(((BaseActor) other).colliders());
+        } else {
+            otherColliders.add(other);
+        }
+
+        for (Collider myCollider : colliders()) {
             for (Actor otherCollider : otherColliders) {
-                // TODO: GeHeImNiSpRiNzIp
+                Function<Actor, Boolean> collides = myCollider == this ? super::intersects : myCollider::intersects;
+
+                if (collides.apply(otherCollider)) {
+                    return true;
+                }
             }
         }
+
         return false;
     }
 
@@ -61,10 +72,13 @@ public class BaseActor extends Actor implements IGetVector2, IDamageable {
         }
     }
 
-    protected ArrayList<Actor> colliders() {
-        ArrayList<Actor> colliders = new ArrayList<>();
-        Optional<GreenfootImage> baseImage = getGreenfootImage();
-        baseImage.ifPresent(i -> colliders.add(this));
+    protected ArrayList<Collider> colliders() {
+        ArrayList<Collider> colliders = new ArrayList<>();
+
+        GreenfootImage baseImage = getImage();
+        if (baseImage != null && baseImage != Misc.blank) {
+            colliders.add(this);
+        }
 
         colliders.addAll(multipleImages.getImages());
         return colliders;
@@ -93,7 +107,4 @@ public class BaseActor extends Actor implements IGetVector2, IDamageable {
     protected void deathHandler() {}
 
 
-    protected Optional<GreenfootImage> getGreenfootImage() {
-        return getImage() != Misc.blank ? Optional.ofNullable(getImage()) : Optional.empty();
-    }
 }
