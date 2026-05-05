@@ -1,6 +1,7 @@
 #Greenfoot project file
 class.Bullet.image=ammunition_large.png
 class.ConePlayer.image=blank.png
+class.DelayedExecution.image=blank.png
 class.GameSelection.image=black_background.png
 class.GameSelectionPlayer.image=blank.png
 class.GridBugsEnemy.image=bug_spawn_1.png
