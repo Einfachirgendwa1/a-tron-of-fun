@@ -23,7 +23,7 @@ public class LightCycleEnemy extends Enemy {
     public boolean isCrashed() {
         LightCyclesWorld world = (LightCyclesWorld) getWorld();
         Trail trail = (Trail) getOneIntersectingObject(Trail.class);
-        if (touchesPlayer(world.player)|| (getOneIntersectingObject(Trail.class) != null && trail.getAge() > 40)) {
+        if (touchesPlayer(world.player) || (getOneIntersectingObject(Trail.class) != null && trail.getAge() > 40)) {
             crashed = true;
         }
         return crashed;
@@ -51,8 +51,13 @@ public class LightCycleEnemy extends Enemy {
             || y <= 10 || y >= getWorld().getHeight() - 10;
     }
 
-    public void act() {
+    public int randomTurn(){
+        int turn = (int)(Math.random() * 500) + 1;
+        return turn; 
+    }
 
+    public void act() {
+ 
         super.act();
         if (isCrashed()) {
             boomAnimation();
@@ -61,6 +66,12 @@ public class LightCycleEnemy extends Enemy {
 
         if (isNearWall()) {
             direction = direction + 1;
+        }
+
+        if (randomTurn() == 250 || randomTurn() == 0 || randomTurn() == 125){
+            direction = direction - 1;
+        } else if (randomTurn() == 375 || randomTurn() == 500){
+            direction = direction + 1; 
         }
 
         int result = direction % 4;
