@@ -1,7 +1,6 @@
 import greenfoot.Actor;
 import greenfoot.GreenfootImage;
 
-import javax.annotation.CheckReturnValue;
 import java.util.Optional;
 
 public class BaseActor extends Actor implements IGetVector2, IDamageable {
@@ -36,7 +35,7 @@ public class BaseActor extends Actor implements IGetVector2, IDamageable {
         setLocation(Math.round(newPos.x()), Math.round(newPos.y()));
     }
 
-    @CheckReturnValue
+
     protected Vector2 towards(IGetVector2 other) {
         return other.position().minus(this).normalize();
     }
@@ -77,7 +76,7 @@ public class BaseActor extends Actor implements IGetVector2, IDamageable {
 
     protected void deathHandler() {}
 
-    @CheckReturnValue
+
     protected Optional<GreenfootImage> getGreenfootImage() {
         return getImage() != Misc.blank ? Optional.ofNullable(getImage()) : Optional.empty();
     }

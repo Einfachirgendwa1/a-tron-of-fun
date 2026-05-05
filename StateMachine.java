@@ -1,6 +1,5 @@
 import greenfoot.Greenfoot;
 
-import javax.annotation.CheckReturnValue;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -29,7 +28,7 @@ public class StateMachine {
         }
     }
 
-    @CheckReturnValue
+
     public Thread addThread() {
         Thread thread = new Thread();
         onStart(() -> threads.add(thread));
@@ -51,7 +50,7 @@ public class StateMachine {
         private int currentInstruction = 0;
         private boolean done;
 
-        @CheckReturnValue
+
         public Thread wait(int frames) {
             instructions.add(new Instruction() {
                 int remaining = frames;
@@ -76,7 +75,7 @@ public class StateMachine {
             return this;
         }
 
-        @CheckReturnValue
+
         public Thread waitRandom(int min, int max) {
             return wait(Greenfoot.getRandomNumber(max - min) + min);
         }
