@@ -27,7 +27,6 @@ public class LightCyclePlayer extends Player {
         Greenfoot.delay(10);
         cycleImage.setImage("boom_4.png");
         Greenfoot.delay(20);
-
         LightCyclesWorld world = (LightCyclesWorld) getWorld(); 
         world.gameOver();
     }
