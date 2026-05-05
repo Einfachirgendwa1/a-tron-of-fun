@@ -6,32 +6,14 @@ import java.util.function.Consumer;
 
 public class StateMachine {
     private final List<Thread> threads = new ArrayList<>();
-    private Consumer<StateMachine> activeState;
-    private int frameCounter = 0;
 
     public StateMachine(Consumer<StateMachine> activeState) {
-        this.activeState = activeState;
+        activeState.accept(this);
     }
-
-    public void switchState(Consumer<StateMachine> activeState) {
-        Misc.debugPrint("Switching to state " + activeState);
-
-        this.activeState = activeState;
-        frameCounter = 0;
-        threads.clear();
-    }
-
-    public void onStart(Runnable onStart) {
-        if (frameCounter == 0) {
-            Misc.debugPrint("onStart: " + onStart);
-            onStart.run();
-        }
-    }
-
 
     public Thread addThread() {
         Thread thread = new Thread();
-        onStart(() -> threads.add(thread));
+        threads.add(thread);
         return thread;
     }
 
@@ -40,10 +22,14 @@ public class StateMachine {
         for (int i = 0; i < threads.size(); i++) {
             threads.get(i).update();
         }
-
-        activeState.accept(this);
-        frameCounter++;
     }
+
+    private void switchState(Consumer<StateMachine> newState) {
+        Misc.debugPrint("Switching to state " + newState);
+        threads.clear();
+        newState.accept(this);
+    }
+
 
     public class Thread {
         private final List<Instruction> instructions = new ArrayList<>();
@@ -100,19 +86,27 @@ public class StateMachine {
         }
 
         public void repeat() {
-            execute(() -> {
-                Misc.debugPrint("Repeating");
-                for (Instruction instruction : instructions) {
-                    instruction.reset();
-                }
+            instructions.add(new Instruction() {
+                @Override
+                public void run() {
+                    Misc.debugPrint("Repeating");
+                    for (Instruction instruction : instructions) {
+                        instruction.reset();
+                    }
 
-                currentInstruction = 0;
-                done = true;
+                    currentInstruction = 0;
+                    done = true;
+                }
             });
         }
 
+        public void repeat(Runnable code) {
+            execute(code);
+            repeat();
+        }
+
         public void update() {
-            if (instructions.isEmpty()) return;
+            if (instructions.isEmpty()) throw new RuntimeException("Thread without any instructions!");
 
             done = false;
             while (!done && currentInstruction < instructions.size()) {

@@ -29,11 +29,11 @@ public class GridBugsEnemy extends Enemy {
                 .waitRandom(90, 130)
                 .switchState(this::dance);
 
-        moveWithSpeed(towards(target));
+        stateMachine.addThread().repeat(() -> moveWithSpeed(towards(target)));
     }
 
     public void dance(StateMachine stateMachine) {
-        stateMachine.onStart(() -> setImage("bug_spawn_3.png"));
+        setImage("bug_spawn_3.png");
         stateMachine.addThread()
                 .waitRandom(80, 130)
                 .switchState(this::run);
