@@ -3,6 +3,8 @@ import greenfoot.GreenfootImage;
 import greenfoot.MouseInfo;
 import greenfoot.World;
 
+import java.util.Optional;
+
 public class Misc {
     public static final int worldWidth = 600;
     public static final int worldHeight = 400;
@@ -40,9 +42,10 @@ public class Misc {
         return currentWorld;
     }
 
-    public static Vector2 mousePosition() {
+    public static Optional<Vector2> mousePosition() {
         MouseInfo mouseInfo = Greenfoot.getMouseInfo();
-        return new Vector2(mouseInfo.getX(), mouseInfo.getY());
+        if (mouseInfo == null) return Optional.empty();
+        return Optional.of(new Vector2(mouseInfo.getX(), mouseInfo.getY()));
     }
 
     public static void debugPrint(String message) {

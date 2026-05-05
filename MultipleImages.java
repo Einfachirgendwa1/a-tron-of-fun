@@ -42,6 +42,10 @@ public class MultipleImages {
         return !images.isEmpty();
     }
 
+    public ArrayList<ImageHolder> getImages() {
+        return images;
+    }
+
     public void updateImages(IGetVector2 vector) {
         int x = (int) vector.position().x();
         int y = (int) vector.position().y();

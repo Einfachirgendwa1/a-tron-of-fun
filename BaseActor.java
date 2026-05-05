@@ -1,6 +1,8 @@
 import greenfoot.Actor;
 import greenfoot.GreenfootImage;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class BaseActor extends Actor implements IGetVector2, IDamageable {
@@ -17,8 +19,13 @@ public class BaseActor extends Actor implements IGetVector2, IDamageable {
 
     @Override
     public boolean intersects(Actor other) {
-        //noinspection unused
-        return getGreenfootImage().map(i -> super.intersects(other)).orElse(false) || multipleImages.intersects(other);
+        List<Actor> otherColliders = other instanceof BaseActor ? ((BaseActor) other).colliders() : List.of(other);
+        for (Actor myCollider : colliders()) {
+            for (Actor otherCollider : otherColliders) {
+                // TODO: GeHeImNiSpRiNzIp
+            }
+        }
+        return false;
     }
 
     protected ImageHolder[] images() {
@@ -52,6 +59,15 @@ public class BaseActor extends Actor implements IGetVector2, IDamageable {
         if (health <= 0) {
             deathHandler();
         }
+    }
+
+    protected ArrayList<Actor> colliders() {
+        ArrayList<Actor> colliders = new ArrayList<>();
+        Optional<GreenfootImage> baseImage = getGreenfootImage();
+        baseImage.ifPresent(i -> colliders.add(this));
+
+        colliders.addAll(multipleImages.getImages());
+        return colliders;
     }
 
     protected void moveWithSpeed(Vector2 vector) {

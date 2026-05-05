@@ -4,6 +4,7 @@ import greenfoot.GreenfootImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public abstract class HumanoidPlayer extends Player {
@@ -58,6 +59,7 @@ public abstract class HumanoidPlayer extends Player {
     @Override
     public void act() {
         super.act();
+        shootTimer.update();
 
         Map<String, Runnable> keymap = Map.of(
                 "w", this::moveUp,
@@ -68,6 +70,21 @@ public abstract class HumanoidPlayer extends Player {
 
         legs.setImage(isMoving() ? legsWalk : legsStand);
         body.setImage(isMoving() ? bodyWalk : bodyStand);
+
+        Vector2 direction = towards(Misc.mousePosition().orElse(Vector2.ZERO));
+
+        // between -π and π
+        double angle = Math.atan2(direction.y(), direction.x());
+        Misc.debugPrint(Double.toString(angle));
+
+        // between 0 and 1
+        double percentage = (angle + Math.PI) / (2 * Math.PI);
+
+        // between 0 and 9
+        int i = (int) Math.round(percentage * 9);
+
+        getWorld().showText(Integer.toString(i), 300, 200);
+        pointArm.setImage(leftArm.get(i));
 
         if (Greenfoot.mouseClicked(null) && !onCooldown && allowShooting) {
             shoot();
@@ -84,7 +101,10 @@ public abstract class HumanoidPlayer extends Player {
         onCooldown = true;
         throwArm.setImage(throwActive);
 
-        Vector2 bulletMovement = towards(Misc.mousePosition()).scale(2);
+        Optional<Vector2> mousePosition = Misc.mousePosition();
+        if (mousePosition.isEmpty()) return;
+
+        Vector2 bulletMovement = towards(mousePosition.get()).scale(2);
         Bullet bullet = new Bullet(bulletMovement, false);
         getWorld().addObject(bullet, getX(), getY());
 
