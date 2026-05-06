@@ -4,9 +4,11 @@ import greenfoot.Color;
 
 public class LightCyclePlayer extends Player {
     private int direction = 2;
-    private boolean isPressed = false;
+    private int result = 0;
     private boolean crashed = false;
+    private boolean isPressed = false;
     private ImageHolder cycleImage;
+    private boolean onGrid = true;
 
     //Ermöglichen die Prüfung auf Kollisionen
     public boolean touchesTrail(Trail trail) {
@@ -50,6 +52,15 @@ public class LightCyclePlayer extends Player {
         return new ImageHolder[]{ cycleImage };
     }
 
+    public boolean onGrid() { //Prüfung, ob das cycle auf dem Grid ist 
+        if(getX() % LightCyclesWorld.gridSize == 0 && getY() % LightCyclesWorld.gridSize == 0) {
+            onGrid = true;
+        } else {
+            onGrid = false;
+        }
+        return onGrid;
+    }
+
     public void act() {
 
         super.act();
@@ -58,42 +69,44 @@ public class LightCyclePlayer extends Player {
             return;
         }
 
-        //Bewegung in die aktuelle Richtung
-        int result = direction % 4;
+        //Steuerung mit A und D, relativ zur Bewegungsrichtung des Spielers nach links oder Rechts
+        //Die neue Richtung wird gespeichert und kann beim nächsten erlaubten Punkt auf dem Grid angewendet werden, ohne dass eingaben verloren gehen
+        if (Greenfoot.isKeyDown("a") && !isPressed) {
+                direction = direction - 1;
+                isPressed = true;
+        }
+
+        if (Greenfoot.isKeyDown("d") && !isPressed) {
+                direction = direction + 1;
+                isPressed = true;
+        }
+
+        if(onGrid()) { //Eine Richtungsänderung ist nur möglich, wenn das LightCycle auf dem Grid ist
+            //Bewegung in die aktuelle Richtung
+            result = direction % 4;
+        }
 
         if (result == 3 || result == -1) {
-            moveDown();
-        } else if (result == 2 || result == -2) {
-            moveRight();
-        } else if (result == 1 || result == -3) {
-            moveUp();
-        } else {
-            moveLeft();
+                moveDown();
+                cycleImage.setRotation(90);
+            } else if (result == 2 || result == -2) {
+                moveRight();
+                cycleImage.setRotation(0);
+            } else if (result == 1 || result == -3) {
+                moveUp();
+                cycleImage.setRotation(270);
+            } else {
+                moveLeft();
+                cycleImage.setRotation(180);
+            }
+
+            
+        if (!Greenfoot.isKeyDown("a") && !Greenfoot.isKeyDown("d")) {
+            isPressed = false;
         }
 
         //Erzeugung eines Schweifs an der aktuellen Position
         getWorld().addObject(new Trail(Color.YELLOW), getX(), getY());
 
-        //Steuerung mit A und D, relativ zur Bewegungsrichtung des Spielers nach links oder Rechts
-        if (Greenfoot.isKeyDown("a") && !isPressed) {
-            direction = direction - 1;
-            cycleImage.rotate(-90);
-            isPressed = true;
-        }
-
-        if (Greenfoot.isKeyDown("d") && !isPressed) {
-            direction = direction + 1;
-            cycleImage.rotate(90);
-            isPressed = true;
-        }
-
-        /*Die Frames sind zu schnell für die Tasteneingaben, 
-        weswegen die isPressed Variable zu schnelle Eingaben verhindert, 
-        die sonst ein falsches Verhalten verursachen würden.*/
-
-        //Wenn keine der beiden Tasten gedrückt wird, kann die nächste Eingabe registriert werden.
-        if (!Greenfoot.isKeyDown("a") && !Greenfoot.isKeyDown("d")) {
-            isPressed = false;
-        }
     }
 }

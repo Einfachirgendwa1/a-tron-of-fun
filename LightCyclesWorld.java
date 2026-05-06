@@ -8,6 +8,12 @@ public class LightCyclesWorld extends BaseWorld {
     private static int gameCount = 0;
     public LightCycleEnemy enemy;
     public LightCyclePlayer player;
+    public static int gridSize = 18;
+
+    /** 
+     * Verwendung eines Grids, welches die sechsfache breite der Wand hat, um die Bewegung der LightCycles zu erleichtern und die Kollisionsprüfung zu vereinfachen.
+     * Außerdem können Schweife nicht direkt nebeneinanderliegen, sodass das Spiel optisch aufgelockert wird.
+     */
 
     /**
      * Constructor for objects of class LightCyclesWorld.
@@ -16,9 +22,10 @@ public class LightCyclesWorld extends BaseWorld {
     public LightCyclesWorld() {
         super();
 
-        player = MultipleImages.createActor(LightCyclePlayer::new, 75, 350);
-        enemy  = MultipleImages.createActor(LightCycleEnemy::new,  525, 50);
+        player = MultipleImages.createActor(LightCyclePlayer::new, 72, 360);
+        enemy  = MultipleImages.createActor(LightCycleEnemy::new, 522, 54);
         // Dunkle Magie, die anscheinend funktioniert 
+        //Koordinaten durch 18 teilbar, damit die Startposition dem Grid entspricht
     }
 
     public void gameOver() {
