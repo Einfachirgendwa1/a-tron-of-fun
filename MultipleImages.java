@@ -47,11 +47,8 @@ public class MultipleImages {
     }
 
     public void updateImages(IGetVector2 vector) {
-        int x = (int) vector.position().x();
-        int y = (int) vector.position().y();
-
         for (ImageHolder image : images) {
-            image.setLocation(image.getOffsetX() + x, image.getOffsetY() + y);
+            image.updatePosition(vector);
         }
     }
 }

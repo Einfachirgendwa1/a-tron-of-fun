@@ -1,8 +1,10 @@
 import greenfoot.GreenfootImage;
 
 public class ImageHolder extends Collider {
-    private final int offsetX;
-    private final int offsetY;
+    protected int offsetX;
+    protected int offsetY;
+
+    protected Vector2 basePosition;
 
     public ImageHolder(GreenfootImage image, int offsetX, int offsetY) {
         this.offsetX = offsetX;
@@ -25,5 +27,32 @@ public class ImageHolder extends Collider {
 
     public void rotate(int degrees) { // Damit man Bilder rotieren kann
         getImage().rotate(degrees);
+    }
+
+    public void updatePosition(IGetVector2 newPosition) {
+        int x = (int) newPosition.position().x();
+        int y = (int) newPosition.position().y();
+
+        basePosition = newPosition.position();
+
+        setLocation(offsetX + x, offsetY + y);
+    }
+
+    @Override
+    public void mirrorHorizontally() {
+        super.mirrorHorizontally();
+        offsetX *= -1;
+
+        updatePosition(basePosition);
+    }
+
+    @Override
+    public void mirrorVertically() {
+        super.mirrorVertically();
+        offsetY *= -1;
+
+        Misc.debugPrint(offsetX * -1 + " is now " + offsetX);
+
+        updatePosition(basePosition);
     }
 }

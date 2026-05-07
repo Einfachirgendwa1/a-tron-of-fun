@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-public class BaseActor extends Collider implements IGetVector2, IDamageable {
+public class BaseActor extends Collider implements IDamageable {
     protected MultipleImages multipleImages = new MultipleImages(images());
     protected int health = 100;
     protected float speed = 1;
@@ -41,11 +41,6 @@ public class BaseActor extends Collider implements IGetVector2, IDamageable {
 
     protected ImageHolder[] images() {
         return new ImageHolder[]{};
-    }
-
-    @Override
-    public Vector2 position() {
-        return new Vector2(getX(), getY());
     }
 
     protected void move(Vector2 vector) {
@@ -106,5 +101,19 @@ public class BaseActor extends Collider implements IGetVector2, IDamageable {
 
     protected void deathHandler() {}
 
+    @Override
+    public void mirrorHorizontally() {
+        for (Collider collider : colliders()) {
+            if (collider == this) getImage().mirrorHorizontally();
+            else collider.mirrorHorizontally();
+        }
+    }
 
+    @Override
+    public void mirrorVertically() {
+        for (Collider collider : colliders()) {
+            if (collider == this) getImage().mirrorVertically();
+            else collider.mirrorVertically();
+        }
+    }
 }

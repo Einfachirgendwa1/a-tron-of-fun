@@ -22,8 +22,9 @@ public abstract class HumanoidPlayer extends Player {
         }
     }
 
-
     protected boolean allowShooting = true;
+    private boolean horizontalFlip = false;
+    private boolean verticalFlip = false;
     private boolean onCooldown = false;
     private ImageHolder body;
     private ImageHolder legs;
@@ -36,6 +37,22 @@ public abstract class HumanoidPlayer extends Player {
                 onCooldown = false;
             }
     );
+
+    public void setVerticalFlip(boolean verticalFlip) {
+        if (verticalFlip != this.verticalFlip) {
+            pointArm.mirrorVertically();
+        }
+
+        this.verticalFlip = verticalFlip;
+    }
+
+    public void setHorizontalFlip(boolean horizontalFlip) {
+        if (horizontalFlip != this.horizontalFlip) {
+            mirrorHorizontally();
+        }
+
+        this.horizontalFlip = horizontalFlip;
+    }
 
     protected boolean isMoving() {
         return Stream.of("w", "a", "s", "d").anyMatch(Greenfoot::isKeyDown);
@@ -50,8 +67,17 @@ public abstract class HumanoidPlayer extends Player {
         legs = new ImageHolder(legsStand, 0, 31);
         body = new ImageHolder(bodyStand, 0, 0);
 
-        pointArm = new ImageHolder(leftArm.get(4), -13, -11);
         throwArm = new ImageHolder(throwInactive, 0, 6);
+
+        pointArm = new ImageHolder(leftArm.get(4), -13, -11) {
+            @Override
+            public void mirrorHorizontally() {
+                getImage().mirrorHorizontally();
+                System.out.println("horizontally mirrored");
+                offsetY = -1000;
+                updatePosition(basePosition);
+            }
+        };
 
         return new ImageHolder[]{body, legs, pointArm, throwArm};
     }
@@ -75,16 +101,28 @@ public abstract class HumanoidPlayer extends Player {
 
         // between -π and π
         double angle = Math.atan2(direction.y(), direction.x());
-        Misc.debugPrint(Double.toString(angle));
 
         // between 0 and 1
-        double percentage = (angle + Math.PI) / (2 * Math.PI);
+        double percentage = 1 - (angle + Math.PI) / (2 * Math.PI);
 
         // between 0 and 9
         int i = (int) Math.round(percentage * 9);
 
-        getWorld().showText(Integer.toString(i), 300, 200);
-        pointArm.setImage(leftArm.get(i));
+        if (percentage <= 0.25) {
+            setHorizontalFlip(false);
+            setVerticalFlip(true);
+        } else if (percentage <= 0.5) {
+            setHorizontalFlip(true);
+            setVerticalFlip(true);
+        } else if (percentage <= 0.75) {
+            setHorizontalFlip(true);
+            setVerticalFlip(false);
+        } else {
+            setHorizontalFlip(false);
+            setVerticalFlip(false);
+        }
+
+        // if (i >= 0 && i < leftArm.size()) pointArm.setImage(leftArm.get(i));
 
         if (Greenfoot.mouseClicked(null) && !onCooldown && allowShooting) {
             shoot();
