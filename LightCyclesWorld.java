@@ -5,7 +5,6 @@
  * @version (a version number or a date)
  */
 public class LightCyclesWorld extends BaseWorld {
-    private static int gameCount = 0;
     public LightCycleEnemy enemy;
     public LightCyclePlayer player;
     public static int gridSize = 18;
