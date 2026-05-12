@@ -7,6 +7,8 @@ public class ImageHolder extends Collider {
     protected Vector2 basePosition;
 
     public ImageHolder(GreenfootImage image, int offsetX, int offsetY) {
+        super();
+       
         this.offsetX = offsetX;
         this.offsetY = offsetY;
 

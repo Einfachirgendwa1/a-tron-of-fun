@@ -1,5 +1,4 @@
 import greenfoot.Actor;
-import greenfoot.GreenfootImage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +12,11 @@ public class BaseActor extends Collider implements IDamageable {
     protected float speed = 1;
     protected int needsUnMirror = 0;
 
+    protected boolean isCollider = true;
+
     {
         if (multipleImages.hasImages()) {
+            isCollider = false;
             setImage(Misc.blank);
         }
     }
@@ -73,8 +75,7 @@ public class BaseActor extends Collider implements IDamageable {
     protected ArrayList<Collider> colliders() {
         ArrayList<Collider> colliders = new ArrayList<>();
 
-        GreenfootImage baseImage = getImage();
-        if (baseImage != null && baseImage != Misc.blank) {
+        if (isCollider) {
             colliders.add(this);
         }
 
