@@ -1,6 +1,7 @@
 import greenfoot.GreenfootImage;
 import greenfoot.Color;
-import greenfoot.Greenfoot;/**
+import greenfoot.Greenfoot;
+/**
  * Write a description of class LightCyclesWorld here.
  *
  * @author (your name)
