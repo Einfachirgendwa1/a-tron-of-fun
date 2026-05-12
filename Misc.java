@@ -11,9 +11,15 @@ public class Misc {
     public static final GreenfootImage blank = new GreenfootImage("images/blank.png");
     private static final boolean debug = true;
     private static GameSelection gameSelection;
-    private static World currentWorld;
+    private static World currentWorld = null;
 
     public static void setWorld(World world) {
+        if (currentWorld != null) {
+            for (BaseActor actor : currentWorld.getObjects(BaseActor.class)) {
+                actor.close();
+            }
+        }
+
         currentWorld = world;
 
         if (world instanceof GameSelection) {

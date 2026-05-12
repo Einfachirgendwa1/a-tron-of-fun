@@ -68,16 +68,7 @@ public abstract class HumanoidPlayer extends Player {
         body = new ImageHolder(bodyStand, 0, 0);
 
         throwArm = new ImageHolder(throwInactive, 0, 6);
-
-        pointArm = new ImageHolder(leftArm.get(4), -13, -11) {
-            @Override
-            public void mirrorHorizontally() {
-                getImage().mirrorHorizontally();
-                System.out.println("horizontally mirrored");
-                offsetY = -1000;
-                updatePosition(basePosition);
-            }
-        };
+        pointArm = new ImageHolder(leftArm.get(4), -13, -11);
 
         return new ImageHolder[]{body, legs, pointArm, throwArm};
     }

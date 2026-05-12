@@ -51,8 +51,6 @@ public class ImageHolder extends Collider {
         super.mirrorVertically();
         offsetY *= -1;
 
-        Misc.debugPrint(offsetX * -1 + " is now " + offsetX);
-
         updatePosition(basePosition);
     }
 }
