@@ -9,6 +9,7 @@ public class LightCycleEnemy extends Enemy {
     private ImageHolder cycleImage;
     private boolean crashed = false;
     private boolean onGrid = true;
+    private boolean hasTurned = false;
 
     @Override
     protected ImageHolder[] images() {
@@ -88,6 +89,9 @@ public class LightCycleEnemy extends Enemy {
             boomAnimation();
             return;
         }
+
+        if (onGrid()) { //Prüfung nur jede Grid-Zelle möglich, um ein irritierendes Drehen zu vermeiden
+
             if (pathCheck(direction)) {
             if (!pathCheck(direction - 1)) { //Prüfung, ob die Bewegung nach links blockiert ist
                 direction = direction - 1;
@@ -96,13 +100,11 @@ public class LightCycleEnemy extends Enemy {
             }
         }
 
-        if (onGrid()) { //Prüfung nur jede Grid-Zelle möglich
-
             //Zufällige Richtungsänderung, um das Verhalten des Gegners unvorhersehbar zu machen, wenn alle Wege offen sind (mit Zufälliger Richtungswahl)
             if (!pathCheck( direction - 1) && !pathCheck( direction + 1)){
-                if (Math.random() < 0.05) {
+                if (Math.random() < 0.1) {
                     direction = direction + 1;
-                } else if (Math.random() > 0.95) {
+                } else if (Math.random() > 0.9) {
                     direction = direction - 1;
                 }
             }
