@@ -5,9 +5,7 @@ import java.util.List;
 import java.util.function.Function;
 
 public class BaseActor extends Collider implements IDamageable {
-    private static final int HORIZONTAL = 1;
-    private static final int VERTICAL = 2;
-    protected MultipleImages multipleImages = new MultipleImages(images());
+    private final MultipleImages multipleImages = new MultipleImages(images());
     protected int health = 100;
     protected float speed = 1;
     protected int needsUnMirror = 0;
@@ -107,7 +105,7 @@ public class BaseActor extends Collider implements IDamageable {
 
     @Override
     public void mirrorHorizontally() {
-        needsUnMirror ^= HORIZONTAL;
+        needsUnMirror ^= Misc.HORIZONTAL;
 
         for (Collider collider : colliders()) {
             if (collider == this) getImage().mirrorHorizontally();
@@ -117,7 +115,7 @@ public class BaseActor extends Collider implements IDamageable {
 
     @Override
     public void mirrorVertically() {
-        needsUnMirror ^= VERTICAL;
+        needsUnMirror ^= Misc.VERTICAL;
 
         for (Collider collider : colliders()) {
             if (collider == this) getImage().mirrorVertically();
@@ -126,7 +124,8 @@ public class BaseActor extends Collider implements IDamageable {
     }
 
     public void close() {
-        if ((needsUnMirror & HORIZONTAL) != 0) mirrorHorizontally();
-        if ((needsUnMirror & VERTICAL) != 0) mirrorVertically();
+        for (Collider collider : colliders()) {
+            Misc.applyRotationFlags(collider.getImage(), needsUnMirror);
+        }
     }
 }

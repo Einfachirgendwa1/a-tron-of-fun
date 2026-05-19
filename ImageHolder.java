@@ -5,10 +5,11 @@ public class ImageHolder extends Collider {
     protected int offsetY;
 
     protected Vector2 basePosition;
+    protected int mirror = 0;
 
     public ImageHolder(GreenfootImage image, int offsetX, int offsetY) {
         super();
-       
+
         this.offsetX = offsetX;
         this.offsetY = offsetY;
 
@@ -17,6 +18,13 @@ public class ImageHolder extends Collider {
 
     public ImageHolder(String image, int offsetX, int offsetY) {
         this(new GreenfootImage("images/" + image), offsetX, offsetY);
+    }
+
+    @Override
+    public void setImage(GreenfootImage image) {
+        Misc.applyRotationFlags(getImage(), mirror);
+        Misc.applyRotationFlags(image, mirror);
+        super.setImage(image);
     }
 
     public int getOffsetX() {
@@ -43,16 +51,18 @@ public class ImageHolder extends Collider {
     @Override
     public void mirrorHorizontally() {
         super.mirrorHorizontally();
-        offsetX *= -1;
+        mirror ^= Misc.HORIZONTAL;
 
+        offsetX *= -1;
         updatePosition(basePosition);
     }
 
     @Override
     public void mirrorVertically() {
         super.mirrorVertically();
-        offsetY *= -1;
+        mirror ^= Misc.VERTICAL;
 
+        offsetY *= -1;
         updatePosition(basePosition);
     }
 }

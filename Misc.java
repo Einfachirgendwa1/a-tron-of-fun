@@ -9,6 +9,8 @@ public class Misc {
     public static final int worldWidth = 600;
     public static final int worldHeight = 400;
     public static final GreenfootImage blank = new GreenfootImage("images/blank.png");
+    public static final int HORIZONTAL = 1;
+    public static final int VERTICAL = 2;
     private static final boolean debug = false;
     private static GameSelection gameSelection;
     private static World currentWorld = null;
@@ -24,6 +26,23 @@ public class Misc {
     public static void loadWorld(World world) {
         Greenfoot.setWorld(world);
         setWorld(world);
+    }
+
+    public static boolean flag(int flags, int flag) {
+        return (flags & flag) != 0;
+    }
+
+    public static boolean horizontal(int flags) {
+        return flag(HORIZONTAL, flags);
+    }
+
+    public static boolean vertical(int flags) {
+        return flag(VERTICAL, flags);
+    }
+
+    public static void applyRotationFlags(GreenfootImage image, int flags) {
+        if (horizontal(flags)) image.mirrorHorizontally();
+        if (vertical(flags)) image.mirrorVertically();
     }
 
     public static void exitMinigame() {

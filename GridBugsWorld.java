@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class GridBugsWorld extends BaseWorld {
     private final GridBugsTarget target = new GridBugsTarget();
-    private final GridBugsPlayer player = MultipleImages.createActor(GridBugsPlayer::new, 100, 100);
+    private final GridBugsPlayer player = MultipleImages.createActor(GridBugsPlayer::new, 300, 100);
     private final ArrayList<GridBugsEnemy> enemies = new ArrayList<>();
 
     {

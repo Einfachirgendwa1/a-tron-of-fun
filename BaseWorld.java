@@ -5,4 +5,9 @@ public class BaseWorld extends World {
         super(Misc.worldWidth, Misc.worldHeight, 1);
         Misc.setWorld(this);
     }
+
+    @Override
+    public void stopped() {
+        getObjects(BaseActor.class).forEach(BaseActor::close);
+    }
 }
