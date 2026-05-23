@@ -3,6 +3,7 @@ import greenfoot.GreenfootImage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class BaseActor extends Collider implements IDamageable {
     private final MultipleImages multipleImages;
@@ -18,6 +19,12 @@ public class BaseActor extends Collider implements IDamageable {
 
         multipleImages = new MultipleImages(imageHolders);
         setImage(Misc.blank);
+    }
+
+    public static void run(Actor actor, Consumer<BaseActor> function) {
+        if (actor instanceof BaseActor) {
+            function.accept((BaseActor) actor);
+        }
     }
 
     @Override
@@ -39,9 +46,10 @@ public class BaseActor extends Collider implements IDamageable {
 
     protected void move(Vector2 vector) {
         Vector2 newPos = position().plus(vector);
-        setLocation(Math.round(newPos.x()), Math.round(newPos.y()));
+        int x = Math.round(newPos.x());
+        int y = Math.round(newPos.y());
+        setLocation(x, y);
     }
-
 
     protected Vector2 towards(IGetVector2 other) {
         return other.position().minus(this).normalize();
@@ -54,11 +62,15 @@ public class BaseActor extends Collider implements IDamageable {
 
     @Override
     public void act() {
-        multipleImages.updateImages(this);
+        updateChildren();
 
         if (health <= 0) {
             deathHandler();
         }
+    }
+
+    public void updateChildren() {
+        multipleImages.updateImages(this);
     }
 
     protected void moveWithSpeed(Vector2 vector) {

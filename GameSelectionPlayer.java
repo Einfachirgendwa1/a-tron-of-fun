@@ -41,7 +41,7 @@ public class GameSelectionPlayer extends HumanoidPlayer {
             }
         }
 
-        if (Greenfoot.isKeyDown("space") && currentMinigame != -1) {
+        if (Greenfoot.isKeyDown("space") && currentMinigame != -1 && !isMoving()) {
             Misc.enterMinigame(currentMinigame);
         }
     }

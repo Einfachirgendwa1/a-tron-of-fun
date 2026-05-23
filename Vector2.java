@@ -35,4 +35,12 @@ public record Vector2(float x, float y) implements IGetVector2 {
     public Vector2 scale(float d) {
         return new Vector2(this.x * d, this.y * d);
     }
+
+    public double angle(IGetVector2 end) {
+        Vector2 direction = end.position().minus(this).normalize();
+        double angle = Math.atan2(direction.y(), direction.x());
+
+        return 1 - (angle + Math.PI) / (2 * Math.PI);
+    }
+
 }

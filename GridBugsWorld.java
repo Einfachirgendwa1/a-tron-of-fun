@@ -1,26 +1,28 @@
 import java.util.ArrayList;
 
 public class GridBugsWorld extends BaseWorld {
-    private final GridBugsTarget target = new GridBugsTarget();
-    private final GridBugsPlayer player = MultipleImages.createActor(GridBugsPlayer::new, 300, 100);
+    private final GridBugsPlayer player;
     private final ArrayList<GridBugsEnemy> enemies = new ArrayList<>();
 
-    {
-        addObject(target, 500, 300);
-        spawnGridBugs(new Vector2[]{
+    public GridBugsWorld() {
+        Misc.addObject(new GridBugsTarget(), Misc.worldWidth / 2, Misc.worldHeight / 2);
+
+        Vector2[] gridBugPositions = {
                 new Vector2(200, 120),
                 new Vector2(200, 100),
                 new Vector2(220, 100),
                 new Vector2(220, 120)
-        });
-    }
+        };
 
-    private void spawnGridBugs(Vector2[] locations) {
-        for (Vector2 location : locations) {
-            GridBugsEnemy gridBug = new GridBugsEnemy();
-            addObject(gridBug, Math.round(location.x()), Math.round(location.y()));
+        for (Vector2 location : gridBugPositions) {
+            int x = Math.round(location.x());
+            int y = Math.round(location.y());
+
+            GridBugsEnemy gridBug = Misc.addObject(new GridBugsEnemy(), x, y);
             enemies.add(gridBug);
         }
+
+        player = Misc.addObject(new GridBugsPlayer(), 300, 100);
     }
 
     @Override
@@ -33,10 +35,6 @@ public class GridBugsWorld extends BaseWorld {
             if (player.touches(gridBug)) {
                 Misc.exitMinigame();
             }
-        }
-
-        if (player.touches(target)) {
-            Misc.exitMinigame();
         }
     }
 }

@@ -1,9 +1,6 @@
-import greenfoot.Actor;
-
 import java.util.ArrayList;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 public class MultipleImages {
     private static int multiCreatorX;
@@ -21,23 +18,6 @@ public class MultipleImages {
 
             images.add(image);
         }
-    }
-
-    public static <T extends Actor> T createActor(Supplier<T> supplier) {
-        return createActor(supplier, Misc.worldWidth / 2, Misc.worldHeight / 2);
-    }
-
-    public static <T extends Actor> T createActor(Supplier<T> supplier, int x, int y) {
-        multiCreatorX = x;
-        multiCreatorY = y;
-
-        T actor = supplier.get();
-        Misc.getCurrentWorld().addObject(actor, x, y);
-
-        multiCreatorX = 0;
-        multiCreatorY = 0;
-
-        return actor;
     }
 
     public boolean any(Predicate<ImageHolder> predicate) {

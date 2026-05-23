@@ -1,11 +1,14 @@
-import greenfoot.World;
-
 import java.util.List;
 import java.util.function.Supplier;
 
 public class GameSelection extends BaseWorld {
-    private final GameSelectionPlayer player = MultipleImages.createActor(GameSelectionPlayer::new);
-    private final List<Supplier<World>> miniGames = List.of(
+    private final GameSelectionPlayer player = Misc.addObject(
+            new GameSelectionPlayer(),
+            Misc.worldWidth / 2,
+            Misc.worldHeight / 2
+    );
+
+    private final List<Supplier<BaseWorld>> miniGames = List.of(
             ConeShooterWorld::new,
             LightCyclesWorld::new,
             GridBugsWorld::new,

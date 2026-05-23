@@ -4,7 +4,6 @@ import greenfoot.GreenfootImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 public abstract class HumanoidPlayer extends Player {
@@ -88,13 +87,7 @@ public abstract class HumanoidPlayer extends Player {
         legs.setImage(isMoving() ? legsWalk : legsStand);
         body.setImage(isMoving() ? bodyWalk : bodyStand);
 
-        Vector2 direction = towards(Misc.mousePosition().orElse(Vector2.ZERO));
-
-        // between -π and π
-        double angle = Math.atan2(direction.y(), direction.x());
-
-        // between 0 and 1
-        double percentage = 1 - (angle + Math.PI) / (2 * Math.PI);
+        double percentage = Misc.angleToMouse(this).orElse(0.);
 
         // between 0 and 9
         int i = (int) Math.round(percentage * 9);
@@ -130,13 +123,12 @@ public abstract class HumanoidPlayer extends Player {
         onCooldown = true;
         throwArm.setImage(throwActive);
 
-        Optional<Vector2> mousePosition = Misc.mousePosition();
-        if (mousePosition.isEmpty()) return;
+        Misc.mousePosition().ifPresent(mousePosition -> {
+            Vector2 bulletMovement = towards(mousePosition).scale(2);
+            Bullet bullet = new Bullet(bulletMovement, false);
+            getWorld().addObject(bullet, getX(), getY());
 
-        Vector2 bulletMovement = towards(mousePosition.get()).scale(2);
-        Bullet bullet = new Bullet(bulletMovement, false);
-        getWorld().addObject(bullet, getX(), getY());
-
-        shootTimer.reset();
+            shootTimer.reset();
+        });
     }
 }

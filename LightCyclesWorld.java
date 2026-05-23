@@ -21,9 +21,9 @@ public class LightCyclesWorld extends BaseWorld {
     public LightCyclesWorld() {
         super();
 
-        player = MultipleImages.createActor(LightCyclePlayer::new, 72, 360);
-        enemy = MultipleImages.createActor(LightCycleEnemy::new, 522, 54);
-        // Dunkle Magie, die anscheinend funktioniert 
+        player = Misc.addObject(new LightCyclePlayer(), 72, 360);
+        enemy = Misc.addObject(new LightCycleEnemy(), 522, 54);
+        // Dunkle Magie, die anscheinend funktioniert
         //Koordinaten durch 18 teilbar, damit die Startposition dem Grid entspricht
     }
 
