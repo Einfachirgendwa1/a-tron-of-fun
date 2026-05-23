@@ -1,22 +1,22 @@
-import greenfoot.GreenfootImage;
 import greenfoot.Color;
 import greenfoot.Greenfoot;
+import greenfoot.GreenfootImage;
 
 public class LightCycleEnemy extends Enemy {
 
     private int direction = 4;
-    private int result = 0;
+    private final int result = 0;
     private ImageHolder cycleImage;
     private boolean crashed = false;
     private boolean onGrid = true;
-    private boolean hasTurned = false;
+    private final boolean hasTurned = false;
 
     @Override
     protected ImageHolder[] images() {
         GreenfootImage img = new GreenfootImage("images/lightcycle_enemy.png");
         img.rotate(-90);
         cycleImage = new ImageHolder(img, 0, 0);
-        return new ImageHolder[]{ cycleImage };
+        return new ImageHolder[]{cycleImage};
     }
 
     public boolean touchesPlayer(LightCyclePlayer player) {
@@ -43,7 +43,7 @@ public class LightCycleEnemy extends Enemy {
         cycleImage.setImage("boom_4.png");
         Greenfoot.delay(20);
 
-        LightCyclesWorld world = (LightCyclesWorld) getWorld(); 
+        LightCyclesWorld world = (LightCyclesWorld) getWorld();
         world.gameOver();
     }
 
@@ -52,7 +52,7 @@ public class LightCycleEnemy extends Enemy {
         int nx = getX();
         int ny = getY();
 
-        if        (direction % 4 == 0) { //Vorhersehung der nächsten Grid-Zelle in Abhängigkeit von der Bewegungsrichtung 
+        if (direction % 4 == 0) { //Vorhersehung der nächsten Grid-Zelle in Abhängigkeit von der Bewegungsrichtung
             nx -= LightCyclesWorld.gridSize;
         } else if (direction % 4 == 2) {
             nx += LightCyclesWorld.gridSize;
@@ -62,23 +62,16 @@ public class LightCycleEnemy extends Enemy {
             ny += LightCyclesWorld.gridSize;
         }
 
-        if (nx <= 0 || nx >=  getWorld().getWidth() - LightCyclesWorld.gridSize || ny <= 0 || ny >= getWorld().getHeight() - LightCyclesWorld.gridSize) { //Prüfung, ob die Bewegung über die Weltgrenzen hinausgehen würde
+        if (nx <= 0 || nx >= getWorld().getWidth() - LightCyclesWorld.gridSize || ny <= 0 || ny >= getWorld().getHeight() - LightCyclesWorld.gridSize) { //Prüfung, ob die Bewegung über die Weltgrenzen hinausgehen würde
             return true;
         }
 
-        if (getWorld().getObjectsAt(nx, ny, Trail.class).size() > 0) { //Prüfung, ob die Bewegung in eine Zelle mit einem Trail führen würde
-        return true;
-        }
-
-        return false;
+        //Prüfung, ob die Bewegung in eine Zelle mit einem Trail führen würde
+        return getWorld().getObjectsAt(nx, ny, Trail.class).size() > 0;
     }
 
     public boolean onGrid() { //Prüfung, ob das cycle auf dem Grid ist 
-        if(getX() % LightCyclesWorld.gridSize == 0 && getY() % LightCyclesWorld.gridSize == 0) {
-            onGrid = true;
-        } else {
-            onGrid = false;
-        }
+        onGrid = getX() % LightCyclesWorld.gridSize == 0 && getY() % LightCyclesWorld.gridSize == 0;
         return onGrid;
     }
 
@@ -93,15 +86,15 @@ public class LightCycleEnemy extends Enemy {
         if (onGrid()) { //Prüfung nur jede Grid-Zelle möglich, um ein irritierendes Drehen zu vermeiden
 
             if (pathCheck(direction)) {
-            if (!pathCheck(direction - 1)) { //Prüfung, ob die Bewegung nach links blockiert ist
-                direction = direction - 1;
-            } else {
-                direction = direction + 1; //Richtungsänderung nach Rechts, da eine 180-Grad Drehung nicht möglich ist und es keinen anderen Weg gibt
+                if (!pathCheck(direction - 1)) { //Prüfung, ob die Bewegung nach links blockiert ist
+                    direction = direction - 1;
+                } else {
+                    direction = direction + 1; //Richtungsänderung nach Rechts, da eine 180-Grad Drehung nicht möglich ist und es keinen anderen Weg gibt
+                }
             }
-        }
 
             //Zufällige Richtungsänderung, um das Verhalten des Gegners unvorhersehbar zu machen, wenn alle Wege offen sind (mit Zufälliger Richtungswahl)
-            if (!pathCheck( direction - 1) && !pathCheck( direction + 1)){
+            if (!pathCheck(direction - 1) && !pathCheck(direction + 1)) {
                 if (Math.random() < 0.1) {
                     direction = direction + 1;
                 } else if (Math.random() > 0.9) {

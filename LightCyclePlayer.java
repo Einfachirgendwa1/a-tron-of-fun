@@ -1,6 +1,6 @@
+import greenfoot.Color;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
-import greenfoot.Color;
 
 public class LightCyclePlayer extends Player {
     private int direction = 2;
@@ -29,7 +29,7 @@ public class LightCyclePlayer extends Player {
         Greenfoot.delay(10);
         cycleImage.setImage("boom_4.png");
         Greenfoot.delay(20);
-        LightCyclesWorld world = (LightCyclesWorld) getWorld(); 
+        LightCyclesWorld world = (LightCyclesWorld) getWorld();
         world.gameOver();
     }
 
@@ -37,7 +37,7 @@ public class LightCyclePlayer extends Player {
     public boolean isCrashed() {
         LightCyclesWorld world = (LightCyclesWorld) getWorld();
         Trail trail = (Trail) getOneIntersectingObject(Trail.class);
-        if (touchesEnemy(world.enemy)|| (getOneIntersectingObject(Trail.class) != null && trail.getAge() > 40)) {
+        if (touchesEnemy(world.enemy) || (getOneIntersectingObject(Trail.class) != null && trail.getAge() > 40)) {
             crashed = true;
         }
         return crashed;
@@ -45,19 +45,15 @@ public class LightCyclePlayer extends Player {
 
     @Override
     protected ImageHolder[] images() {
-        LightCyclesWorld world = (LightCyclesWorld) getWorld(); 
+        LightCyclesWorld world = (LightCyclesWorld) getWorld();
         GreenfootImage img = new GreenfootImage("images/lightcycle_player.png");
         img.rotate(90);
         cycleImage = new ImageHolder(img, 0, 0);
-        return new ImageHolder[]{ cycleImage };
+        return new ImageHolder[]{cycleImage};
     }
 
     public boolean onGrid() { //Prüfung, ob das cycle auf dem Grid ist 
-        if(getX() % LightCyclesWorld.gridSize == 0 && getY() % LightCyclesWorld.gridSize == 0) {
-            onGrid = true;
-        } else {
-            onGrid = false;
-        }
+        onGrid = getX() % LightCyclesWorld.gridSize == 0 && getY() % LightCyclesWorld.gridSize == 0;
         return onGrid;
     }
 
@@ -72,35 +68,36 @@ public class LightCyclePlayer extends Player {
         //Steuerung mit A und D, relativ zur Bewegungsrichtung des Spielers nach links oder Rechts
         //Die neue Richtung wird gespeichert und kann beim nächsten erlaubten Punkt auf dem Grid angewendet werden, ohne dass eingaben verloren gehen
         if (Greenfoot.isKeyDown("a") && !isPressed) {
-                direction = direction - 1;
-                isPressed = true;
+            direction = direction - 1;
+            isPressed = true;
         }
 
         if (Greenfoot.isKeyDown("d") && !isPressed) {
-                direction = direction + 1;
-                isPressed = true;
+            direction = direction + 1;
+            isPressed = true;
         }
 
-        if(onGrid()) { //Eine Richtungsänderung ist nur möglich, wenn das LightCycle auf dem Grid ist
+        if (onGrid()) { //Eine Richtungsänderung ist nur möglich, wenn das LightCycle auf dem Grid ist
             //Bewegung in die aktuelle Richtung
             result = direction % 4;
         }
 
-        if (result == 3 || result == -1) {
-                moveDown();
-                cycleImage.setRotation(90);
-            } else if (result == 2 || result == -2) {
-                moveRight();
-                cycleImage.setRotation(0);
-            } else if (result == 1 || result == -3) {
-                moveUp();
-                cycleImage.setRotation(270);
-            } else {
-                moveLeft();
-                cycleImage.setRotation(180);
-            }
 
-            
+        if (result == 3 || result == -1) {
+            moveDown();
+            cycleImage.setRotation(90);
+        } else if (result == 2 || result == -2) {
+            moveRight();
+            cycleImage.setRotation(0);
+        } else if (result == 1 || result == -3) {
+            moveUp();
+            cycleImage.setRotation(270);
+        } else {
+            moveLeft();
+            cycleImage.setRotation(180);
+        }
+
+
         if (!Greenfoot.isKeyDown("a") && !Greenfoot.isKeyDown("d")) {
             isPressed = false;
         }

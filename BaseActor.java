@@ -1,22 +1,23 @@
 import greenfoot.Actor;
+import greenfoot.GreenfootImage;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 public class BaseActor extends Collider implements IDamageable {
-    private final MultipleImages multipleImages = new MultipleImages(images());
+    private final MultipleImages multipleImages;
     protected int health = 100;
     protected float speed = 1;
-    protected int needsUnMirror = 0;
-
-    protected boolean isCollider = true;
 
     {
-        if (multipleImages.hasImages()) {
-            isCollider = false;
-            setImage(Misc.blank);
+        ImageHolder[] imageHolders = images();
+
+        if (imageHolders.length == 0) {
+            imageHolders = new ImageHolder[]{new ImageHolder(getImage(), 0, 0)};
         }
+
+        multipleImages = new MultipleImages(imageHolders);
+        setImage(Misc.blank);
     }
 
     @Override
@@ -24,22 +25,12 @@ public class BaseActor extends Collider implements IDamageable {
         List<Actor> otherColliders = new ArrayList<>();
 
         if (other instanceof BaseActor) {
-            otherColliders.addAll(((BaseActor) other).colliders());
+            otherColliders.addAll(((BaseActor) other).multipleImages.getImages());
         } else {
             otherColliders.add(other);
         }
 
-        for (Collider myCollider : colliders()) {
-            for (Actor otherCollider : otherColliders) {
-                Function<Actor, Boolean> collides = myCollider == this ? super::intersects : myCollider::intersects;
-
-                if (collides.apply(otherCollider)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
+        return multipleImages.any(image -> otherColliders.stream().anyMatch(image::intersects));
     }
 
     protected ImageHolder[] images() {
@@ -70,17 +61,6 @@ public class BaseActor extends Collider implements IDamageable {
         }
     }
 
-    protected ArrayList<Collider> colliders() {
-        ArrayList<Collider> colliders = new ArrayList<>();
-
-        if (isCollider) {
-            colliders.add(this);
-        }
-
-        colliders.addAll(multipleImages.getImages());
-        return colliders;
-    }
-
     protected void moveWithSpeed(Vector2 vector) {
         move(vector.normalize().scale(speed));
     }
@@ -101,31 +81,30 @@ public class BaseActor extends Collider implements IDamageable {
         moveWithSpeed(Vector2.RIGHT);
     }
 
-    protected void deathHandler() {}
+    protected void deathHandler() {
+        getWorld().removeObject(this);
+    }
 
     @Override
     public void mirrorHorizontally() {
-        needsUnMirror ^= Misc.HORIZONTAL;
-
-        for (Collider collider : colliders()) {
-            if (collider == this) getImage().mirrorHorizontally();
-            else collider.mirrorHorizontally();
-        }
+        multipleImages.forEach(ImageHolder::mirrorHorizontally);
     }
 
     @Override
     public void mirrorVertically() {
-        needsUnMirror ^= Misc.VERTICAL;
-
-        for (Collider collider : colliders()) {
-            if (collider == this) getImage().mirrorVertically();
-            else collider.mirrorVertically();
-        }
+        multipleImages.forEach(ImageHolder::mirrorVertically);
     }
 
-    public void close() {
-        for (Collider collider : colliders()) {
-            Misc.applyRotationFlags(collider.getImage(), needsUnMirror);
+    public void destroyChildren() {
+        multipleImages.forEach(getWorld()::removeObject);
+    }
+
+    @Override
+    public void setImage(GreenfootImage image) {
+        if (image == Misc.blank || multipleImages == null) {
+            super.setImage(image);
+        } else if (multipleImages.getImages().size() == 1) {
+            multipleImages.getImages().getFirst().setImage(image);
         }
     }
 }

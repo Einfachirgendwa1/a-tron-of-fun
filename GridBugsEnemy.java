@@ -34,6 +34,7 @@ public class GridBugsEnemy extends Enemy {
 
     public void dance(StateMachine stateMachine) {
         setImage("bug_spawn_3.png");
+
         stateMachine.addThread()
                 .waitRandom(80, 130)
                 .switchState(this::run);

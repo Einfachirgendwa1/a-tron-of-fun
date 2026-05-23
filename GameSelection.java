@@ -10,7 +10,7 @@ public class GameSelection extends BaseWorld {
             LightCyclesWorld::new,
             GridBugsWorld::new,
             TankLabyrinthWorld::new
-        );
+    );
 
     public void enterMinigame(int minigameIndex) {
         Misc.loadWorld(miniGames.get(minigameIndex).get());

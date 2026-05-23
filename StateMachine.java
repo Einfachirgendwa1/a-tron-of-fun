@@ -118,7 +118,8 @@ public class StateMachine {
         private abstract static class Instruction {
             public abstract void run();
 
-            public void reset() {}
+            public void reset() {
+            }
         }
     }
 }

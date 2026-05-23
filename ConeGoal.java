@@ -1,17 +1,17 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.Actor;
+import greenfoot.GreenfootImage;
 
 /**
  * Write a description of class ConeGoal here.
- * 
- * @author (your name) 
+ *
+ * @author (your name)
  * @version (a version number or a date)
  */
-public class ConeGoal extends Actor{
+public class ConeGoal extends Actor {
 
     GreenfootImage border = getImage();
 
-    public void act()
-    {
+    public void act() {
         super.act();
     }
 }

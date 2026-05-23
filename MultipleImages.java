@@ -1,6 +1,8 @@
 import greenfoot.Actor;
 
 import java.util.ArrayList;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public class MultipleImages {
@@ -38,8 +40,12 @@ public class MultipleImages {
         return actor;
     }
 
-    public boolean hasImages() {
-        return !images.isEmpty();
+    public boolean any(Predicate<ImageHolder> predicate) {
+        return images.stream().anyMatch(predicate);
+    }
+
+    public void forEach(Consumer<ImageHolder> consumer) {
+        images.forEach(consumer);
     }
 
     public ArrayList<ImageHolder> getImages() {

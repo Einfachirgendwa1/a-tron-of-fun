@@ -1,3 +1,4 @@
+import greenfoot.Actor;
 import greenfoot.World;
 
 public class BaseWorld extends World {
@@ -7,7 +8,11 @@ public class BaseWorld extends World {
     }
 
     @Override
-    public void stopped() {
-        getObjects(BaseActor.class).forEach(BaseActor::close);
+    public void removeObject(Actor object) {
+        if (object instanceof BaseActor) {
+            ((BaseActor) object).destroyChildren();
+        }
+
+        super.removeObject(object);
     }
 }

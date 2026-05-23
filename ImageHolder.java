@@ -1,15 +1,13 @@
 import greenfoot.GreenfootImage;
 
 public class ImageHolder extends Collider {
-    protected int offsetX;
-    protected int offsetY;
+    private MirrorFlags mirrorFlags;
 
-    protected Vector2 basePosition;
-    protected int mirror = 0;
+    private int offsetX;
+    private int offsetY;
+    private Vector2 basePosition;
 
     public ImageHolder(GreenfootImage image, int offsetX, int offsetY) {
-        super();
-
         this.offsetX = offsetX;
         this.offsetY = offsetY;
 
@@ -22,9 +20,13 @@ public class ImageHolder extends Collider {
 
     @Override
     public void setImage(GreenfootImage image) {
-        Misc.applyRotationFlags(getImage(), mirror);
-        Misc.applyRotationFlags(image, mirror);
-        super.setImage(image);
+        if (mirrorFlags == null) {
+            mirrorFlags = new MirrorFlags();
+        }
+
+        GreenfootImage newImage = new GreenfootImage(image);
+        mirrorFlags.apply(newImage);
+        super.setImage(newImage);
     }
 
     public int getOffsetX() {
@@ -33,10 +35,6 @@ public class ImageHolder extends Collider {
 
     public int getOffsetY() {
         return offsetY;
-    }
-
-    public void rotate(int degrees) { // Damit man Bilder rotieren kann
-        getImage().rotate(degrees);
     }
 
     public void updatePosition(IGetVector2 newPosition) {
@@ -51,18 +49,18 @@ public class ImageHolder extends Collider {
     @Override
     public void mirrorHorizontally() {
         super.mirrorHorizontally();
-        mirror ^= Misc.HORIZONTAL;
 
         offsetX *= -1;
         updatePosition(basePosition);
+        mirrorFlags.toggleHorizontal();
     }
 
     @Override
     public void mirrorVertically() {
         super.mirrorVertically();
-        mirror ^= Misc.VERTICAL;
 
         offsetY *= -1;
         updatePosition(basePosition);
+        mirrorFlags.toggleVertical();
     }
 }

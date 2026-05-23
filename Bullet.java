@@ -8,6 +8,8 @@ public class Bullet extends BaseActor {
     }
 
     public void act() {
+        super.act();
+
         move(velocity);
 
         if (isAtEdge()) {

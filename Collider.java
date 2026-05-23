@@ -2,8 +2,6 @@ import greenfoot.Actor;
 import greenfoot.GreenfootImage;
 
 public class Collider extends Actor implements IGetVector2 {
-    protected GreenfootImage base;
-
     public Collider() {
         super();
     }
