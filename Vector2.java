@@ -42,5 +42,4 @@ public record Vector2(float x, float y) implements IGetVector2 {
 
         return 1 - (angle + Math.PI) / (2 * Math.PI);
     }
-
 }

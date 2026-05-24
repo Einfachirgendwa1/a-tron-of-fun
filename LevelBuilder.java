@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 
@@ -16,14 +17,14 @@ public class LevelBuilder extends BaseWorld {
     private final ArrayList<Point> currentPoints = new ArrayList<>();
     private final Class<? extends BaseWorld> world = GridBugsWorld.class;
     private final Path output = LevelLoader.path(world);
-    private final ArrayList<Line> writtenLines;
+    private final List<Line> writtenLines;
 
     private int deleteCooldown = 0;
 
     public LevelBuilder() {
         try {
             world.getField("levelBuilder").set(null, true);
-            writtenLines = world.getConstructor().newInstance().getWalls();
+            writtenLines = world.getConstructor().newInstance().getLines();
         } catch (Exception e) {
             throw new RuntimeException("Failed to reflect on " + world.getName(), e);
         }
@@ -36,14 +37,13 @@ public class LevelBuilder extends BaseWorld {
             ImageHolder clone = new ImageHolder(image, actor.getX(), actor.getY());
             staticClones.add(clone);
 
-            removeObject(actor);
+            removeObjectUnchecked(actor);
         }
 
         for (ImageHolder imageHolder : staticClones) {
             addObject(imageHolder, 0, 0);
             imageHolder.updatePosition(new Vector2(0, 0));
         }
-
     }
 
     private static void lines(ArrayList<Point> points, BiConsumer<Point, Point> consumer) {
@@ -51,7 +51,6 @@ public class LevelBuilder extends BaseWorld {
             consumer.accept(points.get(n), points.get(n + 1));
         }
     }
-
 
     @Override
     public void act() {
@@ -119,11 +118,17 @@ public class LevelBuilder extends BaseWorld {
         System.out.println("Writing " + currentPoints.size() + " points");
 
         StringBuilder output = new StringBuilder();
-        lines(currentPoints, (a, b) -> output
-                .append(a.x()).append(",")
-                .append(a.y()).append(",")
-                .append(b.x()).append(",")
-                .append(b.y()).append("\n"));
+        lines(
+            currentPoints,
+            (a, b) -> output.append(a.x())
+                .append(",")
+                .append(a.y())
+                .append(",")
+                .append(b.x())
+                .append(",")
+                .append(b.y())
+                .append("\n")
+        );
 
         try {
             Files.writeString(this.output, output.toString(), StandardOpenOption.APPEND, StandardOpenOption.CREATE);

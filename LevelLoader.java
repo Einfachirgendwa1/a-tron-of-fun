@@ -12,9 +12,8 @@ public class LevelLoader {
     public static ArrayList<Line> getLevelData(Class<? extends BaseWorld> level) {
         ArrayList<Line> levelData = new ArrayList<>();
 
-        Path filePath = path(level);
         try {
-            for (String line : Files.readAllLines(filePath)) {
+            for (String line : Files.readAllLines(path(level))) {
                 if (line.isBlank()) continue;
 
                 Object[] data = Arrays.stream(line.split(",")).map(Integer::parseInt).toArray();

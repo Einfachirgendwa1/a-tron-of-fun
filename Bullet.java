@@ -12,7 +12,7 @@ public class Bullet extends BaseActor {
 
         move(velocity);
 
-        if (isAtEdge()) {
+        if (isAtEdge() || wallCollisionOccured()) {
             getWorld().removeObject(this);
             return;
         }

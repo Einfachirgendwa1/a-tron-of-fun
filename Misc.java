@@ -9,6 +9,7 @@ public class Misc {
     public static final int worldWidth = 600;
     public static final int worldHeight = 400;
     public static final GreenfootImage blank = new GreenfootImage("images/blank.png");
+    public static final int wallThickness = 3;
     private static final boolean debug = false;
     private static GameSelection gameSelection;
     private static BaseWorld currentWorld = null;
@@ -29,6 +30,7 @@ public class Misc {
     public static void exitMinigame() {
         if (gameSelection == null) {
             gameSelection = new GameSelection();
+            Misc.loadWorld(gameSelection);
         } else {
             gameSelection.exitMinigame();
         }
@@ -54,18 +56,15 @@ public class Misc {
 
     public static <T extends Actor> T addObject(T actor, int x, int y) {
         currentWorld.addObject(actor, x, y);
-        System.out.println("Creating " + actor.getClass().getSimpleName() + " onto " + currentWorld.getClass().getSimpleName());
         return actor;
     }
 
     public static <T extends Actor> T addObject(T actor, IGetVector2 vector) {
-        Vector2 position = vector.position();
-        return addObject(actor, Math.round(position.x()), Math.round(position.y()));
+        Point position = new Point(vector.position());
+        return addObject(actor, position.x(), position.y());
     }
 
     public static Optional<Double> angleToMouse(IGetVector2 start) {
         return mousePosition().map(point -> start.position().angle(point));
-
     }
-
 }

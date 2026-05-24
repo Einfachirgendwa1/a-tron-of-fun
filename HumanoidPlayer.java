@@ -29,13 +29,13 @@ public abstract class HumanoidPlayer extends Player {
     private ImageHolder legs;
     private ImageHolder pointArm;
     private ImageHolder throwArm;
-    private final DelayedExecution shootTimer = new DelayedExecution(
-            15,
-            () -> {
-                throwArm.setImage(throwInactive);
-                onCooldown = false;
-            }
-    );
+    private final StateThread shootTimer = new StateThread(null) {{
+        wait(15).execute(() -> {
+                    throwArm.setImage(throwInactive);
+                    onCooldown = false;
+                }
+        );
+    }};
 
     public void setVerticalFlip(boolean verticalFlip) {
         if (verticalFlip != this.verticalFlip) {
@@ -63,13 +63,17 @@ public abstract class HumanoidPlayer extends Player {
         // The Player class calls this function in its constructor and then passes all the ImageHolders we return to 
         // MultipleImages, but because Player is our superclass, its constructor actually runs earlier than ours.
 
-        legs = new ImageHolder(legsStand, 0, 31);
-        body = new ImageHolder(bodyStand, 0, 0);
+        legs = new ImageHolder(legsStand, 0, 31, false);
+        body = new ImageHolder(bodyStand, 0, 0, false);
 
-        throwArm = new ImageHolder(throwInactive, 0, 6);
-        pointArm = new ImageHolder(leftArm.get(4), -13, -11);
+        throwArm = new ImageHolder(throwInactive, 0, 6, false);
+        pointArm = new ImageHolder(leftArm.get(4), -13, -11, false);
 
-        return new ImageHolder[]{body, legs, pointArm, throwArm};
+        GreenfootImage colliderImage = new GreenfootImage(Misc.blank);
+        colliderImage.scale(10, 38);
+
+        ImageHolder collider = new ImageHolder(colliderImage, 0, 9);
+        return new ImageHolder[]{body, legs, pointArm, throwArm, collider};
     }
 
     @Override
@@ -125,8 +129,7 @@ public abstract class HumanoidPlayer extends Player {
 
         Misc.mousePosition().ifPresent(mousePosition -> {
             Vector2 bulletMovement = towards(mousePosition).scale(2);
-            Bullet bullet = new Bullet(bulletMovement, false);
-            getWorld().addObject(bullet, getX(), getY());
+            Misc.addObject(new Bullet(bulletMovement, false), this);
 
             shootTimer.reset();
         });
