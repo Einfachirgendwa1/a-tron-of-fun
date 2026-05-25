@@ -6,14 +6,9 @@
  */
 public class ConeShooterWorld extends BaseWorld {
 
-    /**
-     * Constructor for objects of class LightConeWorld.
-     *
-     */
     public ConeShooterWorld() {
         super();
         ConeBorder border = new ConeBorder();
-        ConeGoal goal = new ConeGoal();
 
 
         //Erzeugung der Bahngrenzen an jeder 32. y-Koordinate, da die Bilder 32*32 groß sind
@@ -29,7 +24,41 @@ public class ConeShooterWorld extends BaseWorld {
             border.border.rotate(180);
         }
 
-        goal = new ConeGoal();
+        ConeGoal goal;
+
+        //Der Zielbereich besteht aus 3 Reihen, die sich imer an einem festen Platz befinden.
+
+        // Reihe 1  
+        goal = new ConeGoal("cone_goal_edge.png");
+        addObject(goal, 288, 64);
+        goal = new ConeGoal("cone_goal_edge.png");
+        goal.goal.mirrorHorizontally();
+        addObject(goal, 320, 64);
+
+        // Reihe 2
+        goal = new ConeGoal("cone_goal_edge.png");
+        addObject(goal, 256, 96);
+        goal = new ConeGoal("cone_content.png");
+        addObject(goal, 288, 96);
+        goal = new ConeGoal("cone_content.png");
+        addObject(goal, 320, 96);
+        goal = new ConeGoal("cone_goal_edge.png");
+        goal.goal.mirrorHorizontally();
+        addObject(goal, 352, 96);
+
+        // Reihe 3
+        goal = new ConeGoal("cone_goal_edge.png");
         addObject(goal, 224, 128);
+        goal = new ConeGoal("cone_content.png");
+        addObject(goal, 256, 128);
+        goal = new ConeGoal("cone_content.png");
+        addObject(goal, 288, 128);
+        goal = new ConeGoal("cone_content.png");
+        addObject(goal, 320, 128);
+        goal = new ConeGoal("cone_content.png");
+        addObject(goal, 352, 128);
+        goal = new ConeGoal("cone_goal_edge.png");
+        goal.goal.mirrorHorizontally();
+        addObject(goal, 384, 128);
     }
 }

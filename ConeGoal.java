@@ -9,7 +9,12 @@ import greenfoot.GreenfootImage;
  */
 public class ConeGoal extends Actor {
 
-    GreenfootImage border = getImage();
+    public GreenfootImage goal = getImage();
+
+    public ConeGoal(String image) { //Änderung des Bildes in Abhängigkeit von der Position im Ziel
+        setImage(image);
+        goal = getImage();
+    }
 
     public void act() {
         super.act();
