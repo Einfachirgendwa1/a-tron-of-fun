@@ -18,12 +18,8 @@ public class GridBugsWorld extends BaseWorld {
             new Vector2(200, 120), new Vector2(200, 100), new Vector2(220, 100), new Vector2(220, 120)
         };
 
-        for (Vector2 location : gridBugPositions) {
-            int x = Math.round(location.x());
-            int y = Math.round(location.y());
-
-            GridBugsEnemy gridBug = Misc.addObject(new GridBugsEnemy(), x, y);
-            enemies.add(gridBug);
+        for (Vector2 gridBugPosition : gridBugPositions) {
+            spawnEnemy(gridBugPosition);
         }
 
         player = Misc.addObject(new GridBugsPlayer(), 300, 100);
@@ -55,8 +51,7 @@ public class GridBugsWorld extends BaseWorld {
         return (stateMachine) -> {
             getObjects(Actor.class).forEach(this::removeObjectUnchecked);
 
-            getBackground().setColor(Color.BLUE);
-            getBackground().drawString(text, Misc.worldWidth / 2, Misc.worldHeight / 2);
+            Misc.drawText(text, Vector2.MIDDLE, 50, Color.BLUE);
             stateMachine.addThread().wait(120).execute(Misc::exitMinigame);
         };
     }
@@ -71,6 +66,10 @@ public class GridBugsWorld extends BaseWorld {
         }
 
         stateMachine.switchState(state);
+    }
+
+    public void spawnEnemy(IGetVector2 pos) {
+        enemies.add(Misc.addObject(new GridBugsEnemy(this), pos));
     }
 
     @Override

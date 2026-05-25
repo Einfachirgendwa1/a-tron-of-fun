@@ -1,1 +1,2 @@
 - Fix incorrect movement normalization
+- Weird bug were you still die to gridbugs youve already killed

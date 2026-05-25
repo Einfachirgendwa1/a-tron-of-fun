@@ -14,28 +14,40 @@ public abstract class HumanoidPlayer extends Player {
     private static final List<GreenfootImage> leftArm = new ArrayList<>();
     private static final GreenfootImage throwInactive = new GreenfootImage("man_arm_bent_down.png");
     private static final GreenfootImage throwActive = new GreenfootImage("man_arm_bent_left.png");
-
-    static {
-        for (int i = 0; i < 10; i++) {
-            leftArm.add(new GreenfootImage("man_arm_" + i + ".png"));
-        }
-    }
-
     protected boolean allowShooting = true;
     private boolean horizontalFlip = false;
     private boolean verticalFlip = false;
     private boolean onCooldown = false;
     private ImageHolder body;
     private ImageHolder legs;
+
+    private final StateThread walkingAnimation = new StateThread(null) {{
+        int walkDelay = 10;
+
+        execute(() -> {
+            legs.setImage(legsWalk);
+            body.setImage(bodyWalk);
+        }).wait(walkDelay).execute(() -> {
+            legs.setImage(legsStand);
+            body.setImage(bodyStand);
+        }).wait(walkDelay).repeat();
+    }};
+
     private ImageHolder pointArm;
     private ImageHolder throwArm;
+
     private final StateThread shootTimer = new StateThread(null) {{
         wait(15).execute(() -> {
-                    throwArm.setImage(throwInactive);
-                    onCooldown = false;
-                }
-        );
+            throwArm.setImage(throwInactive);
+            onCooldown = false;
+        });
     }};
+
+    static {
+        for (int i = 0; i < 10; i++) {
+            leftArm.add(new GreenfootImage("man_arm_" + i + ".png"));
+        }
+    }
 
     public void setVerticalFlip(boolean verticalFlip) {
         if (verticalFlip != this.verticalFlip) {
@@ -82,14 +94,21 @@ public abstract class HumanoidPlayer extends Player {
         shootTimer.update();
 
         Map<String, Runnable> keymap = Map.of(
-                "w", this::moveUp,
-                "a", this::moveLeft,
-                "s", this::moveDown,
-                "d", this::moveRight
+            "w",
+            this::moveUp,
+            "a",
+            this::moveLeft,
+            "s",
+            this::moveDown,
+            "d",
+            this::moveRight
         );
 
-        legs.setImage(isMoving() ? legsWalk : legsStand);
-        body.setImage(isMoving() ? bodyWalk : bodyStand);
+        if (isMoving()) {
+            walkingAnimation.update();
+        } else {
+            walkingAnimation.reset();
+        }
 
         double percentage = Misc.angleToMouse(this).orElse(0.);
 

@@ -1,10 +1,15 @@
 public class GridBugsEnemy extends Enemy {
+    private final GridBugsWorld world;
     private Vector2 target;
     private final StateMachine stateMachine = new StateMachine(this::spawn);
 
     {
         speed = 1;
         health = 1;
+    }
+
+    public GridBugsEnemy(GridBugsWorld world) {
+        this.world = world;
     }
 
     private void spawn(StateMachine stateMachine) {
@@ -33,7 +38,7 @@ public class GridBugsEnemy extends Enemy {
     public void dance(StateMachine stateMachine) {
         setImage("bug_spawn_3.png");
 
-        stateMachine.addThread().waitRandom(80, 130).switchState(this::run);
+        stateMachine.addThread().waitRandom(80, 130).execute(() -> world.spawnEnemy(position())).switchState(this::run);
     }
 
     public void setTarget(IGetVector2 target) {
