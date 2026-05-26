@@ -3,10 +3,17 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class LightCone extends Actor{
     private int position;
     private int baseY; //Die y-Koordinate, von der ausgehend die verschiebung der Bilder berechnet wird um die Kegelform zu erreichen
+    private int boomFrame = -1;
+    private boolean blinking = false;
+    private int blinkFrame = 0;
 
     public LightCone(int position, int baseY){
         this.baseY = baseY;
         setPosition(position);
+    }
+
+    public void setBlinking(boolean blinking) {
+        this.blinking = blinking;
     }
     
     public int getPosition(){
@@ -52,5 +59,53 @@ public class LightCone extends Actor{
 
     public int getBaseY(){
         return baseY;
+    }
+
+    private void boomAnimation() { //Explosionsanimation, die laufen kann, ohne dass der Spielfluss angehalten wird
+        if (boomFrame == 0) {
+            setImage("boom_1.png");
+        } else if (boomFrame == 10) {
+            setImage("boom_2.png");
+        } else if (boomFrame == 20) {
+            setImage("boom_3.png");
+        } else if (boomFrame == 30) {
+            setImage("boom_4.png");
+        } else if (boomFrame == 40) {
+            getWorld().removeObject(this);
+        } else if (boomFrame > 40) { //Zurücksetzten des Werts, der die Animation auslösen kann, wenn die Animation endet
+            boomFrame = -1;
+        }
+        boomFrame++;
+    }
+
+    public void act() {
+
+        if (boomFrame >= 0) {
+            boomAnimation();
+            return;
+        } 
+
+        /**
+         * Die einzelnen Teile des Kegels gelten erst als "getroffen", wenn der Schuss sich in einem Umkreis von 20 Pixeln befindet.
+         * Unabhängig davon, wo sich der SChuss in Relation zum Element befindet, wird der Treffer registriert.
+         * Der Schuss wird vor der animation entfernt.
+         */
+        Bullet bullet = (Bullet) getOneIntersectingObject(Bullet.class);
+        if (bullet != null && Math.abs(getX() - bullet.getX()) < 20 && Math.abs(getY() - bullet.getY()) < 20) {
+            getWorld().removeObject(bullet);
+            boomFrame = 0;
+        }
+        
+        if (blinking) { //Das Warnblinken des Kegels. Die Transparenz wird alle 10 Frames geändert.
+            blinkFrame++;
+            if (blinkFrame % 10 == 0) {
+                GreenfootImage img = getImage();
+                if (img.getTransparency() == 255) {
+                    img.setTransparency(100);
+                } else {
+                    img.setTransparency(255);
+                }
+            }
+        }
     }
 }

@@ -58,6 +58,11 @@ public class ConeShooterWorld extends BaseWorld {
 
         //Eine bereits am Anfang des Spiels sichtbare Kegelreihe
         spawnRow(160);
+
+        //Der Spieler
+        ConePlayer player;
+        player = new ConePlayer();
+        addObject(player, 304, 320);
     }
 
     //Erzeugt eine vollständige Kegelreihe an der angegebenen y-Koordinate
@@ -69,17 +74,21 @@ public class ConeShooterWorld extends BaseWorld {
         }
     }
 
+    public void gameOver(boolean win) { //Spielende
+        Misc.exitMinigame();
+    }
+
     public void act() {
         super.act();
         actCount++;
 
         /**
-         * Alle 70 Acts bewegt sich jedes Objekt des Kegels um einen Schritt nach rechts.
+         * Alle 100 Acts bewegt sich jedes Objekt des Kegels um einen Schritt nach rechts.
          * Alle Objekte, die die Position sechs erreichen, werden entfernt (außerhalb der Bahngrenzen gibt es keine Kegelobjekte mehr)
          * In jeder Reihe kommt ein Objekt mit Position 1 hinzu, sodass die rotierende Kegelbewegung entsteht.
          */ 
 
-        if (actCount % 70 == 0) {
+        if (actCount % 100 == 0) {
             for (int i = 0; i < getObjects(LightCone.class).size(); i++) {
                 LightCone cone = getObjects(LightCone.class).get(i);
                 if (cone.getPosition() >= 6) { //Entfernung der letzten Position
@@ -104,21 +113,30 @@ public class ConeShooterWorld extends BaseWorld {
         }
 
         /**
-         * Alle 400 Acts bewegen sich alle bestehenden Reihen des Lichtkegels um 24 Pixel nach unten
+         * Alle 500 Acts bewegen sich alle bestehenden Reihen des Lichtkegels um 24 Pixel nach unten
          * 24, damit lückenlos und pretty
          * Eine neue Reihe wird an die oberste Reihenposition hinzugefügt. 
          * So wird der Kegel größer und das Ziel wird geschützt.
          * */
 
-        if (actCount % 400 == 0) { //Verschiebung der Reihen nach unten
+        if (actCount % 500 == 0) { //Verschiebung der Reihen nach unten
             for (int i = 0; i < getObjects(LightCone.class).size(); i++) {
                 LightCone cone = getObjects(LightCone.class).get(i); 
+                cone.setBlinking(false); //Kegel hört auf, zu blinken, sobald die neue Reihe da ist
                 cone.setBaseY(cone.getBaseY() + 24);
                 cone.setLocation(cone.getX(), cone.getTargetY());
             }
 
             spawnRow(160);//Neue Reihe am Oberen Ende des Lichtkegels erzeugen
             rowCount++;
+        }
+
+        //100 Acts vor dem Erscheinen einer neuen Reihe blinkt der Kegel als Warnung vor dem Erscheinen einer neuen Reihe
+        if (actCount % 500 == 400) {
+            for (int i = 0; i < getObjects(LightCone.class).size(); i++) {
+                LightCone cone = getObjects(LightCone.class).get(i); 
+                cone.setBlinking(true);
+            }
         }
     }
 }
