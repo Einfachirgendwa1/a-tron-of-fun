@@ -1,64 +1,124 @@
-/**
- * Write a description of class LightConeWorld here.
- *
- * @author (your name)
- * @version (a version number or a date)
- */
+import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+
 public class ConeShooterWorld extends BaseWorld {
+
+    private int actCount = 0;
+    private int rowCount = 1;
+    LightCone cone = new LightCone(1,160);
 
     public ConeShooterWorld() {
         super();
         ConeBorder border = new ConeBorder();
 
 
-        //Erzeugung der Bahngrenzen an jeder 32. y-Koordinate, da die Bilder 32*32 groß sind
+        //Erzeugung der Bahngrenzen, die an die Kegelbreite angepasst sind
 
+        //Linke Seite
         for (int y = 160; y <= 400; y = y + 32) {
             border = new ConeBorder();
-            addObject(border, 192, y);
+            addObject(border, 213, y);
         }
 
+        //Rechte Seite wird gedreht, damit die volle sichtbare breite der Bahn genutzt werden kann
         for (int y = 160; y <= 400; y = y + 32) {
             border = new ConeBorder();
-            addObject(border, 416, y);
+            addObject(border, 395, y);
             border.border.rotate(180);
         }
 
         ConeGoal goal;
 
-        //Der Zielbereich besteht aus 3 Reihen, die sich imer an einem festen Platz befinden.
+        //Der Zielbereich besteht aus 3 Reihen, die sich immer an einem festen Platz befinden.
 
-        // Reihe 1  
-        goal = new ConeGoal("cone_goal_edge.png");
-        addObject(goal, 288, 64);
-        goal = new ConeGoal("cone_goal_edge.png");
-        goal.goal.mirrorHorizontally();
-        addObject(goal, 320, 64);
+        // Reihe 1
+        goal = new ConeGoal("cone_goal_top.png");
+        addObject(goal, 304, 64);
 
         // Reihe 2
         goal = new ConeGoal("cone_goal_edge.png");
-        addObject(goal, 256, 96);
+        addObject(goal, 272, 96);
         goal = new ConeGoal("cone_content.png");
-        addObject(goal, 288, 96);
-        goal = new ConeGoal("cone_content.png");
-        addObject(goal, 320, 96);
+        addObject(goal, 304, 96);
         goal = new ConeGoal("cone_goal_edge.png");
         goal.goal.mirrorHorizontally();
-        addObject(goal, 352, 96);
+        addObject(goal, 336, 96);
 
         // Reihe 3
         goal = new ConeGoal("cone_goal_edge.png");
-        addObject(goal, 224, 128);
+        addObject(goal, 240, 128);
         goal = new ConeGoal("cone_content.png");
-        addObject(goal, 256, 128);
+        addObject(goal, 272, 128);
         goal = new ConeGoal("cone_content.png");
-        addObject(goal, 288, 128);
+        addObject(goal, 304, 128);
         goal = new ConeGoal("cone_content.png");
-        addObject(goal, 320, 128);
-        goal = new ConeGoal("cone_content.png");
-        addObject(goal, 352, 128);
+        addObject(goal, 336, 128);
         goal = new ConeGoal("cone_goal_edge.png");
         goal.goal.mirrorHorizontally();
-        addObject(goal, 384, 128);
+        addObject(goal, 368, 128);
+
+        //Eine bereits am Anfang des Spiels sichtbare Kegelreihe
+        spawnRow(160);
+    }
+
+    //Erzeugt eine vollständige Kegelreihe an der angegebenen y-Koordinate
+    public void spawnRow (int baseY){
+        for (int i = 0; i < 6; i++) {
+            cone = new LightCone(i + 1, baseY);
+            addObject(cone, 0, 0); //Die Position wird direkt in der nächsten Zeile gesetzt, das Objekt muss aber schon vorher erzeugt werden
+            cone.setLocation(224 + 32 * i +cone.getXChange(), cone.getTargetY());
+        }
+    }
+
+    public void act() {
+        super.act();
+        actCount++;
+
+        /**
+         * Alle 70 Acts bewegt sich jedes Objekt des Kegels um einen Schritt nach rechts.
+         * Alle Objekte, die die Position sechs erreichen, werden entfernt (außerhalb der Bahngrenzen gibt es keine Kegelobjekte mehr)
+         * In jeder Reihe kommt ein Objekt mit Position 1 hinzu, sodass die rotierende Kegelbewegung entsteht.
+         */ 
+
+        if (actCount % 70 == 0) {
+            for (int i = 0; i < getObjects(LightCone.class).size(); i++) {
+                LightCone cone = getObjects(LightCone.class).get(i);
+                if (cone.getPosition() >= 6) { //Entfernung der letzten Position
+                    removeObject(cone);
+                    i--; //Liste der Objekte wird kürzer
+                    continue; //Für das entfernte Objekt soll der Rest der SChleife nicht mehr ausgeführt werden.
+                }
+
+                //Um falsche Lücken in der Bewegung zu vermeiden, wird die Verschiebung mit der Änderung der Position korrigiert.
+                int oldXChange = cone.getXChange(); //X-Verschiebung vor dem Positionswechsel
+                cone.setPosition(cone.getPosition() + 1); //Position und Bild ändern
+                int newXChange = cone.getXChange(); //Verschiebung nach dem Positionswechsel
+                //Korrektur der Verschiebung
+                cone.setLocation(cone.getX() + 32 + newXChange - oldXChange, cone.getTargetY());
+            }
+
+            for (int i = 0; i < rowCount; i++) {
+                cone = new LightCone(1, 160 + 24 * i); //neues Objekt mit der passenden y-Koordinate der jeweiligen Reihe
+                addObject(cone, 0, 0); //Die Position wird direkt in der nächsten Zeile gesetzt, das Objekt muss aber schon vorher erzeugt werden
+                cone.setLocation(224 + cone.getXChange(), cone.getTargetY());
+            }
+        }
+
+        /**
+         * Alle 400 Acts bewegen sich alle bestehenden Reihen des Lichtkegels um 24 Pixel nach unten
+         * 24, damit lückenlos und pretty
+         * Eine neue Reihe wird an die oberste Reihenposition hinzugefügt. 
+         * So wird der Kegel größer und das Ziel wird geschützt.
+         * */
+
+        if (actCount % 400 == 0) { //Verschiebung der Reihen nach unten
+            for (int i = 0; i < getObjects(LightCone.class).size(); i++) {
+                LightCone cone = getObjects(LightCone.class).get(i); 
+                cone.setBaseY(cone.getBaseY() + 24);
+                cone.setLocation(cone.getX(), cone.getTargetY());
+            }
+
+            spawnRow(160);//Neue Reihe am Oberen Ende des Lichtkegels erzeugen
+            rowCount++;
+        }
     }
 }
