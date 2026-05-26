@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.Optional;
+import java.util.function.Function;
 
 public class Misc {
     public static final int worldWidth = 600;
@@ -66,15 +67,15 @@ public class Misc {
         return new Vector2((float) bounds.getWidth(), (float) bounds.getHeight());
     }
 
-    public static void drawText(String text, IGetVector2 vector, float fontSize, Color color) {
+    public static void drawText(String text, Function<Vector2, IGetVector2> pos, float fontSize, Color color) {
         Font scaledAwt = awtFont.deriveFont(fontSize);
+        GreenfootImage surface = currentWorld.getBackground();
 
-        currentWorld.getBackground().setFont(fromAwtFont(scaledAwt));
-        currentWorld.getBackground().setColor(color);
+        surface.setFont(fromAwtFont(scaledAwt));
+        surface.setColor(color);
 
-        Vector2 topLeft = vector.position().minus(textDimensions(scaledAwt, text).scale(.5f));
-        Point position = new Point(topLeft);
-        currentWorld.getBackground().drawString(text, position.x(), position.y());
+        Point position = new Point(pos.apply(textDimensions(scaledAwt, text)).position());
+        surface.drawString(text, position.x(), position.y());
     }
 
     public static void setWorld(BaseWorld world) {
@@ -129,5 +130,9 @@ public class Misc {
 
     public static Optional<Double> angleToMouse(IGetVector2 start) {
         return mousePosition().map(point -> start.position().angle(point));
+    }
+
+    public static Function<Vector2, IGetVector2> centeredAround(Vector2 center) {
+        return dimensions -> center.minus(dimensions.scale(.5f));
     }
 }

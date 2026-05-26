@@ -6,6 +6,7 @@ import java.util.List;
 
 public abstract class BaseWorld extends World {
     public static boolean levelBuilder = false;
+    protected final Score score;
     private final List<Wall> walls = new ArrayList<>();
 
     public BaseWorld() {
@@ -18,6 +19,8 @@ public abstract class BaseWorld extends World {
         ArrayList<Line> walls = LevelLoader.getLevelData(getClass());
         System.out.println("Loaded " + walls.size() + " walls");
         setWalls(walls);
+
+        score = Misc.addObject(new Score(0), Vector2.ZERO);
     }
 
     public List<Line> getLines() {
