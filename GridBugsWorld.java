@@ -51,7 +51,7 @@ public class GridBugsWorld extends BaseWorld {
         return (stateMachine) -> {
             getObjects(Actor.class).forEach(this::removeObjectUnchecked);
 
-            Misc.drawText(text, Vector2.MIDDLE, 50, Color.BLUE);
+            Misc.drawText(text, Misc.centeredAround(Vector2.MIDDLE), 50, Color.BLUE);
             stateMachine.addThread().wait(120).execute(Misc::exitMinigame);
         };
     }

@@ -167,4 +167,8 @@ public class BaseActor extends Collider implements IDamageable {
     protected void moveRight() {
         moveWithSpeed(Vector2.RIGHT);
     }
+
+    protected Score getScore() {
+        return Misc.getCurrentWorld().score;
+    }
 }

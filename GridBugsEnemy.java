@@ -6,6 +6,7 @@ public class GridBugsEnemy extends Enemy {
     {
         speed = 1;
         health = 1;
+        pointsOnDeath = 100;
     }
 
     public GridBugsEnemy(GridBugsWorld world) {
