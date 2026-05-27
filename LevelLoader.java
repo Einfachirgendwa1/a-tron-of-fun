@@ -23,7 +23,7 @@ public class LevelLoader {
                 levelData.add(new Line(a, b));
             }
         } catch (IOException e) {
-            System.out.println("No level data found for " + level.getSimpleName());
+            Misc.debugPrint("No level data found for " + level.getSimpleName());
         }
 
         return levelData;

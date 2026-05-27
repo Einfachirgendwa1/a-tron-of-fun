@@ -115,7 +115,6 @@ public class LevelBuilder extends BaseWorld {
 
     public void writePoints() {
         if (currentPoints.isEmpty()) return;
-        System.out.println("Writing " + currentPoints.size() + " points");
 
         StringBuilder output = new StringBuilder();
         lines(

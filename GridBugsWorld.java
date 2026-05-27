@@ -30,12 +30,12 @@ public class GridBugsWorld extends BaseWorld {
             for (GridBugsEnemy gridBug : enemies) {
                 gridBug.setTarget(player);
 
-                if (player.touches(gridBug)) {
-                    gameEnd(endScreen("You lost!"));
+                if (player.intersects(gridBug)) {
+                    lost();
                 }
             }
 
-            if (player.touches(gridBugsTarget.getTarget())) {
+            if (player.intersects(gridBugsTarget.getTarget())) {
                 gameEnd(this::winAnimation);
             }
         }).repeat();
@@ -44,16 +44,13 @@ public class GridBugsWorld extends BaseWorld {
     private void winAnimation(StateMachine stateMachine) {
         gridBugsTarget.win();
         GridBugsWinAnimation anim = Misc.addObject(new GridBugsWinAnimation(), Vector2.MIDDLE);
-        stateMachine.addThread().waitFor(anim::isAtEdge).switchState(endScreen("You won!"));
-    }
 
-    private Consumer<StateMachine> endScreen(String text) {
-        return (stateMachine) -> {
-            getObjects(Actor.class).forEach(this::removeObjectUnchecked);
+        stateMachine.addThread().waitFor(anim::isAtEdge).execute(() -> {
+            blank();
 
-            Misc.drawText(text, Misc.centeredAround(Vector2.MIDDLE), 50, Color.BLUE);
+            drawText("You won!", Misc.centeredAround(Vector2.MIDDLE), 50, Color.BLUE);
             stateMachine.addThread().wait(120).execute(Misc::exitMinigame);
-        };
+        });
     }
 
     private void gameEnd(Consumer<StateMachine> state) {
@@ -74,6 +71,7 @@ public class GridBugsWorld extends BaseWorld {
 
     @Override
     public void act() {
+        super.act();
         stateMachine.update();
     }
 }

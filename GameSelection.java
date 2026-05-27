@@ -2,17 +2,13 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class GameSelection extends BaseWorld {
-    private final GameSelectionPlayer player = Misc.addObject(
-            new GameSelectionPlayer(),
-            Misc.worldWidth / 2,
-            Misc.worldHeight / 2
-    );
+    private final GameSelectionPlayer player = Misc.addObject(new GameSelectionPlayer(), Vector2.MIDDLE);
 
     private final List<Supplier<BaseWorld>> miniGames = List.of(
-            ConeShooterWorld::new,
-            LightCyclesWorld::new,
-            GridBugsWorld::new,
-            TankLabyrinthWorld::new
+        ConeShooterWorld::new,
+        LightCyclesWorld::new,
+        GridBugsWorld::new,
+        TankLabyrinthWorld::new
     );
 
     public void enterMinigame(int minigameIndex) {
@@ -21,6 +17,6 @@ public class GameSelection extends BaseWorld {
 
     public void exitMinigame() {
         Misc.loadWorld(this);
-        player.setLocation(300, 200);
+        player.teleport(Vector2.MIDDLE);
     }
 }
