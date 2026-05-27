@@ -6,9 +6,9 @@ import java.util.function.Function;
 
 public abstract class BaseWorld extends World {
     public static boolean levelBuilder = false;
-    protected final Score score;
     private final List<Wall> walls = new ArrayList<>();
-    private FrameSurface frame;
+    private final FrameSurface frame;
+    protected Score score;
     private boolean lost = false;
 
     public BaseWorld() {
@@ -21,18 +21,25 @@ public abstract class BaseWorld extends World {
         ArrayList<Line> walls = LevelLoader.getLevelData(getClass());
         setWalls(walls);
 
+        frame = Misc.addObject(new FrameSurface(), Vector2.MIDDLE);
+        showScore();
+    }
+
+    private static void drawText(TextRenderer renderer, Function<Vector2, IGetVector2> pos) {
+        Point position = new Point(pos.apply(renderer.dimensions()).position());
+        renderer.render(position);
+    }
+
+    protected void showScore() {
         score = Misc.addObject(new Score(), Vector2.ZERO);
     }
 
-    public void drawText(String text, Function<Vector2, IGetVector2> pos, float fontSize, Color color) {
-        TextRenderer renderer = new TextRenderer(frame.getSurface());
-        renderer.setFontSize(fontSize);
-        renderer.setText(text);
+    public void drawOnce(String text, Function<Vector2, IGetVector2> pos, float fontSize, Color color) {
+        drawText(new TextRenderer(text, frame.getImage(), fontSize, color), pos);
+    }
 
-        frame.getSurface().setColor(color);
-
-        Point position = new Point(pos.apply(renderer.dimensions()).position());
-        renderer.render(position);
+    public void drawForever(String text, Function<Vector2, IGetVector2> pos, float fontSize, Color color) {
+        drawText(new TextRenderer(text, getBackground(), fontSize, color), pos);
     }
 
     public List<Line> getLines() {
@@ -69,6 +76,12 @@ public abstract class BaseWorld extends World {
         super.removeObject(object);
     }
 
+    @Override
+    public void act() {
+        super.act();
+        frame.blank();
+    }
+
     public void removeObjectUnchecked(Actor object) {
         super.removeObject(object);
     }
@@ -87,14 +100,14 @@ public abstract class BaseWorld extends World {
         background.setColor(Color.BLACK);
         background.fill();
 
-        drawText("YOU LOST!", Misc.centeredAround(new Vector2(300, 150)), 30, Color.BLUE);
+        drawForever("YOU LOST!", Misc.centeredAround(new Vector2(300, 150)), 30, Color.BLUE);
         Greenfoot.delay(20);
 
-        drawText("SCORE: " + currentScore, Misc.centeredAround(new Vector2(300, 200)), 30, Color.BLUE);
+        drawForever("SCORE: " + currentScore, Misc.centeredAround(new Vector2(300, 200)), 30, Color.BLUE);
         Greenfoot.delay(20);
 
         String nextLine = currentScore > highscore ? "NEW HIGH SCORE!" : "HIGH SCORE: " + highscore;
-        drawText(nextLine, Misc.centeredAround(new Vector2(300, 250)), 30, Color.BLUE);
+        drawForever(nextLine, Misc.centeredAround(new Vector2(300, 250)), 30, Color.BLUE);
         Greenfoot.delay(80);
 
         ScoreTracker.setScore(0);

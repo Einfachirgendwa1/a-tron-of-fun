@@ -9,13 +9,14 @@ public class GridBugsWorld extends BaseWorld {
     private final GridBugsTarget gridBugsTarget;
     private final ArrayList<GridBugsEnemy> enemies = new ArrayList<>();
     private final StateMachine stateMachine;
+    private int timer = 700;
 
     public GridBugsWorld() {
         stateMachine = new StateMachine(this::gameplay);
-        gridBugsTarget = Misc.addObject(new GridBugsTarget(), Misc.worldWidth / 2, Misc.worldHeight / 2);
+        gridBugsTarget = Misc.addObject(new GridBugsTarget(), Vector2.MIDDLE);
 
         Vector2[] gridBugPositions = {
-            new Vector2(200, 120), new Vector2(200, 100), new Vector2(220, 100), new Vector2(220, 120)
+                new Vector2(200, 120), new Vector2(200, 100), new Vector2(220, 100), new Vector2(220, 120)
         };
 
         for (Vector2 gridBugPosition : gridBugPositions) {
@@ -23,6 +24,7 @@ public class GridBugsWorld extends BaseWorld {
         }
 
         player = Misc.addObject(new GridBugsPlayer(), 300, 100);
+        renderTimer();
     }
 
     private void gameplay(StateMachine stateMachine) {
@@ -36,20 +38,34 @@ public class GridBugsWorld extends BaseWorld {
             }
 
             if (player.intersects(gridBugsTarget.getTarget())) {
+                ScoreTracker.addScore(timer * 2);
                 gameEnd(this::winAnimation);
             }
+
+            if (timer == 0) lost();
+
+            renderTimer();
+            timer--;
         }).repeat();
     }
 
+    private void renderTimer() {
+        StringBuilder t = new StringBuilder(Integer.toString(timer));
+        while (t.length() < 4) t.insert(0, "0");
+
+        drawOnce(t.toString(), Misc.centeredAround(new Vector2(300, 251)), 18, Color.YELLOW);
+    }
+
     private void winAnimation(StateMachine stateMachine) {
+        showScore();
         gridBugsTarget.win();
         GridBugsWinAnimation anim = Misc.addObject(new GridBugsWinAnimation(), Vector2.MIDDLE);
 
         stateMachine.addThread().waitFor(anim::isAtEdge).execute(() -> {
             blank();
 
-            drawText("You won!", Misc.centeredAround(Vector2.MIDDLE), 50, Color.BLUE);
-            stateMachine.addThread().wait(120).execute(Misc::exitMinigame);
+            drawForever("You won!", Misc.centeredAround(Vector2.MIDDLE), 50, Color.BLUE);
+            stateMachine.addThread().wait(40).execute(Misc::exitMinigame);
         });
     }
 

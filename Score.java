@@ -10,6 +10,6 @@ public class Score extends BaseActor {
     }
 
     public void act() {
-        Misc.getCurrentWorld().drawText("SCORE: " + ScoreTracker.getScore(), Score::topLeft, 23, Color.BLUE);
+        Misc.getCurrentWorld().drawOnce("SCORE: " + ScoreTracker.getScore(), Score::topLeft, 23, Color.BLUE);
     }
 }

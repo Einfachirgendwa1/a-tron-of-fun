@@ -13,9 +13,6 @@ public class TextRenderer {
     private static final Constructor<greenfoot.Font> fontConstructor;
     private static final Method getGraphics;
     private static final String fontName = "DepartureMonoNerdFont-Regular.otf";
-    private final GreenfootImage surface;
-    private Font instanceAwt;
-    private String text;
 
     static {
         try {
@@ -33,9 +30,16 @@ public class TextRenderer {
         }
     }
 
-    public TextRenderer(GreenfootImage surface) {
+    private final GreenfootImage surface;
+    private final Font instanceAwt;
+    private final String text;
+
+    public TextRenderer(String text, GreenfootImage surface, float fontSize, greenfoot.Color color) {
         this.surface = surface;
-        this.instanceAwt = awtFont;
+        this.text = text;
+        this.instanceAwt = awtFont.deriveFont(fontSize);
+
+        surface.setColor(color);
     }
 
     public static greenfoot.Font fromAwtFont(Font awtFont) {
@@ -55,12 +59,8 @@ public class TextRenderer {
         }
     }
 
-    public void setFontSize(float size) {
-        instanceAwt = awtFont.deriveFont(size);
-    }
-
-    public void setText(String text) {
-        this.text = text;
+    public GreenfootImage getSurface() {
+        return surface;
     }
 
     public void render(Point position) {
@@ -69,7 +69,7 @@ public class TextRenderer {
     }
 
     public Vector2 dimensions() {
-        GlyphVector vector = awtFont.createGlyphVector(getGraphics2D(surface).getFontRenderContext(), text);
+        GlyphVector vector = instanceAwt.createGlyphVector(getGraphics2D(surface).getFontRenderContext(), text);
         Rectangle2D bounds = vector.getVisualBounds();
 
         return new Vector2((float) bounds.getWidth(), (float) bounds.getHeight());

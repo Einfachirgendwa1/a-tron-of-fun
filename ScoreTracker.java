@@ -20,7 +20,7 @@ public abstract class ScoreTracker {
 
     public static int readHighScore() {
         try {
-            return Integer.parseInt(Files.readAllLines(highScoreFile).getFirst());
+            return Integer.parseInt(Files.readString(highScoreFile));
         } catch (IOException e) {
             return 0;
         }
