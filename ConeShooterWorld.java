@@ -1,10 +1,8 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
-
 public class ConeShooterWorld extends BaseWorld {
 
+    LightCone cone = new LightCone(1, 160);
     private int actCount = 0;
     private int rowCount = 1;
-    LightCone cone = new LightCone(1,160);
 
     public ConeShooterWorld() {
         super();
@@ -66,16 +64,17 @@ public class ConeShooterWorld extends BaseWorld {
     }
 
     //Erzeugt eine vollständige Kegelreihe an der angegebenen y-Koordinate
-    public void spawnRow (int baseY){
+    public void spawnRow(int baseY) {
         for (int i = 0; i < 6; i++) {
             cone = new LightCone(i + 1, baseY);
-            addObject(cone, 0, 0); //Die Position wird direkt in der nächsten Zeile gesetzt, das Objekt muss aber schon vorher erzeugt werden
-            cone.setLocation(224 + 32 * i +cone.getXChange(), cone.getTargetY());
+            addObject(
+                    cone,
+                    0,
+                    0
+            ); //Die Position wird direkt in der nächsten Zeile gesetzt, das Objekt muss aber schon vorher erzeugt 
+            // werden
+            cone.setLocation(224 + 32 * i + cone.getXChange(), cone.getTargetY());
         }
-    }
-
-    public void gameOver(boolean win) { //Spielende
-        Misc.exitMinigame();
     }
 
     public void act() {
@@ -84,9 +83,10 @@ public class ConeShooterWorld extends BaseWorld {
 
         /**
          * Alle 100 Acts bewegt sich jedes Objekt des Kegels um einen Schritt nach rechts.
-         * Alle Objekte, die die Position sechs erreichen, werden entfernt (außerhalb der Bahngrenzen gibt es keine Kegelobjekte mehr)
+         * Alle Objekte, die die Position sechs erreichen, werden entfernt (außerhalb der Bahngrenzen gibt es keine 
+         * Kegelobjekte mehr)
          * In jeder Reihe kommt ein Objekt mit Position 1 hinzu, sodass die rotierende Kegelbewegung entsteht.
-         */ 
+         */
 
         if (actCount % 100 == 0) {
             for (int i = 0; i < getObjects(LightCone.class).size(); i++) {
@@ -97,7 +97,8 @@ public class ConeShooterWorld extends BaseWorld {
                     continue; //Für das entfernte Objekt soll der Rest der SChleife nicht mehr ausgeführt werden.
                 }
 
-                //Um falsche Lücken in der Bewegung zu vermeiden, wird die Verschiebung mit der Änderung der Position korrigiert.
+                //Um falsche Lücken in der Bewegung zu vermeiden, wird die Verschiebung mit der Änderung der Position
+                // korrigiert.
                 int oldXChange = cone.getXChange(); //X-Verschiebung vor dem Positionswechsel
                 cone.setPosition(cone.getPosition() + 1); //Position und Bild ändern
                 int newXChange = cone.getXChange(); //Verschiebung nach dem Positionswechsel
@@ -106,8 +107,16 @@ public class ConeShooterWorld extends BaseWorld {
             }
 
             for (int i = 0; i < rowCount; i++) {
-                cone = new LightCone(1, 160 + 24 * i); //neues Objekt mit der passenden y-Koordinate der jeweiligen Reihe
-                addObject(cone, 0, 0); //Die Position wird direkt in der nächsten Zeile gesetzt, das Objekt muss aber schon vorher erzeugt werden
+                cone = new LightCone(
+                        1,
+                        160 + 24 * i
+                ); //neues Objekt mit der passenden y-Koordinate der jeweiligen Reihe
+                addObject(
+                        cone,
+                        0,
+                        0
+                ); //Die Position wird direkt in der nächsten Zeile gesetzt, das Objekt muss aber schon vorher 
+                // erzeugt werden
                 cone.setLocation(224 + cone.getXChange(), cone.getTargetY());
             }
         }
@@ -121,7 +130,7 @@ public class ConeShooterWorld extends BaseWorld {
 
         if (actCount % 500 == 0) { //Verschiebung der Reihen nach unten
             for (int i = 0; i < getObjects(LightCone.class).size(); i++) {
-                LightCone cone = getObjects(LightCone.class).get(i); 
+                LightCone cone = getObjects(LightCone.class).get(i);
                 cone.setBlinking(false); //Kegel hört auf, zu blinken, sobald die neue Reihe da ist
                 cone.setBaseY(cone.getBaseY() + 24);
                 cone.setLocation(cone.getX(), cone.getTargetY());
@@ -131,10 +140,11 @@ public class ConeShooterWorld extends BaseWorld {
             rowCount++;
         }
 
-        //100 Acts vor dem Erscheinen einer neuen Reihe blinkt der Kegel als Warnung vor dem Erscheinen einer neuen Reihe
+        //100 Acts vor dem Erscheinen einer neuen Reihe blinkt der Kegel als Warnung vor dem Erscheinen einer neuen 
+        // Reihe
         if (actCount % 500 == 400) {
             for (int i = 0; i < getObjects(LightCone.class).size(); i++) {
-                LightCone cone = getObjects(LightCone.class).get(i); 
+                LightCone cone = getObjects(LightCone.class).get(i);
                 cone.setBlinking(true);
             }
         }

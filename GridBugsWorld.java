@@ -50,10 +50,10 @@ public class GridBugsWorld extends BaseWorld {
     }
 
     private void renderTimer() {
-        StringBuilder t = new StringBuilder(Integer.toString(timer));
-        while (t.length() < 4) t.insert(0, "0");
+        StringBuilder stringBuilder = new StringBuilder(timer);
+        while (stringBuilder.length() < 4) stringBuilder.insert(0, "0");
 
-        drawOnce(t.toString(), Misc.centeredAround(new Vector2(300, 251)), 18, Color.YELLOW);
+        drawOnce(stringBuilder.toString(), Misc.centeredAround(new Vector2(300, 251)), 18, Color.YELLOW);
     }
 
     private void winAnimation(StateMachine stateMachine) {
@@ -61,12 +61,7 @@ public class GridBugsWorld extends BaseWorld {
         gridBugsTarget.win();
         GridBugsWinAnimation anim = Misc.addObject(new GridBugsWinAnimation(), Vector2.MIDDLE);
 
-        stateMachine.addThread().waitFor(anim::isAtEdge).execute(() -> {
-            blank();
-
-            drawForever("You won!", Misc.centeredAround(Vector2.MIDDLE), 50, Color.BLUE);
-            stateMachine.addThread().wait(40).execute(Misc::exitMinigame);
-        });
+        stateMachine.addThread().waitFor(anim::isAtEdge).execute(this::won);
     }
 
     private void gameEnd(Consumer<StateMachine> state) {

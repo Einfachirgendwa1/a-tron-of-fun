@@ -4,12 +4,12 @@ import greenfoot.GreenfootImage;
 
 public class LightCycleEnemy extends Enemy {
 
-    private int direction = 4;
     private final int result = 0;
+    private final boolean hasTurned = false;
+    private int direction = 4;
     private ImageHolder cycleImage;
     private boolean crashed = false;
     private boolean onGrid = true;
-    private final boolean hasTurned = false;
 
     @Override
     protected ImageHolder[] images() {
@@ -43,8 +43,7 @@ public class LightCycleEnemy extends Enemy {
         cycleImage.setImage("boom_4.png");
         Greenfoot.delay(20);
 
-        LightCyclesWorld world = (LightCyclesWorld) getWorld();
-        world.gameOver();
+        Misc.getCurrentWorld().won();
     }
 
     //Prüft, ob die Bewegungsrichtung blockiert ist, um zu eine "Wendeentscheidung" zu treffen
@@ -89,11 +88,13 @@ public class LightCycleEnemy extends Enemy {
                 if (!pathCheck(direction - 1)) { //Prüfung, ob die Bewegung nach links blockiert ist
                     direction = direction - 1;
                 } else {
-                    direction = direction + 1; //Richtungsänderung nach Rechts, da eine 180-Grad Drehung nicht möglich ist und es keinen anderen Weg gibt
+                    direction = direction + 1; //Richtungsänderung nach Rechts, da eine 180-Grad Drehung nicht 
+                    // möglich ist und es keinen anderen Weg gibt
                 }
             }
 
-            //Zufällige Richtungsänderung, um das Verhalten des Gegners unvorhersehbar zu machen, wenn alle Wege offen sind (mit Zufälliger Richtungswahl)
+            //Zufällige Richtungsänderung, um das Verhalten des Gegners unvorhersehbar zu machen, wenn alle Wege 
+            // offen sind (mit Zufälliger Richtungswahl)
             if (!pathCheck(direction - 1) && !pathCheck(direction + 1)) {
                 if (Math.random() < 0.1) {
                     direction = direction + 1;

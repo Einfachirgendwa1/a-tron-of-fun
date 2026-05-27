@@ -29,8 +29,8 @@ public class LightCyclePlayer extends Player {
         Greenfoot.delay(10);
         cycleImage.setImage("boom_4.png");
         Greenfoot.delay(20);
-        LightCyclesWorld world = (LightCyclesWorld) getWorld();
-        world.gameOver();
+
+        Misc.getCurrentWorld().lost();
     }
 
     // Überprüft, ob der Spieler mit einem Trail oder dem Gegner kollidiert ist
@@ -66,7 +66,8 @@ public class LightCyclePlayer extends Player {
         }
 
         //Steuerung mit A und D, relativ zur Bewegungsrichtung des Spielers nach links oder Rechts
-        //Die neue Richtung wird gespeichert und kann beim nächsten erlaubten Punkt auf dem Grid angewendet werden, ohne dass eingaben verloren gehen
+        //Die neue Richtung wird gespeichert und kann beim nächsten erlaubten Punkt auf dem Grid angewendet werden, 
+        // ohne dass eingaben verloren gehen
         if (Greenfoot.isKeyDown("a") && !isPressed) {
             direction = direction - 1;
             isPressed = true;

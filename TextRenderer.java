@@ -46,7 +46,7 @@ public class TextRenderer {
         try {
             return fontConstructor.newInstance(awtFont);
         } catch (Exception e) {
-            System.err.println("Error: could not load font " + fontName + ": " + e.getMessage());
+            System.err.println("Error: greenfoot couldnt load font " + fontName + ": " + e.getMessage());
             return null;
         }
     }
@@ -57,10 +57,6 @@ public class TextRenderer {
         } catch (Exception e) {
             throw new RuntimeException("Failed to acquire Graphics2D via reflection!", e);
         }
-    }
-
-    public GreenfootImage getSurface() {
-        return surface;
     }
 
     public void render(Point position) {

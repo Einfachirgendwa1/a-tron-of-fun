@@ -10,7 +10,8 @@ public class LightCyclesWorld extends BaseWorld {
     public LightCyclePlayer player;
 
     /**
-     * Verwendung eines Grids, welches die sechsfache breite der Wand hat, um die Bewegung der LightCycles zu erleichtern und die Kollisionsprüfung zu vereinfachen.
+     * Verwendung eines Grids, welches die sechsfache breite der Wand hat, um die Bewegung der LightCycles zu 
+     * erleichtern und die Kollisionsprüfung zu vereinfachen.
      * Außerdem können Schweife nicht direkt nebeneinanderliegen, sodass das Spiel optisch aufgelockert wird.
      */
 
@@ -25,9 +26,5 @@ public class LightCyclesWorld extends BaseWorld {
         enemy = Misc.addObject(new LightCycleEnemy(), 522, 54);
         // Dunkle Magie, die anscheinend funktioniert
         //Koordinaten durch 18 teilbar, damit die Startposition dem Grid entspricht
-    }
-
-    public void gameOver() {
-        Misc.exitMinigame();
     }
 }

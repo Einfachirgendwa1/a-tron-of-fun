@@ -7,13 +7,14 @@ public class ConePlayer extends HumanoidPlayer {
         super.act();
 
         if (getOneIntersectingObject(LightCone.class) != null) { //Der Spieler verliert, wenn er den Lichtkegel berührt
-            world.gameOver(false);
+            world.lost();
         }
 
-        if (getOneIntersectingObject(ConeGoal.class) != null) { //Der Spieler gewinnt, wenn er eine gewisse Zeit in Kontakt mit dem Ziel ist
+        if (getOneIntersectingObject(ConeGoal.class) != null) { //Der Spieler gewinnt, wenn er eine gewisse Zeit in 
+            // Kontakt mit dem Ziel ist
             goalCount++;
             if (goalCount >= 150) {
-                world.gameOver(true);
+                world.won();
             }
         }
 

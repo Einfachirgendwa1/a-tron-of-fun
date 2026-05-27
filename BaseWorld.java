@@ -86,6 +86,15 @@ public abstract class BaseWorld extends World {
         super.removeObject(object);
     }
 
+    protected void won() {
+        blank();
+        ScoreTracker.addScore(500);
+        drawForever("You won!", Misc.centeredAround(Vector2.MIDDLE), 50, Color.BLUE);
+        Greenfoot.delay(40);
+        Misc.exitMinigame();
+    }
+
+
     protected void lost() {
         if (lost) return;
         lost = true;
