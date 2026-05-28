@@ -42,10 +42,6 @@ public class Misc {
         }
     }
 
-    public static void enterMinigame(int id) {
-        gameSelection.enterMinigame(id);
-    }
-
     public static BaseWorld getCurrentWorld() {
         return currentWorld;
     }

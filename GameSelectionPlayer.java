@@ -1,3 +1,4 @@
+import greenfoot.Actor;
 import greenfoot.Greenfoot;
 
 public class GameSelectionPlayer extends HumanoidPlayer {
@@ -42,13 +43,17 @@ public class GameSelectionPlayer extends HumanoidPlayer {
         }
 
         if (Greenfoot.isKeyDown("space") && currentMinigame != -1 && !isMoving()) {
-            Misc.enterMinigame(currentMinigame);
+            Actor intersectingMinigame = getOneIntersectingObject(MiniGame.class);
+            if (intersectingMinigame != null) {
+                ((MiniGame) intersectingMinigame).loadWorld();
+            }
         }
     }
 
-    @Override
-    protected void moveLeft() {
-        if (!isMoving()) targetMinigame = 0;
+    public void reset() {
+        teleport(Vector2.MIDDLE);
+        targetMinigame = -1;
+        currentMinigame = -1;
     }
 
     @Override
@@ -57,12 +62,17 @@ public class GameSelectionPlayer extends HumanoidPlayer {
     }
 
     @Override
-    protected void moveRight() {
-        if (!isMoving()) targetMinigame = 2;
+    protected void moveDown() {
+        if (!isMoving()) targetMinigame = 3;
     }
 
     @Override
-    protected void moveDown() {
-        if (!isMoving()) targetMinigame = 3;
+    protected void moveLeft() {
+        if (!isMoving()) targetMinigame = 0;
+    }
+
+    @Override
+    protected void moveRight() {
+        if (!isMoving()) targetMinigame = 2;
     }
 }
