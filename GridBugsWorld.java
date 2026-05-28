@@ -14,7 +14,7 @@ public class GridBugsWorld extends BaseWorld {
         gridBugsTarget = Misc.addObject(new GridBugsTarget(), Vector2.MIDDLE);
 
         Vector2[] gridBugPositions = {
-                new Vector2(200, 120), new Vector2(200, 100), new Vector2(220, 100), new Vector2(220, 120)
+            new Vector2(200, 120), new Vector2(200, 100), new Vector2(220, 100), new Vector2(220, 120)
         };
 
         for (Vector2 gridBugPosition : gridBugPositions) {
@@ -48,7 +48,7 @@ public class GridBugsWorld extends BaseWorld {
     }
 
     private void renderTimer() {
-        StringBuilder stringBuilder = new StringBuilder(timer);
+        StringBuilder stringBuilder = new StringBuilder(Integer.toString(timer));
         while (stringBuilder.length() < 4) stringBuilder.insert(0, "0");
 
         drawOnce(stringBuilder.toString(), Misc.centeredAround(new Vector2(300, 251)), 18, Color.YELLOW);
