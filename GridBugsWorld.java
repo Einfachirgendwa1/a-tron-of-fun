@@ -7,7 +7,7 @@ public class GridBugsWorld extends BaseWorld {
     private final GridBugsPlayer player;
     private final GridBugsTarget target;
     private final Animator animator;
-    private int timer = 700;
+    private int timer = 1000;
 
     public GridBugsWorld() {
         animator = new Animator(this::gameplay);
@@ -34,18 +34,12 @@ public class GridBugsWorld extends BaseWorld {
 
     private void gameplay(Animator animator) {
         animator.addThread().execute(() -> {
-            for (GridBugsEnemy gridBug : getObjects(GridBugsEnemy.class)) {
-                if (player.intersects(gridBug)) {
-                    lost();
-                }
-            }
-
-            if (player.intersects(target.getTarget())) {
+            if (player.intersects(target)) {
                 ScoreTracker.addScore(timer * 2);
                 gameEnd(this::winAnimation);
             }
 
-            if (timer == 0) lost();
+            if (timer == 0) lost("THE TIMER RAN OUT");
 
             renderTimer();
             timer--;

@@ -21,7 +21,7 @@ public abstract class HumanoidPlayer extends Player {
     private ImageHolder body;
     private ImageHolder legs;
 
-    private final StateThread walkingAnimation = new StateThread(null) {{
+    private final StateThread walkingAnimation = new StateThread() {{
         int walkDelay = 10;
 
         execute(() -> {
@@ -36,7 +36,7 @@ public abstract class HumanoidPlayer extends Player {
     private ImageHolder pointArm;
     private ImageHolder throwArm;
 
-    private final StateThread shootTimer = new StateThread(null) {{
+    private final StateThread shootTimer = new StateThread() {{
         wait(15).execute(() -> {
             throwArm.setImage(throwInactive);
             onCooldown = false;
@@ -147,7 +147,7 @@ public abstract class HumanoidPlayer extends Player {
         throwArm.setImage(throwActive);
 
         Misc.mousePosition().ifPresent(mousePosition -> {
-            Vector2 bulletMovement = towards(mousePosition).scale(2);
+            Vector2 bulletMovement = towards(mousePosition).scale(4);
             Misc.addObject(new Bullet(bulletMovement, false), this);
 
             shootTimer.reset();

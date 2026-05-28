@@ -6,3 +6,4 @@ bluej/build.properties
 *.ctxt
 out/
 /high_score.txt
+doc/

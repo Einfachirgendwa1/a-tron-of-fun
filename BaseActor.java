@@ -4,24 +4,14 @@ import greenfoot.GreenfootImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
-public class BaseActor extends Collider implements IDamageable {
-    private final MultipleImages multipleImages;
+public class BaseActor extends Actor implements IDamageable, IGetVector2 {
     protected int health = 100;
     protected float speed = 1;
+    private ArrayList<ImageHolder> images;
     private boolean wallCollision = false;
     private Vector2 subpixelPosition;
-
-    {
-        ImageHolder[] imageHolders = images();
-
-        if (imageHolders.length == 0) {
-            imageHolders = new ImageHolder[]{new ImageHolder(getImage(), 0, 0)};
-        }
-
-        multipleImages = new MultipleImages(imageHolders);
-        setImage(Misc.blank);
-    }
 
     public static void run(Actor actor, Consumer<BaseActor> function) {
         if (actor instanceof BaseActor) {
@@ -29,7 +19,11 @@ public class BaseActor extends Collider implements IDamageable {
         }
     }
 
-    protected boolean wallCollisionOccured() {
+    public boolean anyCollider(Predicate<ImageHolder> predicate) {
+        return images.stream().filter(ImageHolder::isCollider).anyMatch(predicate);
+    }
+
+    protected boolean wallCollisionOccurred() {
         return wallCollision;
     }
 
@@ -61,42 +55,46 @@ public class BaseActor extends Collider implements IDamageable {
         subpixelPosition = position();
     }
 
-    private void syncPositions() {
-        Point position = new Point(position());
-        super.setLocation(position.x(), position.y());
-        updateChildren();
-    }
-
     @Override
     public void setImage(GreenfootImage image) {
-        if (image == Misc.blank || multipleImages == null) {
-            super.setImage(image);
-        } else if (multipleImages.getImages().size() == 1) {
-            multipleImages.getImages().getFirst().setImage(image);
+        if (images != null) {
+            images.getFirst().setImage(image);
+            return;
         }
+
+        images = new ArrayList<>();
+        ImageHolder[] imageHolders = images();
+
+        if (imageHolders.length == 0) {
+            imageHolders = new ImageHolder[]{new ImageHolder(image, 0, 0)};
+        }
+
+        for (ImageHolder imageHolder : imageHolders) {
+            Misc.getCurrentWorld().addObject(imageHolder, imageHolder.getOffsetX(), imageHolder.getOffsetY());
+            images.add(imageHolder);
+        }
+
+        super.setImage(Misc.blank);
     }
 
     @Override
     public boolean intersects(Actor other) {
         List<Actor> otherColliders = new ArrayList<>();
 
-        if (other instanceof BaseActor) {
-            otherColliders.addAll(((BaseActor) other).multipleImages.getImages());
-        } else {
-            otherColliders.add(other);
-        }
+        run(other, otherActor -> otherColliders.addAll(otherActor.images));
+        if (!(other instanceof BaseActor)) otherColliders.add(other);
 
-        return multipleImages.anyWithCollision(image -> otherColliders.stream().anyMatch(image::intersects));
+        return anyCollider(image -> otherColliders.stream().anyMatch(image::intersects));
     }
 
-    @Override
+    private void syncPositions() {
+        Point position = new Point(position());
+        super.setLocation(position.x(), position.y());
+        updateChildren();
+    }
+
     public void mirrorHorizontally() {
-        multipleImages.forEach(ImageHolder::mirrorHorizontally);
-    }
-
-    @Override
-    public void mirrorVertically() {
-        multipleImages.forEach(ImageHolder::mirrorVertically);
+        images.forEach(ImageHolder::mirrorHorizontally);
     }
 
     @Override
@@ -109,11 +107,11 @@ public class BaseActor extends Collider implements IDamageable {
     }
 
     public void updateChildren() {
-        multipleImages.forEach(image -> image.updatePosition(this));
+        images.forEach(image -> image.updatePosition(this));
     }
 
     public void destroyChildren() {
-        multipleImages.forEach(getWorld()::removeObject);
+        images.forEach(getWorld()::removeObject);
     }
 
     protected void deathHandler() {
@@ -166,9 +164,5 @@ public class BaseActor extends Collider implements IDamageable {
 
     protected void moveRight() {
         moveWithSpeed(Vector2.RIGHT);
-    }
-
-    protected Score getScore() {
-        return Misc.getCurrentWorld().score;
     }
 }

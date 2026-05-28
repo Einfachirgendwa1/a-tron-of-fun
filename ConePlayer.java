@@ -5,15 +5,7 @@ public class ConePlayer extends HumanoidPlayer {
 
         ConeShooterWorld world = (ConeShooterWorld) getWorld();
         if (getOneIntersectingObject(LightCone.class) != null) { //Der Spieler verliert, wenn er den Lichtkegel berührt
-           // world.lost();
-        }
-
-        if (getOneIntersectingObject(ConeGoal.class) != null) { //Der Spieler gewinnt, wenn er eine gewisse Zeit in 
-            // Kontakt mit dem Ziel ist
-            goalCount++;
-            if (goalCount >= 150) {
-                world.won();
-            }
+            // world.lost();
         }
 
         //Macht die Übeschreitung der Bahngrenzen unmöglich
@@ -22,6 +14,15 @@ public class ConePlayer extends HumanoidPlayer {
         } else if (getX() > 365) {
             teleport(new Vector2(365, getY()));
         }
+
+        if (getOneIntersectingObject(ConeGoal.class) != null) { //Der Spieler gewinnt, wenn er eine gewisse Zeit in
+            // Kontakt mit dem Ziel ist
+            goalCount++;
+            if (goalCount >= 150) {
+                world.won();
+            }
+        }
+
         super.act();
     }
 }

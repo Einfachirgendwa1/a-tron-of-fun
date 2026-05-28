@@ -1,11 +1,12 @@
+import greenfoot.Actor;
 import greenfoot.GreenfootImage;
 
-public class ImageHolder extends Collider {
+public class ImageHolder extends Actor implements IGetVector2 {
     private MirrorFlags mirrorFlags;
     private boolean isCollider = true;
     private int offsetX;
     private int offsetY;
-    private Vector2 basePosition;
+    private Point basePosition;
 
     public ImageHolder(GreenfootImage image, int offsetX, int offsetY, boolean isCollider) {
         this(image, offsetX, offsetY);
@@ -27,10 +28,6 @@ public class ImageHolder extends Collider {
         this(new GreenfootImage("images/" + image), offsetX, offsetY, collider);
     }
 
-    public ImageHolder(String image, int offsetX, int offsetY) {
-        this(image, offsetX, offsetY, false);
-    }
-
     public boolean isCollider() {
         return isCollider;
     }
@@ -47,21 +44,32 @@ public class ImageHolder extends Collider {
     }
 
     @Override
+    public boolean intersects(Actor other) {
+        if (!isCollider) return false;
+        if (other instanceof ImageHolder && !((ImageHolder) other).isCollider) return false;
+
+        return super.intersects(other);
+    }
+
     public void mirrorHorizontally() {
-        super.mirrorHorizontally();
+        getImage().mirrorHorizontally();
 
         offsetX *= -1;
         updatePosition(basePosition);
         mirrorFlags.toggleHorizontal();
     }
 
-    @Override
     public void mirrorVertically() {
-        super.mirrorVertically();
+        getImage().mirrorVertically();
 
         offsetY *= -1;
         updatePosition(basePosition);
         mirrorFlags.toggleVertical();
+    }
+
+    @Override
+    public Vector2 position() {
+        return new Vector2(getX(), getY());
     }
 
     public int getOffsetX() {
@@ -73,11 +81,7 @@ public class ImageHolder extends Collider {
     }
 
     public void updatePosition(IGetVector2 newPosition) {
-        int x = (int) newPosition.position().x();
-        int y = (int) newPosition.position().y();
-
-        basePosition = newPosition.position();
-
-        setLocation(offsetX + x, offsetY + y);
+        basePosition = new Point(newPosition.position());
+        setLocation(offsetX + basePosition.x(), offsetY + basePosition.y());
     }
 }

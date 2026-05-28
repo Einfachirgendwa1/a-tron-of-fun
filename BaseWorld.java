@@ -91,8 +91,11 @@ public abstract class BaseWorld extends World {
         Misc.exitMinigame();
     }
 
-
     protected void lost() {
+        lost("YOU LOST!");
+    }
+
+    protected void lost(String deathMessage) {
         if (lost) return;
         lost = true;
 
@@ -106,7 +109,7 @@ public abstract class BaseWorld extends World {
         background.setColor(Color.BLACK);
         background.fill();
 
-        drawForever("YOU LOST!", Misc.centeredAround(new Vector2(300, 150)), 30, Color.BLUE);
+        drawForever(deathMessage, Misc.centeredAround(new Vector2(300, 150)), 30, Color.BLUE);
         Greenfoot.delay(20);
 
         drawForever("SCORE: " + currentScore, Misc.centeredAround(new Vector2(300, 200)), 30, Color.BLUE);

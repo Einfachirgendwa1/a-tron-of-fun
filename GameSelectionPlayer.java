@@ -7,7 +7,7 @@ public class GameSelectionPlayer extends HumanoidPlayer {
 
     public GameSelectionPlayer(MiniGame[] miniGames) {
         allowShooting = false;
-        speed = 2f;
+        speed = 4f;
         this.miniGames = miniGames;
     }
 
@@ -17,16 +17,15 @@ public class GameSelectionPlayer extends HumanoidPlayer {
 
     @Override
     protected boolean isMoving() {
-        return !position().equals(targetPosition());
+        return !new Point(position()).equals(new Point(targetPosition()));
     }
 
     @Override
     public void act() {
         super.act();
 
-        Vector2 target = targetPosition();
         for (int i = 0; i < speed; i++) {
-            move(towards(target));
+            move(towards(targetPosition()));
         }
 
         if (Greenfoot.isKeyDown("space") && !isMoving()) {

@@ -1,7 +1,14 @@
 import greenfoot.Color;
 
+/**
+ * Rendert den blauen Text in der oberen linken Ecke, der den aktuellen Score anzeigt.
+ *
+ * @author Faris
+ * @see ScoreTracker
+ */
 public class Score extends BaseActor {
     public Score() {
+        // Macht, dass der Score schon angezeigt wird, wenn noch nicht Run gedrückt wurde.
         act();
     }
 
