@@ -4,10 +4,8 @@ public class ConePlayer extends HumanoidPlayer {
     public void act() {
 
         ConeShooterWorld world = (ConeShooterWorld) getWorld();
-        super.act();
-
         if (getOneIntersectingObject(LightCone.class) != null) { //Der Spieler verliert, wenn er den Lichtkegel berührt
-            world.lost();
+           // world.lost();
         }
 
         if (getOneIntersectingObject(ConeGoal.class) != null) { //Der Spieler gewinnt, wenn er eine gewisse Zeit in 
@@ -24,5 +22,6 @@ public class ConePlayer extends HumanoidPlayer {
         } else if (getX() > 365) {
             teleport(new Vector2(365, getY()));
         }
+        super.act();
     }
 }

@@ -17,7 +17,7 @@ public class ConeShooterWorld extends BaseWorld {
             addObject(border, 213, y);
         }
 
-        //Rechte Seite wird gedreht, damit die volle sichtbare breite der Bahn genutzt werden kann
+        //Rechte Seite wird gedreht, damit die volle sichtbare Breite der Bahn genutzt werden kann
         for (int y = 160; y <= 400; y = y + 32) {
             border = new ConeBorder();
             addObject(border, 395, y);
@@ -65,16 +65,21 @@ public class ConeShooterWorld extends BaseWorld {
 
     //Erzeugt eine vollständige Kegelreihe an der angegebenen y-Koordinate
     public void spawnRow(int baseY) {
-        for (int i = 0; i < 6; i++) {
-            cone = new LightCone(i + 1, baseY);
-            addObject(
-                    cone,
-                    0,
-                    0
-            ); //Die Position wird direkt in der nächsten Zeile gesetzt, das Objekt muss aber schon vorher erzeugt 
-            // werden
-            cone.setLocation(224 + 32 * i + cone.getXChange(), cone.getTargetY());
+        if (rowCount > 5){
+            
+        } else {
+            for (int i = 0; i < 6; i++) {
+                cone = new LightCone(i + 1, baseY);
+                addObject(
+                        cone,
+                        0,
+                        0
+                ); //Die Position wird direkt in der nächsten Zeile gesetzt, das Objekt muss aber schon vorher erzeugt 
+                // werden
+                cone.setLocation(224 + 32 * i + cone.getXChange(), cone.getTargetY());
+            }
         }
+        
     }
 
     public void act() {
@@ -94,7 +99,7 @@ public class ConeShooterWorld extends BaseWorld {
                 if (cone.getPosition() >= 6) { //Entfernung der letzten Position
                     removeObject(cone);
                     i--; //Liste der Objekte wird kürzer
-                    continue; //Für das entfernte Objekt soll der Rest der SChleife nicht mehr ausgeführt werden.
+                    continue; //Für das entfernte Objekt soll der Rest der Schleife nicht mehr ausgeführt werden.
                 }
 
                 //Um falsche Lücken in der Bewegung zu vermeiden, wird die Verschiebung mit der Änderung der Position
@@ -109,7 +114,7 @@ public class ConeShooterWorld extends BaseWorld {
             for (int i = 0; i < rowCount; i++) {
                 cone = new LightCone(
                         1,
-                        160 + 24 * i
+                        160 + 25 * i
                 ); //neues Objekt mit der passenden y-Koordinate der jeweiligen Reihe
                 addObject(
                         cone,
@@ -128,11 +133,11 @@ public class ConeShooterWorld extends BaseWorld {
          * So wird der Kegel größer und das Ziel wird geschützt.
          * */
 
-        if (actCount % 500 == 0) { //Verschiebung der Reihen nach unten
+        if (actCount % 500 == 0 && rowCount < 5) { //Verschiebung der Reihen nach unten
             for (int i = 0; i < getObjects(LightCone.class).size(); i++) {
                 LightCone cone = getObjects(LightCone.class).get(i);
                 cone.setBlinking(false); //Kegel hört auf, zu blinken, sobald die neue Reihe da ist
-                cone.setBaseY(cone.getBaseY() + 24);
+                cone.setBaseY(cone.getBaseY() + 25);
                 cone.setLocation(cone.getX(), cone.getTargetY());
             }
 
@@ -145,7 +150,9 @@ public class ConeShooterWorld extends BaseWorld {
         if (actCount % 500 == 400) {
             for (int i = 0; i < getObjects(LightCone.class).size(); i++) {
                 LightCone cone = getObjects(LightCone.class).get(i);
-                cone.setBlinking(true);
+                if (rowCount < 5){
+                    cone.setBlinking(true);
+                }
             }
         }
     }

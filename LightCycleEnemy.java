@@ -43,6 +43,7 @@ public class LightCycleEnemy extends Enemy {
         cycleImage.setImage("boom_4.png");
         Greenfoot.delay(20);
 
+        ScoreTracker.addScore(500);
         Misc.getCurrentWorld().won();
     }
 
@@ -76,7 +77,6 @@ public class LightCycleEnemy extends Enemy {
 
     public void act() {
 
-        super.act();
         if (isCrashed()) {
             boomAnimation();
             return;
@@ -123,6 +123,7 @@ public class LightCycleEnemy extends Enemy {
 
         //Erzeugung eines Schweifs an der aktuellen Position
         getWorld().addObject(new Trail(Color.BLUE), getX(), getY());
+        super.act();
     }
 }
 

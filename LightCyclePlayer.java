@@ -106,5 +106,6 @@ public class LightCyclePlayer extends Player {
         //Erzeugung eines Schweifs an der aktuellen Position
         getWorld().addObject(new Trail(Color.YELLOW), getX(), getY());
 
+        super.act();
     }
 }
