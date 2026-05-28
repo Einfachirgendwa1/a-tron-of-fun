@@ -18,13 +18,16 @@ public class LevelBuilder extends BaseWorld {
     private final Class<? extends BaseWorld> world = GridBugsWorld.class;
     private final Path output = LevelLoader.path(world);
     private final List<Line> writtenLines;
+    private final GreenfootImage background;
 
     private int deleteCooldown = 0;
 
     public LevelBuilder() {
         try {
             world.getField("levelBuilder").set(null, true);
-            writtenLines = world.getConstructor().newInstance().getLines();
+            BaseWorld instance = world.getConstructor().newInstance();
+            background = instance.getBackground();
+            writtenLines = new ArrayList<>(instance.getLines());
         } catch (Exception e) {
             throw new RuntimeException("Failed to reflect on " + world.getName(), e);
         }
@@ -67,9 +70,9 @@ public class LevelBuilder extends BaseWorld {
 
         deleteCooldown--;
 
-        GreenfootImage background = new GreenfootImage(Misc.blank);
-        setBackground(background);
-        getBackground().setColor(Color.RED);
+        GreenfootImage scratchBackground = new GreenfootImage(background);
+        scratchBackground.setColor(Color.RED);
+        setBackground(scratchBackground);
 
         writtenLines.forEach(line -> line.draw(getBackground()));
 
