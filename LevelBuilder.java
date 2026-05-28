@@ -15,7 +15,7 @@ import java.util.function.BiConsumer;
 @SuppressWarnings("unused")
 public class LevelBuilder extends BaseWorld {
     private final ArrayList<Point> currentPoints = new ArrayList<>();
-    private final Class<? extends BaseWorld> world = GridBugsWorld.class;
+    private final Class<? extends BaseWorld> world = TankLabyrinthWorld.class;
     private final Path output = LevelLoader.path(world);
     private final List<Line> writtenLines;
     private final GreenfootImage background;
