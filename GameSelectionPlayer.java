@@ -2,47 +2,34 @@ import greenfoot.Actor;
 import greenfoot.Greenfoot;
 
 public class GameSelectionPlayer extends HumanoidPlayer {
-    private int currentMinigame = -1;
-    private int targetMinigame = -1;
+    private final MiniGame[] miniGames;
+    private MiniGame targetMinigame = null;
 
-    {
+    public GameSelectionPlayer(MiniGame[] miniGames) {
         allowShooting = false;
         speed = 2f;
+        this.miniGames = miniGames;
+    }
+
+    private Vector2 targetPosition() {
+        return targetMinigame != null ? targetMinigame.position() : Vector2.MIDDLE;
     }
 
     @Override
     protected boolean isMoving() {
-        return currentMinigame != targetMinigame;
+        return !position().equals(targetPosition());
     }
 
     @Override
     public void act() {
         super.act();
 
-        Vector2 target = switch (targetMinigame) {
-            case 0 -> new Vector2(150, 200);
-            case 1 -> new Vector2(300, 100);
-            case 2 -> new Vector2(450, 200);
-            case 3 -> new Vector2(300, 300);
-            default -> Vector2.MIDDLE;
-        };
-
+        Vector2 target = targetPosition();
         for (int i = 0; i < speed; i++) {
-            Vector2 movementVector = towards(target);
-
-            if (movementVector.x() != 0 && movementVector.y() != 0) {
-                target = Vector2.MIDDLE;
-                movementVector = towards(target);
-            }
-
-            if (movementVector.isZero()) {
-                currentMinigame = targetMinigame;
-            } else {
-                move(movementVector);
-            }
+            move(towards(target));
         }
 
-        if (Greenfoot.isKeyDown("space") && currentMinigame != -1 && !isMoving()) {
+        if (Greenfoot.isKeyDown("space") && !isMoving()) {
             Actor intersectingMinigame = getOneIntersectingObject(MiniGame.class);
             if (intersectingMinigame != null) {
                 ((MiniGame) intersectingMinigame).loadWorld();
@@ -52,27 +39,26 @@ public class GameSelectionPlayer extends HumanoidPlayer {
 
     public void reset() {
         teleport(Vector2.MIDDLE);
-        targetMinigame = -1;
-        currentMinigame = -1;
+        targetMinigame = null;
     }
 
     @Override
     protected void moveUp() {
-        if (!isMoving()) targetMinigame = 1;
+        targetMinigame = miniGames[1];
     }
 
     @Override
     protected void moveDown() {
-        if (!isMoving()) targetMinigame = 3;
+        targetMinigame = miniGames[3];
     }
 
     @Override
     protected void moveLeft() {
-        if (!isMoving()) targetMinigame = 0;
+        targetMinigame = miniGames[0];
     }
 
     @Override
     protected void moveRight() {
-        if (!isMoving()) targetMinigame = 2;
+        targetMinigame = miniGames[2];
     }
 }
