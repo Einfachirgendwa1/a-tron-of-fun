@@ -69,10 +69,7 @@ public abstract class BaseWorld extends World {
 
     @Override
     public void removeObject(Actor object) {
-        if (!levelBuilder) {
-            BaseActor.run(object, BaseActor::destroyChildren);
-        }
-
+        BaseActor.run(object, BaseActor::destroyChildren);
         super.removeObject(object);
     }
 

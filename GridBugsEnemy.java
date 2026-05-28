@@ -1,5 +1,4 @@
 public class GridBugsEnemy extends Enemy {
-    private final GridBugsWorld world;
     private Vector2 target;
     private final StateMachine stateMachine = new StateMachine(this::spawn);
 
@@ -9,27 +8,23 @@ public class GridBugsEnemy extends Enemy {
         pointsOnDeath = 100;
     }
 
-    public GridBugsEnemy(GridBugsWorld world) {
-        this.world = world;
-    }
-
     private void spawn(StateMachine stateMachine) {
         stateMachine.addThread()
-            .wait(30)
-            .execute(() -> setImage("bug_spawn_2.png"))
-            .wait(30)
-            .execute(() -> setImage("bug_spawn_3.png"))
-            .wait(30)
-            .switchState(this::run);
+                .wait(30)
+                .execute(() -> setImage("bug_spawn_2.png"))
+                .wait(30)
+                .execute(() -> setImage("bug_spawn_3.png"))
+                .wait(30)
+                .switchState(this::run);
     }
 
     private void run(StateMachine stateMachine) {
         stateMachine.addThread()
-            .execute(() -> setImage("bug_1.png"))
-            .wait(45)
-            .execute(() -> setImage("bug_2.png"))
-            .wait(45)
-            .repeat();
+                .execute(() -> setImage("bug_1.png"))
+                .wait(45)
+                .execute(() -> setImage("bug_2.png"))
+                .wait(45)
+                .repeat();
 
         stateMachine.addThread().waitRandom(90, 130).switchState(this::dance);
 
@@ -39,7 +34,10 @@ public class GridBugsEnemy extends Enemy {
     public void dance(StateMachine stateMachine) {
         setImage("bug_spawn_3.png");
 
-        stateMachine.addThread().waitRandom(80, 130).execute(() -> world.spawnEnemy(position())).switchState(this::run);
+        stateMachine.addThread().waitRandom(80, 130).execute(() -> {
+            IGetVector2 pos = position();
+            Misc.addObject(new GridBugsEnemy(), pos);
+        }).switchState(this::run);
     }
 
     public void setTarget(IGetVector2 target) {

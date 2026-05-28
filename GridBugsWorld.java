@@ -1,13 +1,11 @@
 import greenfoot.Actor;
 import greenfoot.Color;
 
-import java.util.ArrayList;
 import java.util.function.Consumer;
 
 public class GridBugsWorld extends BaseWorld {
     private final GridBugsPlayer player;
     private final GridBugsTarget gridBugsTarget;
-    private final ArrayList<GridBugsEnemy> enemies = new ArrayList<>();
     private final StateMachine stateMachine;
     private int timer = 700;
 
@@ -20,7 +18,7 @@ public class GridBugsWorld extends BaseWorld {
         };
 
         for (Vector2 gridBugPosition : gridBugPositions) {
-            spawnEnemy(gridBugPosition);
+            Misc.addObject(new GridBugsEnemy(), gridBugPosition);
         }
 
         player = Misc.addObject(new GridBugsPlayer(), 300, 100);
@@ -29,7 +27,7 @@ public class GridBugsWorld extends BaseWorld {
 
     private void gameplay(StateMachine stateMachine) {
         stateMachine.addThread().execute(() -> {
-            for (GridBugsEnemy gridBug : enemies) {
+            for (GridBugsEnemy gridBug : getObjects(GridBugsEnemy.class)) {
                 gridBug.setTarget(player);
 
                 if (player.intersects(gridBug)) {
@@ -74,10 +72,6 @@ public class GridBugsWorld extends BaseWorld {
         }
 
         stateMachine.switchState(state);
-    }
-
-    public void spawnEnemy(IGetVector2 pos) {
-        enemies.add(Misc.addObject(new GridBugsEnemy(this), pos));
     }
 
     @Override
