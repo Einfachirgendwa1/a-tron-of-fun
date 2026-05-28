@@ -5,37 +5,42 @@ import java.util.function.Consumer;
 
 public class GridBugsWorld extends BaseWorld {
     private final GridBugsPlayer player;
-    private final GridBugsTarget gridBugsTarget;
+    private final GridBugsTarget target;
     private final StateMachine stateMachine;
     private int timer = 700;
 
     public GridBugsWorld() {
         stateMachine = new StateMachine(this::gameplay);
-        gridBugsTarget = Misc.addObject(new GridBugsTarget(), Vector2.MIDDLE);
 
-        Vector2[] gridBugPositions = {
-            new Vector2(200, 120), new Vector2(200, 100), new Vector2(220, 100), new Vector2(220, 120)
-        };
-
-        for (Vector2 gridBugPosition : gridBugPositions) {
-            Misc.addObject(new GridBugsEnemy(), gridBugPosition);
-        }
-
+        target = Misc.addObject(new GridBugsTarget(), Vector2.MIDDLE);
         player = Misc.addObject(new GridBugsPlayer(), 300, 100);
+
+        gridBugsBlock(new Vector2(210, 110));
+        gridBugsBlock(new Vector2(440, 210));
+        gridBugsBlock(new Vector2(320, 330));
+        gridBugsBlock(new Vector2(110, 310));
+        gridBugsBlock(new Vector2(80, 240));
+
+        Misc.addObject(new GridBugsBonus(), new Vector2(140, 260));
         renderTimer();
+    }
+
+    private void gridBugsBlock(Vector2 center) {
+        Misc.addObject(new GridBugsEnemy(player), center.plus(Vector2.UP.scale(10)).plus(Vector2.LEFT.scale(10)));
+        Misc.addObject(new GridBugsEnemy(player), center.plus(Vector2.UP.scale(10)).plus(Vector2.RIGHT.scale(10)));
+        Misc.addObject(new GridBugsEnemy(player), center.plus(Vector2.DOWN.scale(10)).plus(Vector2.LEFT.scale(10)));
+        Misc.addObject(new GridBugsEnemy(player), center.plus(Vector2.DOWN.scale(10)).plus(Vector2.RIGHT.scale(10)));
     }
 
     private void gameplay(StateMachine stateMachine) {
         stateMachine.addThread().execute(() -> {
             for (GridBugsEnemy gridBug : getObjects(GridBugsEnemy.class)) {
-                gridBug.setTarget(player);
-
                 if (player.intersects(gridBug)) {
                     lost();
                 }
             }
 
-            if (player.intersects(gridBugsTarget.getTarget())) {
+            if (player.intersects(target.getTarget())) {
                 ScoreTracker.addScore(timer * 2);
                 gameEnd(this::winAnimation);
             }
@@ -56,7 +61,7 @@ public class GridBugsWorld extends BaseWorld {
 
     private void winAnimation(StateMachine stateMachine) {
         showScore();
-        gridBugsTarget.win();
+        target.win();
         GridBugsWinAnimation anim = Misc.addObject(new GridBugsWinAnimation(), Vector2.MIDDLE);
 
         stateMachine.addThread().waitFor(anim::isAtEdge).execute(this::won);

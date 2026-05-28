@@ -34,6 +34,7 @@ public class Misc {
     }
 
     public static void exitMinigame() {
+        Thread.dumpStack();
         if (gameSelection == null) {
             gameSelection = new GameSelection();
             Misc.loadWorld(gameSelection);
