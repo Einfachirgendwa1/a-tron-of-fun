@@ -6,11 +6,11 @@ import java.util.function.Consumer;
 public class GridBugsWorld extends BaseWorld {
     private final GridBugsPlayer player;
     private final GridBugsTarget target;
-    private final StateMachine stateMachine;
+    private final Animator animator;
     private int timer = 700;
 
     public GridBugsWorld() {
-        stateMachine = new StateMachine(this::gameplay);
+        animator = new Animator(this::gameplay);
 
         target = Misc.addObject(new GridBugsTarget(), Vector2.MIDDLE);
         player = Misc.addObject(new GridBugsPlayer(), 300, 100);
@@ -32,8 +32,8 @@ public class GridBugsWorld extends BaseWorld {
         Misc.addObject(new GridBugsEnemy(player), center.plus(Vector2.DOWN.scale(10)).plus(Vector2.RIGHT.scale(10)));
     }
 
-    private void gameplay(StateMachine stateMachine) {
-        stateMachine.addThread().execute(() -> {
+    private void gameplay(Animator animator) {
+        animator.addThread().execute(() -> {
             for (GridBugsEnemy gridBug : getObjects(GridBugsEnemy.class)) {
                 if (player.intersects(gridBug)) {
                     lost();
@@ -59,15 +59,15 @@ public class GridBugsWorld extends BaseWorld {
         drawOnce(stringBuilder.toString(), Misc.centeredAround(new Vector2(300, 251)), 18, Color.YELLOW);
     }
 
-    private void winAnimation(StateMachine stateMachine) {
+    private void winAnimation(Animator animator) {
         showScore();
         target.win();
         GridBugsWinAnimation anim = Misc.addObject(new GridBugsWinAnimation(), Vector2.MIDDLE);
 
-        stateMachine.addThread().waitFor(anim::isAtEdge).execute(this::won);
+        animator.addThread().waitFor(anim::isAtEdge).execute(this::won);
     }
 
-    private void gameEnd(Consumer<StateMachine> state) {
+    private void gameEnd(Consumer<Animator> state) {
         for (Actor actor : getObjects(Actor.class)) {
             if (actor instanceof GridBugsPlayer || actor instanceof Bullet) {
                 removeObject(actor);
@@ -76,12 +76,12 @@ public class GridBugsWorld extends BaseWorld {
             }
         }
 
-        stateMachine.switchState(state);
+        animator.switchState(state);
     }
 
     @Override
     public void act() {
         super.act();
-        stateMachine.update();
+        animator.update();
     }
 }

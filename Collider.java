@@ -2,10 +2,6 @@ import greenfoot.Actor;
 import greenfoot.GreenfootImage;
 
 public class Collider extends Actor implements IGetVector2 {
-    public Collider() {
-        super();
-    }
-
     @Override
     public void setImage(GreenfootImage image) {
         super.setImage(new GreenfootImage(image));

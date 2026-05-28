@@ -7,12 +7,12 @@ import java.util.function.Supplier;
 
 public class StateThread {
     private final List<Instruction> instructions = new ArrayList<>();
-    private final StateMachine stateMachine;
+    private final Animator animator;
     private int currentInstruction = 0;
     private boolean done;
 
-    public StateThread(StateMachine stateMachine) {
-        this.stateMachine = stateMachine;
+    public StateThread(Animator animator) {
+        this.animator = animator;
     }
 
     public StateThread wait(int frames) {
@@ -34,8 +34,8 @@ public class StateThread {
         return this;
     }
 
-    public void switchState(Consumer<StateMachine> newState) {
-        execute(() -> stateMachine.switchState(newState));
+    public void switchState(Consumer<Animator> newState) {
+        execute(() -> animator.switchState(newState));
         done = true;
     }
 

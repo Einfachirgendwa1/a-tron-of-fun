@@ -1,6 +1,6 @@
 public class GridBugsEnemy extends Enemy {
     private final GridBugsPlayer player;
-    private final StateMachine stateMachine = new StateMachine(this::spawn);
+    private final Animator animator = new Animator(this::spawn);
 
     {
         speed = 1;
@@ -12,8 +12,8 @@ public class GridBugsEnemy extends Enemy {
         this.player = player;
     }
 
-    private void spawn(StateMachine stateMachine) {
-        stateMachine.addThread()
+    private void spawn(Animator animator) {
+        animator.addThread()
             .wait(30)
             .execute(() -> setImage("bug_spawn_2.png"))
             .wait(30)
@@ -22,23 +22,23 @@ public class GridBugsEnemy extends Enemy {
             .switchState(this::run);
     }
 
-    private void run(StateMachine stateMachine) {
-        stateMachine.addThread()
+    private void run(Animator animator) {
+        animator.addThread()
             .execute(() -> setImage("bug_1.png"))
             .wait(45)
             .execute(() -> setImage("bug_2.png"))
             .wait(45)
             .repeat();
 
-        stateMachine.addThread().waitRandom(90, 130).switchState(this::dance);
+        animator.addThread().waitRandom(90, 130).switchState(this::dance);
 
-        stateMachine.addThread().repeat(() -> moveWithSpeed(towards(player)));
+        animator.addThread().repeat(() -> moveWithSpeed(towards(player)));
     }
 
-    public void dance(StateMachine stateMachine) {
+    public void dance(Animator animator) {
         setImage("bug_spawn_3.png");
 
-        stateMachine.addThread()
+        animator.addThread()
             .waitRandom(80, 130)
             .execute(() -> Misc.addObject(new GridBugsEnemy(player), position()))
             .switchState(this::run);
@@ -53,7 +53,7 @@ public class GridBugsEnemy extends Enemy {
         // if we have a health value that is less than or equal to zero, super.act() removes us from the world
         // but if that happens stateMachine.update() would throw an exception, which is why super.act() needs to 
         // happen last
-        stateMachine.update();
+        animator.update();
         super.act();
     }
 }

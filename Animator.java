@@ -2,10 +2,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class StateMachine {
+public class Animator {
     private final List<StateThread> threads = new ArrayList<>();
 
-    public StateMachine(Consumer<StateMachine> activeState) {
+    public Animator(Consumer<Animator> activeState) {
         activeState.accept(this);
     }
 
@@ -22,7 +22,7 @@ public class StateMachine {
         }
     }
 
-    public void switchState(Consumer<StateMachine> newState) {
+    public void switchState(Consumer<Animator> newState) {
         Misc.debugPrint("Switching to state " + newState);
         threads.clear();
         newState.accept(this);
