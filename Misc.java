@@ -46,10 +46,10 @@ public class Misc {
         return currentWorld;
     }
 
-    public static Optional<Point> mousePosition() {
+    public static Optional<Point2D> mousePosition() {
         MouseInfo mouseInfo = Greenfoot.getMouseInfo();
         if (mouseInfo == null) return Optional.empty();
-        return Optional.of(new Point(mouseInfo.getX(), mouseInfo.getY()));
+        return Optional.of(new Point2D(mouseInfo.getX(), mouseInfo.getY()));
     }
 
     public static void debugPrint(String message) {
@@ -61,16 +61,16 @@ public class Misc {
         return actor;
     }
 
-    public static <T extends Actor> T addObject(T actor, IGetVector2 vector) {
-        Point position = new Point(vector.position());
+    public static <T extends Actor> T addObject(T actor, Position2D vector) {
+        Point2D position = new Point2D(vector.position());
         return addObject(actor, position.x(), position.y());
     }
 
-    public static Optional<Double> angleToMouse(IGetVector2 start) {
+    public static Optional<Double> angleToMouse(Position2D start) {
         return mousePosition().map(point -> start.position().angle(point));
     }
 
-    public static Function<Vector2, IGetVector2> centeredAround(Vector2 center) {
-        return dimensions -> center.minus(dimensions.scale(.5f));
+    public static Function<Vector2D, Position2D> centeredAround(Vector2D center) {
+        return dimensions -> center.minus(dimensions.multiply(.5f));
     }
 }

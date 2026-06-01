@@ -1,12 +1,12 @@
 import greenfoot.Actor;
 import greenfoot.GreenfootImage;
 
-public class ImageHolder extends Actor implements IGetVector2 {
+public class ImageHolder extends Actor implements Position2D {
     private MirrorFlags mirrorFlags;
     private boolean isCollider = true;
     private int offsetX;
     private int offsetY;
-    private Point basePosition;
+    private Point2D basePosition;
 
     public ImageHolder(GreenfootImage image, int offsetX, int offsetY, boolean isCollider) {
         this(image, offsetX, offsetY);
@@ -68,8 +68,8 @@ public class ImageHolder extends Actor implements IGetVector2 {
     }
 
     @Override
-    public Vector2 position() {
-        return new Vector2(getX(), getY());
+    public Vector2D position() {
+        return new Vector2D(getX(), getY());
     }
 
     public int getOffsetX() {
@@ -80,8 +80,8 @@ public class ImageHolder extends Actor implements IGetVector2 {
         return offsetY;
     }
 
-    public void updatePosition(IGetVector2 newPosition) {
-        basePosition = new Point(newPosition.position());
+    public void updatePosition(Position2D newPosition) {
+        basePosition = new Point2D(newPosition);
         setLocation(offsetX + basePosition.x(), offsetY + basePosition.y());
     }
 }

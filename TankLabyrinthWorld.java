@@ -3,7 +3,7 @@ public class TankLabyrinthWorld extends BaseWorld {
 
     public TankLabyrinthWorld() {
         super();
-        player = Misc.addObject(new TankLabyrinthPlayer(), new Vector2(300, 100));
+        player = Misc.addObject(new TankLabyrinthPlayer(), new Vector2D(300, 100));
     }
 
     @Override

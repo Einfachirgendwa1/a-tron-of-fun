@@ -147,7 +147,7 @@ public abstract class HumanoidPlayer extends Player {
         throwArm.setImage(throwActive);
 
         Misc.mousePosition().ifPresent(mousePosition -> {
-            Vector2 bulletMovement = towards(mousePosition).scale(4);
+            Vector2D bulletMovement = towards(mousePosition).multiply(4);
             Misc.addObject(new Bullet(bulletMovement, false), this);
 
             shootTimer.reset();

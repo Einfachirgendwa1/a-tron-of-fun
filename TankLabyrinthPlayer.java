@@ -5,7 +5,7 @@ public class TankLabyrinthPlayer extends Player {
     @Override
     protected ImageHolder[] images() {
         GreenfootImage image = new GreenfootImage("tank_player.png");
-        Point scaled = new Point(new Vector2(image.getWidth(), image.getHeight()).scale(.75f));
+        Point2D scaled = new Point2D(new Vector2D(image.getWidth(), image.getHeight()).multiply(.75f));
         image.scale(scaled.x(), scaled.y());
 
         return new ImageHolder[]{new ImageHolder(image)};

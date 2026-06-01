@@ -6,12 +6,12 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-public class BaseActor extends Actor implements IDamageable, IGetVector2 {
+public class BaseActor extends Actor implements IDamageable, Position2D {
     protected int health = 100;
     protected float speed = 1;
     private ArrayList<ImageHolder> images;
     private boolean wallCollision = false;
-    private Vector2 subpixelPosition;
+    private Vector2D subpixelPosition;
 
     public static void run(Actor actor, Consumer<BaseActor> function) {
         if (actor instanceof BaseActor) {
@@ -31,7 +31,7 @@ public class BaseActor extends Actor implements IDamageable, IGetVector2 {
         return new ImageHolder[]{};
     }
 
-    protected Vector2 towards(IGetVector2 other) {
+    protected Vector2D towards(Position2D other) {
         return other.position().minus(this).normalize();
     }
 
@@ -88,7 +88,7 @@ public class BaseActor extends Actor implements IDamageable, IGetVector2 {
     }
 
     private void syncPositions() {
-        Point position = new Point(position());
+        Point2D position = new Point2D(this);
         super.setLocation(position.x(), position.y());
         updateChildren();
     }
@@ -98,12 +98,12 @@ public class BaseActor extends Actor implements IDamageable, IGetVector2 {
     }
 
     @Override
-    public Vector2 position() {
+    public Vector2D position() {
         return subpixelPosition;
     }
 
     public void initializePosition() {
-        subpixelPosition = new Vector2(getX(), getY());
+        subpixelPosition = new Vector2D(getX(), getY());
     }
 
     public void updateChildren() {
@@ -118,20 +118,20 @@ public class BaseActor extends Actor implements IDamageable, IGetVector2 {
         getWorld().removeObject(this);
     }
 
-    protected void teleport(IGetVector2 vector) {
+    protected void teleport(Position2D vector) {
         subpixelPosition = vector.position();
     }
 
-    protected void moveWithSpeed(Vector2 vector) {
-        move(vector.normalize().scale(speed));
+    protected void moveWithSpeed(Vector2D vector) {
+        move(vector.normalize().multiply(speed));
     }
 
     protected boolean insideWall() {
         return Misc.getCurrentWorld().getWalls().stream().anyMatch(this::intersects);
     }
 
-    protected void move(Vector2 vector, boolean checkCollision) {
-        Vector2 startPosition = position();
+    protected void move(Vector2D vector, boolean checkCollision) {
+        Vector2D startPosition = position();
         teleport(startPosition.plus(vector));
         syncPositions();
 
@@ -142,7 +142,7 @@ public class BaseActor extends Actor implements IDamageable, IGetVector2 {
         }
     }
 
-    protected void move(Vector2 vector) {
+    protected void move(Vector2D vector) {
         move(vector, true);
     }
 
@@ -151,18 +151,18 @@ public class BaseActor extends Actor implements IDamageable, IGetVector2 {
     }
 
     protected void moveUp() {
-        moveWithSpeed(Vector2.UP);
+        moveWithSpeed(Vector2D.UP);
     }
 
     protected void moveDown() {
-        moveWithSpeed(Vector2.DOWN);
+        moveWithSpeed(Vector2D.DOWN);
     }
 
     protected void moveLeft() {
-        moveWithSpeed(Vector2.LEFT);
+        moveWithSpeed(Vector2D.LEFT);
     }
 
     protected void moveRight() {
-        moveWithSpeed(Vector2.RIGHT);
+        moveWithSpeed(Vector2D.RIGHT);
     }
 }

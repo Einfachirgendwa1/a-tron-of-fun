@@ -1,7 +1,7 @@
 import greenfoot.Actor;
 import greenfoot.GreenfootImage;
 
-public class Collider extends Actor implements IGetVector2 {
+public class Collider extends Actor implements Position2D {
     @Override
     public void setImage(GreenfootImage image) {
         super.setImage(new GreenfootImage(image));
@@ -19,7 +19,7 @@ public class Collider extends Actor implements IGetVector2 {
         getImage().mirrorVertically();
     }
 
-    public Vector2 position() {
-        return new Vector2(getX(), getY());
+    public Vector2D position() {
+        return new Vector2D(getX(), getY());
     }
 }

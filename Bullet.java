@@ -1,8 +1,8 @@
 public class Bullet extends BaseActor {
-    private final Vector2 velocity;
+    private final Vector2D velocity;
     private final boolean canHitPlayer;
 
-    public Bullet(Vector2 velocity, boolean canHitPlayer) {
+    public Bullet(Vector2D velocity, boolean canHitPlayer) {
         this.velocity = velocity;
         this.canHitPlayer = canHitPlayer;
     }

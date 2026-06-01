@@ -12,24 +12,36 @@ public class GridBugsWorld extends BaseWorld {
     public GridBugsWorld() {
         animator = new Animator(this::gameplay);
 
-        target = Misc.addObject(new GridBugsTarget(), Vector2.MIDDLE);
+        target = Misc.addObject(new GridBugsTarget(), Vector2D.MIDDLE);
         player = Misc.addObject(new GridBugsPlayer(), 300, 100);
 
-        gridBugsBlock(new Vector2(210, 110));
-        gridBugsBlock(new Vector2(440, 210));
-        gridBugsBlock(new Vector2(320, 330));
-        gridBugsBlock(new Vector2(110, 310));
-        gridBugsBlock(new Vector2(80, 240));
+        gridBugsBlock(new Vector2D(210, 110));
+        gridBugsBlock(new Vector2D(440, 210));
+        gridBugsBlock(new Vector2D(320, 330));
+        gridBugsBlock(new Vector2D(110, 310));
+        gridBugsBlock(new Vector2D(80, 240));
 
-        Misc.addObject(new GridBugsBonus(), new Vector2(140, 260));
+        Misc.addObject(new GridBugsBonus(), new Vector2D(140, 260));
         renderTimer();
     }
 
-    private void gridBugsBlock(Vector2 center) {
-        Misc.addObject(new GridBugsEnemy(player), center.plus(Vector2.UP.scale(10)).plus(Vector2.LEFT.scale(10)));
-        Misc.addObject(new GridBugsEnemy(player), center.plus(Vector2.UP.scale(10)).plus(Vector2.RIGHT.scale(10)));
-        Misc.addObject(new GridBugsEnemy(player), center.plus(Vector2.DOWN.scale(10)).plus(Vector2.LEFT.scale(10)));
-        Misc.addObject(new GridBugsEnemy(player), center.plus(Vector2.DOWN.scale(10)).plus(Vector2.RIGHT.scale(10)));
+    private void gridBugsBlock(Vector2D center) {
+        Misc.addObject(
+            new GridBugsEnemy(player),
+            center.plus(Vector2D.UP.multiply(10)).plus(Vector2D.LEFT.multiply(10))
+        );
+        Misc.addObject(
+            new GridBugsEnemy(player),
+            center.plus(Vector2D.UP.multiply(10)).plus(Vector2D.RIGHT.multiply(10))
+        );
+        Misc.addObject(
+            new GridBugsEnemy(player),
+            center.plus(Vector2D.DOWN.multiply(10)).plus(Vector2D.LEFT.multiply(10))
+        );
+        Misc.addObject(
+            new GridBugsEnemy(player),
+            center.plus(Vector2D.DOWN.multiply(10)).plus(Vector2D.RIGHT.multiply(10))
+        );
     }
 
     private void gameplay(Animator animator) {
@@ -50,13 +62,13 @@ public class GridBugsWorld extends BaseWorld {
         StringBuilder stringBuilder = new StringBuilder(Integer.toString(timer));
         while (stringBuilder.length() < 4) stringBuilder.insert(0, "0");
 
-        drawOnce(stringBuilder.toString(), Misc.centeredAround(new Vector2(300, 251)), 18, Color.YELLOW);
+        drawOnce(stringBuilder.toString(), Misc.centeredAround(new Vector2D(300, 251)), 18, Color.YELLOW);
     }
 
     private void winAnimation(Animator animator) {
         showScore();
         target.win();
-        GridBugsWinAnimation anim = Misc.addObject(new GridBugsWinAnimation(), Vector2.MIDDLE);
+        GridBugsWinAnimation anim = Misc.addObject(new GridBugsWinAnimation(), Vector2D.MIDDLE);
 
         animator.addThread().waitFor(anim::isAtEdge).execute(this::won);
     }

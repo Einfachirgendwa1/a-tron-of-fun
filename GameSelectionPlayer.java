@@ -11,13 +11,13 @@ public class GameSelectionPlayer extends HumanoidPlayer {
         this.miniGames = miniGames;
     }
 
-    private Vector2 targetPosition() {
-        return targetMinigame != null ? targetMinigame.position() : Vector2.MIDDLE;
+    private Vector2D targetPosition() {
+        return targetMinigame != null ? targetMinigame.position() : Vector2D.MIDDLE;
     }
 
     @Override
     protected boolean isMoving() {
-        return !new Point(position()).equals(new Point(targetPosition()));
+        return !new Point2D(this).equals(new Point2D(targetPosition()));
     }
 
     @Override
@@ -37,7 +37,7 @@ public class GameSelectionPlayer extends HumanoidPlayer {
     }
 
     public void reset() {
-        teleport(Vector2.MIDDLE);
+        teleport(Vector2D.MIDDLE);
         targetMinigame = null;
     }
 

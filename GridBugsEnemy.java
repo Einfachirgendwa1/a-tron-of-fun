@@ -15,7 +15,7 @@ public class GridBugsEnemy extends Enemy {
     public void act() {
         if (intersects(player)) {
             player.takeDamage(50);
-            move(towards(player).scale(-60));
+            move(towards(player).multiply(-60));
         }
 
         // if we have a health value that is less than or equal to zero, super.act() removes us from the world

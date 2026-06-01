@@ -21,24 +21,24 @@ public abstract class BaseWorld extends World {
         ArrayList<Line> walls = LevelLoader.getLevelData(getClass());
         setWalls(walls);
 
-        frame = Misc.addObject(new FrameSurface(), Vector2.MIDDLE);
+        frame = Misc.addObject(new FrameSurface(), Vector2D.MIDDLE);
         showScore();
     }
 
-    private static void drawText(TextRenderer renderer, Function<Vector2, IGetVector2> pos) {
-        Point position = new Point(pos.apply(renderer.dimensions()).position());
+    private static void drawText(TextRenderer renderer, Function<Vector2D, Position2D> pos) {
+        Point2D position = new Point2D(pos.apply(renderer.dimensions()));
         renderer.render(position);
     }
 
     protected void showScore() {
-        score = Misc.addObject(new Score(), Vector2.ZERO);
+        score = Misc.addObject(new Score(), Vector2D.ZERO);
     }
 
-    public void drawOnce(String text, Function<Vector2, IGetVector2> pos, float fontSize, Color color) {
+    public void drawOnce(String text, Function<Vector2D, Position2D> pos, float fontSize, Color color) {
         drawText(new TextRenderer(text, frame.getImage(), fontSize, color), pos);
     }
 
-    public void drawForever(String text, Function<Vector2, IGetVector2> pos, float fontSize, Color color) {
+    public void drawForever(String text, Function<Vector2D, Position2D> pos, float fontSize, Color color) {
         drawText(new TextRenderer(text, getBackground(), fontSize, color), pos);
     }
 
@@ -86,7 +86,7 @@ public abstract class BaseWorld extends World {
     protected void won() {
         blank();
         ScoreTracker.addScore(500);
-        drawForever("You won!", Misc.centeredAround(Vector2.MIDDLE), 50, Color.BLUE);
+        drawForever("You won!", Misc.centeredAround(Vector2D.MIDDLE), 50, Color.BLUE);
         Greenfoot.delay(40);
         Misc.exitMinigame();
     }
@@ -109,14 +109,14 @@ public abstract class BaseWorld extends World {
         background.setColor(Color.BLACK);
         background.fill();
 
-        drawForever(deathMessage, Misc.centeredAround(new Vector2(300, 150)), 30, Color.BLUE);
+        drawForever(deathMessage, Misc.centeredAround(new Vector2D(300, 150)), 30, Color.BLUE);
         Greenfoot.delay(20);
 
-        drawForever("SCORE: " + currentScore, Misc.centeredAround(new Vector2(300, 200)), 30, Color.BLUE);
+        drawForever("SCORE: " + currentScore, Misc.centeredAround(new Vector2D(300, 200)), 30, Color.BLUE);
         Greenfoot.delay(20);
 
         String nextLine = currentScore > highscore ? "NEW HIGH SCORE!" : "HIGH SCORE: " + highscore;
-        drawForever(nextLine, Misc.centeredAround(new Vector2(300, 250)), 30, Color.BLUE);
+        drawForever(nextLine, Misc.centeredAround(new Vector2D(300, 250)), 30, Color.BLUE);
         Greenfoot.delay(80);
 
         ScoreTracker.setScore(0);

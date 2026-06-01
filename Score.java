@@ -12,8 +12,8 @@ public class Score extends BaseActor {
         act();
     }
 
-    private static IGetVector2 topLeft(Vector2 dimensions) {
-        return new Vector2(5, 5).plus(new Vector2(0, dimensions.y()));
+    private static Position2D topLeft(Vector2D dimensions) {
+        return new Vector2D(5, 5).plus(new Vector2D(0, dimensions.y()));
     }
 
     public void act() {

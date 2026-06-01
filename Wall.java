@@ -19,8 +19,8 @@ public class Wall extends BaseActor {
         wallCollider.setImage(image);
     }
 
-    public Vector2 getPosition() {
-        Vector2 startToMiddle = line.end().position().minus(line.start().position()).scale(.5f);
+    public Vector2D getPosition() {
+        Vector2D startToMiddle = line.end().position().minus(line.start().position()).multiply(.5f);
         return line.start().position().plus(startToMiddle);
     }
 

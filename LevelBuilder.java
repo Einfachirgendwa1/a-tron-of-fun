@@ -14,7 +14,7 @@ import java.util.function.BiConsumer;
 
 @SuppressWarnings("unused")
 public class LevelBuilder extends BaseWorld {
-    private final ArrayList<Point> currentPoints = new ArrayList<>();
+    private final ArrayList<Point2D> currentPoints = new ArrayList<>();
     private final Class<? extends BaseWorld> world = TankLabyrinthWorld.class;
     private final Path output = LevelLoader.path(world);
     private final List<Line> writtenLines;
@@ -45,11 +45,11 @@ public class LevelBuilder extends BaseWorld {
 
         for (ImageHolder imageHolder : staticClones) {
             addObject(imageHolder, 0, 0);
-            imageHolder.updatePosition(new Vector2(0, 0));
+            imageHolder.updatePosition(new Vector2D(0, 0));
         }
     }
 
-    private static void lines(ArrayList<Point> points, BiConsumer<Point, Point> consumer) {
+    private static void lines(ArrayList<Point2D> points, BiConsumer<Point2D, Point2D> consumer) {
         for (int n = 0; n < points.size() - 1; n++) {
             consumer.accept(points.get(n), points.get(n + 1));
         }
@@ -76,7 +76,7 @@ public class LevelBuilder extends BaseWorld {
 
         writtenLines.forEach(line -> line.draw(getBackground()));
 
-        Optional<Point> mousePoint = mousePoint();
+        Optional<Point2D> mousePoint = mousePoint();
         mousePoint.ifPresent(currentPoints::add);
 
         lines(currentPoints, this::drawLine);
@@ -96,22 +96,22 @@ public class LevelBuilder extends BaseWorld {
         });
     }
 
-    private void drawLine(Point a, Point b) {
+    private void drawLine(Point2D a, Point2D b) {
         getBackground().drawLine(a.x(), a.y(), b.x(), b.y());
     }
 
-    private Optional<Point> mousePoint() {
+    private Optional<Point2D> mousePoint() {
         if (currentPoints.isEmpty()) return Misc.mousePosition();
 
-        Point last = currentPoints.getLast();
-        Optional<Point> mousePos = Misc.mousePosition();
+        Point2D last = currentPoints.getLast();
+        Optional<Point2D> mousePos = Misc.mousePosition();
         return mousePos.map(p -> {
             double angle = last.position().angle(p);
 
             if (angle < 0.125 || angle > 0.875 || (angle > 0.375 && angle < 0.525)) {
-                return new Point(p.x(), last.y());
+                return new Point2D(p.x(), last.y());
             } else {
-                return new Point(last.x(), p.y());
+                return new Point2D(last.x(), p.y());
             }
         });
     }

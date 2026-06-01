@@ -17,8 +17,8 @@ public class LevelLoader {
                 if (line.isBlank()) continue;
 
                 Object[] data = Arrays.stream(line.split(",")).map(Integer::parseInt).toArray();
-                Point a = new Point((Integer) data[0], (Integer) data[1]);
-                Point b = new Point((Integer) data[2], (Integer) data[3]);
+                Point2D a = new Point2D((Integer) data[0], (Integer) data[1]);
+                Point2D b = new Point2D((Integer) data[2], (Integer) data[3]);
 
                 levelData.add(new Line(a, b));
             }

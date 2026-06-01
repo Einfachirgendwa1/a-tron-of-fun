@@ -5,6 +5,6 @@ public class GridBugsWinAnimation extends HumanoidPlayer {
     }
 
     public void act() {
-        move(Vector2.UP.scale(2f), false);
+        move(Vector2D.UP.multiply(2f), false);
     }
 }
