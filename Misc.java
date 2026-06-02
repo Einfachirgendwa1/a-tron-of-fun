@@ -62,12 +62,12 @@ public class Misc {
     }
 
     public static <T extends Actor> T addObject(T actor, Position2D vector) {
-        Point2D position = new Point2D(vector.position());
+        Point2D position = new Point2D(vector.vec());
         return addObject(actor, position.x(), position.y());
     }
 
     public static Optional<Double> angleToMouse(Position2D start) {
-        return mousePosition().map(point -> start.position().angle(point));
+        return mousePosition().map(point -> start.vec().angle(point));
     }
 
     public static Function<Vector2D, Position2D> centeredAround(Vector2D center) {

@@ -8,5 +8,5 @@
  * @author Faris
  */
 public interface Position2D {
-    Vector2D position();
+    Vector2D vec();
 }

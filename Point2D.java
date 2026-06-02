@@ -12,13 +12,15 @@
  * @see Position2D
  */
 public record Point2D(int x, int y) implements Position2D {
+    public static final Point2D CANVAS = new Point2D(Misc.worldWidth, Misc.worldHeight);
+    public static final Point2D MIDDLE = CANVAS.vec().divide(2).point();
+
     public Point2D(Position2D pos) {
-        Vector2D vector = pos.position();
-        this(Math.round(vector.x()), Math.round(vector.y()));
+        this(Math.round(pos.vec().x()), Math.round(pos.vec().y()));
     }
 
     @Override
-    public Vector2D position() {
+    public Vector2D vec() {
         return new Vector2D(x, y);
     }
 }

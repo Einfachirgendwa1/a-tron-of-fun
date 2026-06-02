@@ -52,7 +52,7 @@ public class GridBugsEnemy extends Enemy {
         setImage("bug_spawn_3.png");
 
         animator.addThread().waitRandom(50, 90).execute(() -> {
-            Misc.addObject(new GridBugsEnemy(player), position());
+            Misc.addObject(new GridBugsEnemy(player), vec());
             animator.switchState(this::run);
         });
     }

@@ -8,7 +8,7 @@ public class FrameSurface extends Actor {
 
     public void blank() {
         GreenfootImage blank = new GreenfootImage(Misc.blank);
-        blank.scale(600, 400);
+        blank.scale(Point2D.CANVAS.x(), Point2D.CANVAS.y());
         setImage(blank);
     }
 }

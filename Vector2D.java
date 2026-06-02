@@ -12,7 +12,8 @@
  */
 public record Vector2D(float x, float y) implements Position2D {
     public static final Vector2D ZERO = new Vector2D(0, 0);
-    public static final Vector2D MIDDLE = new Vector2D(Misc.worldWidth / 2f, Misc.worldHeight / 2f);
+    public static final Vector2D CANVAS = new Vector2D(Misc.worldWidth, Misc.worldHeight);
+    public static final Vector2D MIDDLE = CANVAS.divide(2);
 
     public static final Vector2D UP = new Vector2D(0, -1);
     public static final Vector2D DOWN = new Vector2D(0, 1);
@@ -20,7 +21,7 @@ public record Vector2D(float x, float y) implements Position2D {
     public static final Vector2D RIGHT = new Vector2D(1, 0);
 
     @Override
-    public Vector2D position() {
+    public Vector2D vec() {
         return this;
     }
 
@@ -49,7 +50,7 @@ public record Vector2D(float x, float y) implements Position2D {
      * @return Die Summe (ein neuer Vektor).
      */
     public Vector2D plus(Position2D other) {
-        return new Vector2D(this.x + other.position().x, this.y + other.position().y);
+        return new Vector2D(this.x + other.vec().x, this.y + other.vec().y);
     }
 
     /**
@@ -59,7 +60,7 @@ public record Vector2D(float x, float y) implements Position2D {
      * @return Die Differenz (ein neuer Vektor).
      */
     public Vector2D minus(Position2D other) {
-        return new Vector2D(this.x - other.position().x, this.y - other.position().y);
+        return new Vector2D(this.x - other.vec().x, this.y - other.vec().y);
     }
 
     /**
@@ -90,9 +91,16 @@ public record Vector2D(float x, float y) implements Position2D {
      * @return Der Winkel als eine Zahl zwischen 0 (0°) und 1 (360°).
      */
     public double angle(Position2D end) {
-        Vector2D direction = end.position().minus(this).normalize();
+        Vector2D direction = end.vec().minus(this).normalize();
         double angle = Math.atan2(direction.y(), direction.x());
 
         return 1 - (angle + Math.PI) / (2 * Math.PI);
+    }
+
+    /**
+     * @return Der Vektor als ein {@link Point2D}. Rundet mittels {@link Math#round(float)}.
+     */
+    public Point2D point() {
+        return new Point2D(this);
     }
 }

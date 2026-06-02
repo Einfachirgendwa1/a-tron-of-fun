@@ -106,7 +106,7 @@ public class LevelBuilder extends BaseWorld {
         Point2D last = currentPoints.getLast();
         Optional<Point2D> mousePos = Misc.mousePosition();
         return mousePos.map(p -> {
-            double angle = last.position().angle(p);
+            double angle = last.vec().angle(p);
 
             if (angle < 0.125 || angle > 0.875 || (angle > 0.375 && angle < 0.525)) {
                 return new Point2D(p.x(), last.y());

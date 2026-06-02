@@ -14,7 +14,6 @@ public abstract class HumanoidPlayer extends Player {
     private static final List<GreenfootImage> leftArm = new ArrayList<>();
     private static final GreenfootImage throwInactive = new GreenfootImage("man_arm_bent_down.png");
     private static final GreenfootImage throwActive = new GreenfootImage("man_arm_bent_left.png");
-    protected boolean allowShooting = true;
     private boolean horizontalFlip = false;
     private boolean verticalFlip = false;
     private boolean onCooldown = false;
@@ -22,7 +21,7 @@ public abstract class HumanoidPlayer extends Player {
     private ImageHolder legs;
 
     private final StateThread walkingAnimation = new StateThread() {{
-        int walkDelay = 10;
+        final int walkDelay = 10;
 
         execute(() -> {
             legs.setImage(legsWalk);
@@ -65,6 +64,9 @@ public abstract class HumanoidPlayer extends Player {
         this.horizontalFlip = horizontalFlip;
     }
 
+    /**
+     * Bestimmt ob der Spieler sich bewegt oder nicht.
+     */
     protected boolean isMoving() {
         return Stream.of("w", "a", "s", "d").anyMatch(Greenfoot::isKeyDown);
     }
@@ -131,7 +133,7 @@ public abstract class HumanoidPlayer extends Player {
 
         // if (i >= 0 && i < leftArm.size()) pointArm.setImage(leftArm.get(i));
 
-        if (Greenfoot.mouseClicked(null) && !onCooldown && allowShooting) {
+        if (Greenfoot.mouseClicked(null) && !onCooldown) {
             shoot();
         }
 
@@ -142,7 +144,10 @@ public abstract class HumanoidPlayer extends Player {
         }
     }
 
-    private void shoot() {
+    /**
+     * Wird gerufen, wenn der Spieler schießen will.
+     */
+    protected void shoot() {
         onCooldown = true;
         throwArm.setImage(throwActive);
 

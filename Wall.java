@@ -20,8 +20,8 @@ public class Wall extends BaseActor {
     }
 
     public Vector2D getPosition() {
-        Vector2D startToMiddle = line.end().position().minus(line.start().position()).multiply(.5f);
-        return line.start().position().plus(startToMiddle);
+        Vector2D startToMiddle = line.end().vec().minus(line.start().vec()).multiply(.5f);
+        return line.start().vec().plus(startToMiddle);
     }
 
     @Override

@@ -19,7 +19,7 @@ public class Collider extends Actor implements Position2D {
         getImage().mirrorVertically();
     }
 
-    public Vector2D position() {
+    public Vector2D vec() {
         return new Vector2D(getX(), getY());
     }
 }

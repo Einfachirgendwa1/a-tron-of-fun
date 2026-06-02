@@ -65,6 +65,11 @@ public class GridBugsWorld extends BaseWorld {
         drawOnce(stringBuilder.toString(), Misc.centeredAround(new Vector2D(300, 251)), 18, Color.YELLOW);
     }
 
+    /**
+     * Spielt die Animation ab, wenn der Spieler gewinnt.
+     * Der Score und der Lichtstrahl werden angezeigt. Der Spieler wechselt zur Siegesanimation und sobald er das obere
+     * Ende des Spielfelds erreicht wird {@link #won()} ausgeführt.
+     */
     private void winAnimation(Animator animator) {
         showScore();
         target.win();

@@ -32,7 +32,7 @@ public class BaseActor extends Actor implements IDamageable, Position2D {
     }
 
     protected Vector2D towards(Position2D other) {
-        return other.position().minus(this).normalize();
+        return other.vec().minus(this).normalize();
     }
 
     @Override
@@ -52,7 +52,7 @@ public class BaseActor extends Actor implements IDamageable, Position2D {
     @Override
     public void setLocation(int x, int y) {
         super.setLocation(x, y);
-        subpixelPosition = position();
+        subpixelPosition = new Vector2D(x, y);
     }
 
     @Override
@@ -87,9 +87,12 @@ public class BaseActor extends Actor implements IDamageable, Position2D {
         return anyCollider(image -> otherColliders.stream().anyMatch(image::intersects));
     }
 
+    public Point2D pos() {
+        return vec().point();
+    }
+
     private void syncPositions() {
-        Point2D position = new Point2D(this);
-        super.setLocation(position.x(), position.y());
+        super.setLocation(pos().x(), pos().y());
         updateChildren();
     }
 
@@ -98,7 +101,7 @@ public class BaseActor extends Actor implements IDamageable, Position2D {
     }
 
     @Override
-    public Vector2D position() {
+    public Vector2D vec() {
         return subpixelPosition;
     }
 
@@ -119,7 +122,7 @@ public class BaseActor extends Actor implements IDamageable, Position2D {
     }
 
     protected void teleport(Position2D vector) {
-        subpixelPosition = vector.position();
+        subpixelPosition = vector.vec();
     }
 
     protected void moveWithSpeed(Vector2D vector) {
@@ -131,8 +134,8 @@ public class BaseActor extends Actor implements IDamageable, Position2D {
     }
 
     protected void move(Vector2D vector, boolean checkCollision) {
-        Vector2D startPosition = position();
-        teleport(startPosition.plus(vector));
+        Vector2D startPosition = vec();
+        teleport(vec().plus(vector));
         syncPositions();
 
         if (checkCollision && insideWall()) {
@@ -150,18 +153,30 @@ public class BaseActor extends Actor implements IDamageable, Position2D {
         Misc.getCurrentWorld().removeObjectUnchecked(this);
     }
 
+    /**
+     * Wird gerufen, wenn der Actor sich nach oben bewegen soll.
+     */
     protected void moveUp() {
         moveWithSpeed(Vector2D.UP);
     }
 
+    /**
+     * Wird gerufen, wenn der Actor sich nach unten bewegen soll.
+     */
     protected void moveDown() {
         moveWithSpeed(Vector2D.DOWN);
     }
 
+    /**
+     * Wird gerufen, wenn der Actor sich nach links bewegen soll.
+     */
     protected void moveLeft() {
         moveWithSpeed(Vector2D.LEFT);
     }
 
+    /**
+     * Wird gerufen, wenn der Actor sich nach rechts bewegen soll.
+     */
     protected void moveRight() {
         moveWithSpeed(Vector2D.RIGHT);
     }

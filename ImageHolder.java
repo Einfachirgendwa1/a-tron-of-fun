@@ -68,7 +68,7 @@ public class ImageHolder extends Actor implements Position2D {
     }
 
     @Override
-    public Vector2D position() {
+    public Vector2D vec() {
         return new Vector2D(getX(), getY());
     }
 

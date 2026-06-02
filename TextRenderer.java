@@ -1,7 +1,6 @@
 import greenfoot.GreenfootImage;
 
-import java.awt.Graphics2D;
-import java.awt.FontFormatException;
+import java.awt.*;
 import java.awt.font.GlyphVector;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
@@ -31,23 +30,23 @@ import java.lang.reflect.Method;
  * privaten {@link GreenfootImage#getGraphics()} Methode auf dem surface image geholt.
  *
  * @author Faris
- * @see java.awt.Font
+ * @see Font
  * @see greenfoot.Font
  */
 public class TextRenderer {
-    private static final java.awt.Font awtFont;
+    private static final Font awtFont;
     private static final Constructor<greenfoot.Font> fontConstructor;
     private static final Method getGraphics;
     private static final String fontName = "DepartureMonoNerdFont-Regular.otf";
     private final GreenfootImage surface;
-    private final java.awt.Font instanceAwt;
+    private final Font instanceAwt;
     private final String text;
 
     static {
         try {
-            awtFont = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, new File(fontName));
+            awtFont = Font.createFont(Font.TRUETYPE_FONT, new File(fontName));
 
-            fontConstructor = greenfoot.Font.class.getDeclaredConstructor(java.awt.Font.class);
+            fontConstructor = greenfoot.Font.class.getDeclaredConstructor(Font.class);
             fontConstructor.setAccessible(true);
 
             getGraphics = GreenfootImage.class.getDeclaredMethod("getGraphics");
@@ -75,7 +74,7 @@ public class TextRenderer {
         surface.setColor(color);
     }
 
-    public static greenfoot.Font fromAwtFont(java.awt.Font awtFont) {
+    public static greenfoot.Font fromAwtFont(Font awtFont) {
         try {
             return fontConstructor.newInstance(awtFont);
         } catch (Exception e) {

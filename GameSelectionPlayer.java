@@ -1,23 +1,49 @@
 import greenfoot.Actor;
 import greenfoot.Greenfoot;
 
+/**
+ * Der Spieler im Auswahlmenü für die verschiedenen Minispiele am Anfang.
+ * Die Bewegungsanimationen etc. werden von {@link HumanoidPlayer} geerbt.
+ * Ein entscheidender Unterschied zu den anderen Klassen die von {@link HumanoidPlayer} erben
+ * ({@link GridBugsPlayer} und {@link ConePlayer}) ist, dass {@link HumanoidPlayer#shoot()} überschrieben wird, da es
+ * keinen Sinn ergibt, im Hauptmenü schießen zu können.
+ * Die 4 {@link MiniGame}s werden als ein Array gespeichert. Beim Drücken von WASD wird {@code targetMinigame} auf das
+ * jeweilige {@link MiniGame} gesetzt und der Spieler läuft darauf zu. Wenn er es erreicht wird {@link #isMoving()}
+ * {@code false} und wenn die Leertaste gedrückt wird {@link MiniGame#loadWorld()} auf dem jeweiligen {@link MiniGame}
+ * aufgerufen.
+ *
+ * @author Faris
+ * @see HumanoidPlayer
+ * @see GameSelection
+ * @see MiniGame
+ */
 public class GameSelectionPlayer extends HumanoidPlayer {
     private final MiniGame[] miniGames;
     private MiniGame targetMinigame = null;
 
     public GameSelectionPlayer(MiniGame[] miniGames) {
-        allowShooting = false;
-        speed = 4f;
         this.miniGames = miniGames;
+        speed = 4f;
     }
 
+    /**
+     * @return Die Position des {@code targetMinigame}. {@link Vector2D#MIDDLE} wenn es {@code null} ist.
+     */
     private Vector2D targetPosition() {
-        return targetMinigame != null ? targetMinigame.position() : Vector2D.MIDDLE;
+        return targetMinigame != null ? targetMinigame.vec() : Vector2D.MIDDLE;
+    }
+
+    /**
+     * Wird gerufen, wenn das aktuelle Minigame endet.
+     */
+    public void reset() {
+        teleport(Point2D.MIDDLE);
+        targetMinigame = null;
     }
 
     @Override
     protected boolean isMoving() {
-        return !new Point2D(this).equals(new Point2D(targetPosition()));
+        return !vec().point().equals(targetPosition().point());
     }
 
     @Override
@@ -36,10 +62,8 @@ public class GameSelectionPlayer extends HumanoidPlayer {
         }
     }
 
-    public void reset() {
-        teleport(Vector2D.MIDDLE);
-        targetMinigame = null;
-    }
+    @Override
+    protected void shoot() {}
 
     @Override
     protected void moveUp() {
