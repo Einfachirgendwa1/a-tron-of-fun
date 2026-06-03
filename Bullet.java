@@ -17,8 +17,7 @@ public class Bullet extends BaseActor {
             return;
         }
 
-        IDamageable target = null;
-
+        BaseActor target = null;
         if (canHitPlayer) {
             target = (Player) getOneIntersectingObject(Player.class);
         }

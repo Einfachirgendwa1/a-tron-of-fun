@@ -42,8 +42,8 @@ public abstract class BaseWorld extends World {
         drawText(new TextRenderer(text, getBackground(), fontSize, color), pos);
     }
 
-    public List<Line> getLines() {
-        return walls.stream().map(Wall::getLine).toList();
+    public GreenfootImage getFrame() {
+        return frame.getImage();
     }
 
     public List<Wall> getWalls() {

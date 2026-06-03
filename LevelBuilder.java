@@ -16,9 +16,8 @@ import java.util.function.BiConsumer;
 public class LevelBuilder extends BaseWorld {
     private final ArrayList<Point2D> currentPoints = new ArrayList<>();
     private final Class<? extends BaseWorld> world = TankLabyrinthWorld.class;
-    private final Path output = LevelLoader.path(world);
+    private final Path output = LevelLoader.path(world, "path");
     private final List<Line> writtenLines;
-    private final GreenfootImage background;
 
     private int deleteCooldown = 0;
 
@@ -26,8 +25,8 @@ public class LevelBuilder extends BaseWorld {
         try {
             world.getField("levelBuilder").set(null, true);
             BaseWorld instance = world.getConstructor().newInstance();
-            background = instance.getBackground();
-            writtenLines = new ArrayList<>(instance.getLines());
+            setBackground(instance.getBackground());
+            writtenLines = LevelLoader.getLevelData(output);
         } catch (Exception e) {
             throw new RuntimeException("Failed to reflect on " + world.getName(), e);
         }
@@ -35,17 +34,19 @@ public class LevelBuilder extends BaseWorld {
         ArrayList<ImageHolder> staticClones = new ArrayList<>();
         for (Actor actor : getObjects(Actor.class)) {
             GreenfootImage image = actor.getImage();
-            if (image == Misc.blank) continue;
+            if (actor instanceof FrameSurface) continue;
 
-            ImageHolder clone = new ImageHolder(image, actor.getX(), actor.getY());
-            staticClones.add(clone);
+            if (!(actor instanceof BaseActor)) {
+                ImageHolder clone = new ImageHolder(image, actor.getX(), actor.getY());
+                staticClones.add(clone);
+            }
 
             removeObjectUnchecked(actor);
         }
 
         for (ImageHolder imageHolder : staticClones) {
             addObject(imageHolder, 0, 0);
-            imageHolder.updatePosition(new Vector2D(0, 0));
+            imageHolder.updatePosition(Vector2D.ZERO);
         }
     }
 
@@ -55,8 +56,21 @@ public class LevelBuilder extends BaseWorld {
         }
     }
 
+    private Optional<Line> snapLine(Point2D mouse) {
+        List<Line> snappingCandidates = writtenLines.stream().sorted((a, b) -> {
+            float distToA = a.snap(mouse).vec().minus(mouse).magnitude();
+            float distToB = b.snap(mouse).vec().minus(mouse).magnitude();
+
+            return Math.round(distToA - distToB);
+        }).toList();
+
+        return snappingCandidates.isEmpty() ? Optional.empty() : Optional.of(snappingCandidates.getFirst());
+    }
+
     @Override
     public void act() {
+        super.act();
+
         if (!currentPoints.isEmpty()) {
             if (Greenfoot.isKeyDown("d") && deleteCooldown <= 0) {
                 currentPoints.removeLast();
@@ -70,14 +84,16 @@ public class LevelBuilder extends BaseWorld {
 
         deleteCooldown--;
 
-        GreenfootImage scratchBackground = new GreenfootImage(background);
-        scratchBackground.setColor(Color.RED);
-        setBackground(scratchBackground);
-
-        writtenLines.forEach(line -> line.draw(getBackground()));
+        getFrame().setColor(Color.RED);
+        writtenLines.forEach(line -> line.draw(getFrame()));
 
         Optional<Point2D> mousePoint = mousePoint();
-        mousePoint.ifPresent(currentPoints::add);
+        mousePoint.ifPresent(e -> {
+            Point2D b = e.vec().minus(new Vector2D(5, 5)).point();
+            getFrame().setColor(Color.GREEN);
+            getFrame().drawRect(b.x(), b.y(), 10, 10);
+            currentPoints.add(e);
+        });
 
         lines(currentPoints, this::drawLine);
 
@@ -97,23 +113,41 @@ public class LevelBuilder extends BaseWorld {
     }
 
     private void drawLine(Point2D a, Point2D b) {
-        getBackground().drawLine(a.x(), a.y(), b.x(), b.y());
+        getFrame().drawLine(a.x(), a.y(), b.x(), b.y());
     }
 
     private Optional<Point2D> mousePoint() {
-        if (currentPoints.isEmpty()) return Misc.mousePosition();
+        final int snapThreshold = 25;
+
+        Optional<Point2D> mousePos = Misc.mousePosition();
+        if (mousePos.isEmpty()) return Optional.empty();
+        Point2D mouse = mousePos.get();
+
+        List<Point2D> snappingCandidates = writtenLines.stream().map(line -> line.snap(mouse)).sorted((a, b) -> {
+            float distToA = a.vec().minus(mouse).magnitude();
+            float distToB = b.vec().minus(mouse).magnitude();
+
+            return Math.round(distToA - distToB);
+        }).toList();
+
+        if (!snappingCandidates.isEmpty()) {
+            Vector2D potentialSnap = snappingCandidates.getFirst().vec();
+
+            if (potentialSnap.minus(mouse).magnitude() < snapThreshold) {
+                return Optional.of(potentialSnap.point());
+            }
+        }
+
+        if (currentPoints.isEmpty()) return mousePos;
 
         Point2D last = currentPoints.getLast();
-        Optional<Point2D> mousePos = Misc.mousePosition();
-        return mousePos.map(p -> {
-            double angle = last.vec().angle(p);
+        double angle = last.vec().angle(mouse);
 
-            if (angle < 0.125 || angle > 0.875 || (angle > 0.375 && angle < 0.525)) {
-                return new Point2D(p.x(), last.y());
-            } else {
-                return new Point2D(last.x(), p.y());
-            }
-        });
+        if (angle < 0.125 || angle > 0.875 || (angle > 0.375 && angle < 0.525)) {
+            return Optional.of(new Point2D(mouse.x(), last.y()));
+        } else {
+            return Optional.of(new Point2D(last.x(), mouse.y()));
+        }
     }
 
     public void writePoints() {

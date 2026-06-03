@@ -5,15 +5,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class LevelLoader {
-    public static Path path(Class<? extends BaseWorld> clazz) {
-        return Path.of(clazz.getName() + ".levelData");
+    public static Path path(Class<? extends BaseWorld> clazz, String tag) {
+        return Path.of(clazz.getName() + "." + tag + "Data");
     }
 
     public static ArrayList<Line> getLevelData(Class<? extends BaseWorld> level) {
+        return getLevelData(path(level, "level"));
+    }
+
+    public static ArrayList<Line> getLevelData(Path path) {
         ArrayList<Line> levelData = new ArrayList<>();
 
         try {
-            for (String line : Files.readAllLines(path(level))) {
+            for (String line : Files.readAllLines(path)) {
                 if (line.isBlank()) continue;
 
                 Object[] data = Arrays.stream(line.split(",")).map(Integer::parseInt).toArray();
@@ -23,7 +27,7 @@ public class LevelLoader {
                 levelData.add(new Line(a, b));
             }
         } catch (IOException e) {
-            Misc.debugPrint("No level data found for " + level.getSimpleName());
+            Misc.debugPrint("No level data found for " + path);
         }
 
         return levelData;

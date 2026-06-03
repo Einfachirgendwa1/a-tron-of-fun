@@ -37,7 +37,7 @@ public class GameSelectionPlayer extends HumanoidPlayer {
      * Wird gerufen, wenn das aktuelle Minigame endet.
      */
     public void reset() {
-        teleport(Point2D.MIDDLE);
+        setLocation(Point2D.MIDDLE);
         targetMinigame = null;
     }
 

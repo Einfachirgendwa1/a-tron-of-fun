@@ -9,4 +9,8 @@
  */
 public interface Position2D {
     Vector2D vec();
+
+    default Point2D point() {
+        return vec().point();
+    }
 }
