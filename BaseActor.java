@@ -5,13 +5,44 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+/**
+ * Die Basisklasse von (fast) allen Actors.
+ * Erweitert die {@link Actor} Klasse um verschiedene praktische Funktionalitäten, wie zum Beispiel, dass ein
+ * {@link BaseActor} aus mehreren Bildern bestehen kann, diverse Funktionen zur Bewegung bereitstellt und automatisch
+ * Kollisionen überprüfen kann.
+ */
 public class BaseActor extends Actor implements Position2D {
+    /**
+     * Wie viel Leben der Actor hat.
+     */
     protected int health = 100;
+
+    /**
+     * Wie schnell der Actor ist.
+     *
+     * @see #moveWithSpeed(Position2D)
+     */
+
     protected float speed = 1;
+    /**
+     * Die zu diesem Actor zugehörigen Bilder. Häufig ist das nur ein einziges.
+     */
     private ArrayList<ImageHolder> images;
+
+    /**
+     * Ob im letzten frame eine Kollision mit einer Wand aufgetreten ist.
+     */
     private boolean wallCollision = false;
+
+    /**
+     * Die "wahre" Position des Actors. Wird für Greenfoot immer von einem {@link Vector2D} in einen {@link Point2D}
+     * übersetzt.
+     */
     private Vector2D subpixelPosition;
 
+    /**
+     * Ruft die {@code function} wenn {@code actor} ein {@link BaseActor} ist.
+     */
     public static void run(Actor actor, Consumer<BaseActor> function) {
         if (actor instanceof BaseActor) {
             function.accept((BaseActor) actor);
@@ -25,18 +56,37 @@ public class BaseActor extends Actor implements Position2D {
         return wallCollision;
     }
 
+    /**
+     * Die Bilder des Actors.
+     *
+     * @return Ein Array mit all den {@link ImageHolder}n.
+     */
     protected ImageHolder[] images() {
         return new ImageHolder[]{};
     }
 
+    /**
+     * Berechnet eine Richtung.
+     *
+     * @param other Das Ziel.
+     * @return Ein normalisierter Vektor der in Richtung des Ziels zeigt.
+     */
     protected Vector2D towards(Position2D other) {
         return other.minus(this).normalize();
     }
 
+    /**
+     * Nimmt Schaden.
+     *
+     * @param amount Wie viel Schaden genommen werden soll.
+     */
     public void takeDamage(int amount) {
         health -= amount;
     }
 
+    /**
+     * Das Verhalten des Actors.
+     */
     @Override
     public void act() {
         wallCollision = false;
@@ -47,11 +97,24 @@ public class BaseActor extends Actor implements Position2D {
         }
     }
 
+    /**
+     * Teleportiert den Actor.
+     *
+     * @param x Die neue X-Koordinate.
+     * @param y Die neue Y-Koordinate.
+     */
     @Override
     public void setLocation(int x, int y) {
         setLocation(new Point2D(x, y));
     }
 
+    /**
+     * Ändert das Bild des Actors. Macht nur Sinn bei Objekten mit nur einem Bild.
+     * Wird einmal von Greenfoot beim Programmstart gerufen. Dieser Fall wird abgefangen und auf die multiple-images
+     * Funktionalität des Actors übersetzt.
+     *
+     * @param image Das neue Bild.
+     */
     @Override
     public void setImage(GreenfootImage image) {
         if (images != null) {
@@ -102,6 +165,9 @@ public class BaseActor extends Actor implements Position2D {
         updateChildren();
     }
 
+    /**
+     * Spiegelt den Actor horizontal.
+     */
     public void mirrorHorizontally() {
         images.forEach(ImageHolder::mirrorHorizontally);
     }
@@ -111,10 +177,16 @@ public class BaseActor extends Actor implements Position2D {
         return subpixelPosition;
     }
 
+    /**
+     * Speichert die aktuelle Position auf dem Canvas als {@code subpixelPosition}.
+     */
     public void initializePosition() {
         subpixelPosition = new Vector2D(getX(), getY());
     }
 
+    /**
+     * Synchronisiert die Positionen der {@link ImageHolder}.
+     */
     public void updateChildren() {
         images.forEach(image -> image.updatePosition(this));
     }
@@ -134,6 +206,11 @@ public class BaseActor extends Actor implements Position2D {
         getWorld().removeObject(this);
     }
 
+    /**
+     * Teleportiert den Actor.
+     *
+     * @param vector Die neue Position.
+     */
     protected void setLocation(Position2D vector) {
         subpixelPosition = vector.vec();
         applyPosition();

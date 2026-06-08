@@ -5,7 +5,6 @@ import java.util.*;
  * Basierend auf <a href="https://en.wikipedia.org/wiki/Breadth-first_search#Pseudocode">Pseudocode von Wikipedia</a>.
  *
  * @author Faris
- * @see DepthFirstSearch
  * @see PathFinder
  */
 public class BreadthFirstSearch implements PathFinder {

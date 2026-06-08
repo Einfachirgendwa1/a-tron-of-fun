@@ -1,7 +1,7 @@
 /**
  * Implementierungen beschreiben oder besitzen eine zweidimensionale Position.
  * Das sind einerseits die Klassen {@link Vector2D} und {@link Point2D} die Positionen im Raum beschreiben, aber auch
- * z.B. alle {@link BaseActor} und {@link Collider} die im zweidimensionalen Raum existieren.
+ * z.B. alle {@link BaseActor} die im zweidimensionalen Raum existieren.
  * Anstelle eines {@link Vector2D} als Parameter sollten Methoden meistens eine {@link Position2D} nehmen, da das
  * die callsites der Methode verkürzt.
  *
@@ -16,18 +16,38 @@ public interface Position2D {
         return new Vector2D(x, y);
     }
 
+    /**
+     * Die von diesem Objekt dargestellte Position.
+     *
+     * @return Die Position als {@link Vector2D}
+     */
     Vector2D vec();
 
+    /**
+     * Die von dem Objekt dargestellt Position.
+     *
+     * @return Die Position als {@link Point2D}.
+     */
+    default Point2D point() {
+        return new Point2D(Math.round(xPos()), Math.round(yPos()));
+    }
+
+    /**
+     * Die X-Koordinate.
+     *
+     * @return Die X-Koordinate als float.
+     */
     default float xPos() {
         return vec().x();
     }
 
+    /**
+     * Die Y-Koordinate.
+     *
+     * @return Die Y-Koordinate als float.
+     */
     default float yPos() {
         return vec().y();
-    }
-
-    default Point2D point() {
-        return new Point2D(Math.round(xPos()), Math.round(yPos()));
     }
 
     /**
@@ -103,10 +123,20 @@ public interface Position2D {
         return 1 - (angle + Math.PI) / (2 * Math.PI);
     }
 
+    /**
+     * Überprüft, ob die dargestellte Position (0, 0) ist.
+     *
+     * @return Ist die dargestellte Position gleich (0, 0)?
+     */
     default boolean zero() {
         return vec().equals(Vector2D.ZERO);
     }
 
+    /**
+     * Überprüft, ob die dargestellte Position *nicht* (0, 0) ist.
+     *
+     * @return Ist die dargestellte Position ungleich (0, 0)?
+     */
     default boolean nonZero() {
         return !zero();
     }

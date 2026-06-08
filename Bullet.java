@@ -1,7 +1,17 @@
 import java.util.Optional;
 
+/**
+ * Eine Kugel.
+ */
 public class Bullet extends BaseActor {
+    /**
+     * Die Bewegung der Kugel.
+     */
     private final Vector2D velocity;
+
+    /**
+     * Die Art von Objekten welche die Kugel treffen kann.
+     */
     private final Class<? extends BaseActor> target;
 
     public Bullet(Vector2D velocity, Class<? extends BaseActor> target) {

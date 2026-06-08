@@ -3,10 +3,28 @@ import greenfoot.Color;
 
 import java.util.function.Consumer;
 
+/**
+ * Die Grid-Bugs Welt.
+ */
 public class GridBugsWorld extends BaseWorld {
+    /**
+     * Der Spieler.
+     */
     private final GridBugsPlayer player;
+
+    /**
+     * Das Ziel.
+     */
     private final GridBugsTarget target;
+
+    /**
+     * Ein Animator für die Siegesanimation.
+     */
     private final Animator animator;
+
+    /**
+     * Die verbleibende Zeit bevor der Spieler stirbt.
+     */
     private int timer = 1000;
 
     public GridBugsWorld() {
@@ -25,6 +43,11 @@ public class GridBugsWorld extends BaseWorld {
         renderTimer();
     }
 
+    /**
+     * Erstellt 4 Grid-Bugs in einem Block.
+     *
+     * @param center Der Mittelpunkt des Blocks.
+     */
     private void gridBugsBlock(Vector2D center) {
         Misc.addObject(
             new GridBugsEnemy(player),
@@ -44,6 +67,11 @@ public class GridBugsWorld extends BaseWorld {
         );
     }
 
+    /**
+     * Das ganz normale Spiel.
+     *
+     * @param animator Der Animator.
+     */
     private void gameplay(Animator animator) {
         animator.addThread().execute(() -> {
             if (player.intersects(target)) {
@@ -58,6 +86,9 @@ public class GridBugsWorld extends BaseWorld {
         }).repeat();
     }
 
+    /**
+     * Zeichnet den Timer.
+     */
     private void renderTimer() {
         StringBuilder stringBuilder = new StringBuilder(Integer.toString(timer));
         while (stringBuilder.length() < 4) stringBuilder.insert(0, "0");
@@ -78,6 +109,11 @@ public class GridBugsWorld extends BaseWorld {
         animator.addThread().waitFor(anim::isAtEdge).execute(this::won);
     }
 
+    /**
+     * Das Spielende und der State der nach Ende des Gameplay abgespielt werden soll.
+     *
+     * @param state Der neue State.
+     */
     private void gameEnd(Consumer<Animator> state) {
         for (Actor actor : getObjects(Actor.class)) {
             if (actor instanceof GridBugsPlayer || actor instanceof Bullet) {

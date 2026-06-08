@@ -1,10 +1,22 @@
+/**
+ * Die Welt, in der man die verschiedenen Minigames auswählen kann und zu der man nach jedem Minigame zurückkehrt.
+ */
 public class GameSelection extends BaseWorld {
+    /**
+     * Die verschiedenen Minigames.
+     */
     private MiniGame[] miniGames = createMiniGames();
+
+    /**
+     * Der Spieler.
+     */
     private final GameSelectionPlayer player = Misc.addObject(new GameSelectionPlayer(miniGames), Vector2D.MIDDLE);
 
-    public GameSelection() {
-    }
-
+    /**
+     * Erstellt die verschiedenen Minigames.
+     *
+     * @return Die erstellten Minigames.
+     */
     private MiniGame[] createMiniGames() {
         return new MiniGame[]{
             Misc.addObject(new MiniGame(ConeShooterWorld::new, 0), minigamePosition(Vector2D.LEFT)),
@@ -14,10 +26,19 @@ public class GameSelection extends BaseWorld {
         };
     }
 
+    /**
+     * Berechnet die Position eines Minigames.
+     *
+     * @param direction Die Richtung, in der es verschoben werden soll.
+     * @return Die finale Position.
+     */
     private Vector2D minigamePosition(Vector2D direction) {
         return Vector2D.MIDDLE.plus(direction.multiply(150));
     }
 
+    /**
+     * Verlässt das aktuelle Minigame.
+     */
     public void exitMinigame() {
         Misc.loadWorld(this);
 

@@ -1,5 +1,15 @@
+/**
+ * Die Grid-Bugs Spinne.
+ */
 public class GridBugsEnemy extends Enemy {
+    /**
+     * Der Spieler.
+     */
     private final GridBugsPlayer player;
+
+    /**
+     * Der animator der die verschiedenen States der Spinne managed.
+     */
     private final Animator animator = new Animator(this::spawn);
 
     {
@@ -12,6 +22,9 @@ public class GridBugsEnemy extends Enemy {
         this.player = player;
     }
 
+    /**
+     * Fügt dem Spieler beim Kontakt Schaden hinzu.
+     */
     @Override
     protected void onPlayerContact() {
         player.takeDamage(50);
@@ -19,13 +32,18 @@ public class GridBugsEnemy extends Enemy {
     }
 
     public void act() {
-        // if we have a health value that is less than or equal to zero, super.act() removes us from the world
-        // but if that happens stateMachine.update() would throw an exception, which is why super.act() needs to
-        // happen last
+        // Wenn unser Health-Wert kleiner oder gleich null ist, entfernt uns super.act() aus der Welt.
+        // Falls das passiert, würde stateMachine.update() eine Exception werfen, weshalb super.act()
+        // zuletzt aufgerufen werden muss.
         animator.update();
         super.act();
     }
 
+    /**
+     * Die Spawn-Phase.
+     *
+     * @param animator Der Animator.
+     */
     private void spawn(Animator animator) {
         animator.addThread()
             .wait(30)
@@ -36,6 +54,11 @@ public class GridBugsEnemy extends Enemy {
             .execute(() -> animator.switchState(this::run));
     }
 
+    /**
+     * Die Spinne rennt auf den Spieler zu.
+     *
+     * @param animator Der Animator.
+     */
     private void run(Animator animator) {
         animator.addThread()
             .execute(() -> setImage("bug_1.png"))
@@ -49,6 +72,11 @@ public class GridBugsEnemy extends Enemy {
         animator.addThread().repeat(() -> moveWithSpeed(towards(player)));
     }
 
+    /**
+     * Die Spinne erzeugt eine neue Spinne.
+     *
+     * @param animator Der Animator.
+     */
     public void duplicate(Animator animator) {
         setImage("bug_spawn_3.png");
 

@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
+/**
+ * Ein Spieler mit menschlichen Animationen.
+ */
 public abstract class HumanoidPlayer extends Player {
     private static final GreenfootImage legsStand = new GreenfootImage("man_stand_legs.png");
     private static final GreenfootImage bodyStand = new GreenfootImage("man_stand_body.png");
@@ -118,8 +121,6 @@ public abstract class HumanoidPlayer extends Player {
             setHorizontalFlip(false);
             setVerticalFlip(false);
         }
-
-        // if (i >= 0 && i < leftArm.size()) pointArm.setImage(leftArm.get(i));
 
         if (Greenfoot.mouseClicked(null) && !onCooldown) {
             shoot();

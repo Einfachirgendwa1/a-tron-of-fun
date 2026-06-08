@@ -8,7 +8,6 @@ import java.util.Map;
  * @author Faris
  * @see TankLabyrinthEnemy
  * @see BreadthFirstSearch
- * @see DepthFirstSearch
  */
 public interface PathFinder {
     /**
