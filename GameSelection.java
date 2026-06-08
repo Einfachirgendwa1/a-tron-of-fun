@@ -15,7 +15,7 @@ public class GameSelection extends BaseWorld {
     }
 
     private Vector2D minigamePosition(Vector2D direction) {
-        return Vector2D.MIDDLE.plus(direction.multiply(180));
+        return Vector2D.MIDDLE.plus(direction.multiply(150));
     }
 
     public void exitMinigame() {

@@ -9,6 +9,7 @@ public class MiniGame extends BaseActor {
     public MiniGame(Supplier<BaseWorld> baseWorldSupplier, int color) {
         this.worldSupplier = baseWorldSupplier;
         GreenfootImage image = new GreenfootImage("images/minigame" + color + ".png");
+        image.scale((int) (image.getWidth() * 0.8), (int) (image.getHeight() * 0.8));
 
         area.setImage(image);
     }
