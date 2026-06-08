@@ -1,10 +1,10 @@
 import greenfoot.GreenfootImage;
 
 public class Wall extends BaseActor {
-    private final Line line;
+    private final Line2D line;
     private ImageHolder wallCollider;
 
-    public Wall(Line line) {
+    public Wall(Line2D line) {
         this.line = line;
 
         int width = Math.abs(line.start().x() - line.end().x());
@@ -33,7 +33,12 @@ public class Wall extends BaseActor {
     @Override
     public void takeDamage(int amount) {}
 
-    public Line getLine() {
+    @Override
+    public String toString() {
+        return "Wall{" + "line=" + line + ", wallCollider=" + wallCollider + '}';
+    }
+
+    public Line2D getLine() {
         return line;
     }
 }

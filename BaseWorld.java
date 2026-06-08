@@ -18,8 +18,13 @@ public abstract class BaseWorld extends World {
             Misc.setWorld(this);
         }
 
-        ArrayList<Line> walls = LevelLoader.getLevelData(getClass());
+        ArrayList<Line2D> walls = LevelLoader.getLevelData(getClass());
         setWalls(walls);
+
+        for (Line2D wall : walls) {
+            getBackground().setColor(Color.RED);
+            wall.draw(getBackground());
+        }
 
         frame = Misc.addObject(new FrameSurface(), Vector2D.MIDDLE);
         showScore();
@@ -50,11 +55,11 @@ public abstract class BaseWorld extends World {
         return walls;
     }
 
-    public void setWalls(ArrayList<Line> lines) {
+    public void setWalls(ArrayList<Line2D> lines) {
         walls.forEach(this::removeObject);
         walls.clear();
 
-        for (Line line : lines) {
+        for (Line2D line : lines) {
             Wall wall = new Wall(line);
             walls.add(Misc.addObject(wall, wall.getPosition()));
         }
@@ -86,7 +91,7 @@ public abstract class BaseWorld extends World {
     protected void won() {
         blank();
         ScoreTracker.addScore(500);
-        drawForever("You won!", Misc.centeredAround(Vector2D.MIDDLE), 50, Color.BLUE);
+        drawForever("YOU WON!", Misc.centeredAround(Vector2D.MIDDLE), 50, Color.BLUE);
         Greenfoot.delay(40);
         Misc.exitMinigame();
     }

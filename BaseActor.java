@@ -30,7 +30,7 @@ public class BaseActor extends Actor implements Position2D {
     }
 
     protected Vector2D towards(Position2D other) {
-        return other.vec().minus(this).normalize();
+        return other.minus(this).normalize();
     }
 
     public void takeDamage(int amount) {
@@ -140,12 +140,22 @@ public class BaseActor extends Actor implements Position2D {
     }
 
     /**
+     * Bewegt sich mit der in dem {@link #speed} Attribut vorgegebenen Geschwindigkeit mit Kollisionsüberprüfung.
+     *
+     * @param position Die Richtung in welche die Bewegung passiert. Wird vor Verwendung normalisiert.
+     */
+    protected void moveWithSpeed(Position2D position) {
+        moveWithSpeed(position, true);
+    }
+
+    /**
      * Bewegt sich mit der in dem {@link #speed} Attribut vorgegebenen Geschwindigkeit.
      *
-     * @param vector Die Richtung in welche die Bewegung passiert. Wird vor Verwendung normalisiert.
+     * @param vector         Die Richtung in welche die Bewegung passiert. Wird vor Verwendung normalisiert.
+     * @param checkCollision Ob Kollisionüberprüfung durchgeführt werden soll oder nicht.
      */
-    protected void moveWithSpeed(Vector2D vector) {
-        move(vector.normalize().multiply(speed));
+    protected void moveWithSpeed(Position2D vector, boolean checkCollision) {
+        move(vector.normalize().multiply(speed), checkCollision);
     }
 
     /**
@@ -162,7 +172,7 @@ public class BaseActor extends Actor implements Position2D {
      */
     protected void move(Vector2D vector, boolean checkCollision) {
         Vector2D startPosition = vec();
-        setLocation(vec().plus(vector));
+        setLocation(plus(vector));
         applyPosition();
 
         if (checkCollision && insideWall()) {

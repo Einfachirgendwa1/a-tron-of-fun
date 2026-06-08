@@ -1,0 +1,1 @@
+"C:\Program Files\Greenfoot\jdk\bin\javadoc.exe" -classpath "C:\Program Files\Greenfoot\lib\*" -d doc -private *.java

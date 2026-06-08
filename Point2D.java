@@ -15,6 +15,11 @@ public record Point2D(int x, int y) implements Position2D {
     public static final Point2D CANVAS = new Point2D(Misc.worldWidth, Misc.worldHeight);
     public static final Point2D MIDDLE = CANVAS.vec().divide(2).point();
 
+    public static final Point2D UP = new Point2D(0, -1);
+    public static final Point2D DOWN = new Point2D(0, 1);
+    public static final Point2D LEFT = new Point2D(-1, 0);
+    public static final Point2D RIGHT = new Point2D(1, 0);
+
     public Point2D(Position2D pos) {
         this(Math.round(pos.vec().x()), Math.round(pos.vec().y()));
     }

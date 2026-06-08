@@ -3,7 +3,6 @@ import greenfoot.GreenfootImage;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Stream;
 
 public abstract class HumanoidPlayer extends Player {
@@ -95,17 +94,6 @@ public abstract class HumanoidPlayer extends Player {
         super.act();
         shootTimer.update();
 
-        Map<String, Runnable> keymap = Map.of(
-            "w",
-            this::moveUp,
-            "a",
-            this::moveLeft,
-            "s",
-            this::moveDown,
-            "d",
-            this::moveRight
-        );
-
         if (isMoving()) {
             walkingAnimation.update();
         } else {
@@ -136,12 +124,6 @@ public abstract class HumanoidPlayer extends Player {
         if (Greenfoot.mouseClicked(null) && !onCooldown) {
             shoot();
         }
-
-        for (Map.Entry<String, Runnable> entry : keymap.entrySet()) {
-            if (Greenfoot.isKeyDown(entry.getKey())) {
-                entry.getValue().run();
-            }
-        }
     }
 
     /**
@@ -153,7 +135,7 @@ public abstract class HumanoidPlayer extends Player {
 
         Misc.mousePosition().ifPresent(mousePosition -> {
             Vector2D bulletMovement = towards(mousePosition).multiply(4);
-            Misc.addObject(new Bullet(bulletMovement, false), this);
+            Misc.addObject(new Bullet(bulletMovement, Enemy.class), this);
 
             shootTimer.reset();
         });

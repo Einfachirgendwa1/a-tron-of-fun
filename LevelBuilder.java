@@ -16,8 +16,8 @@ import java.util.function.BiConsumer;
 public class LevelBuilder extends BaseWorld {
     private final ArrayList<Point2D> currentPoints = new ArrayList<>();
     private final Class<? extends BaseWorld> world = TankLabyrinthWorld.class;
-    private final Path output = LevelLoader.path(world, "path");
-    private final List<Line> writtenLines;
+    private final Path output = LevelLoader.filePath(world, "path");
+    private final List<Line2D> writtenLines;
 
     private int deleteCooldown = 0;
 
@@ -50,16 +50,16 @@ public class LevelBuilder extends BaseWorld {
         }
     }
 
-    private static void lines(ArrayList<Point2D> points, BiConsumer<Point2D, Point2D> consumer) {
+    public static void lines(List<Point2D> points, BiConsumer<Point2D, Point2D> consumer) {
         for (int n = 0; n < points.size() - 1; n++) {
             consumer.accept(points.get(n), points.get(n + 1));
         }
     }
 
-    private Optional<Line> snapLine(Point2D mouse) {
-        List<Line> snappingCandidates = writtenLines.stream().sorted((a, b) -> {
-            float distToA = a.snap(mouse).vec().minus(mouse).magnitude();
-            float distToB = b.snap(mouse).vec().minus(mouse).magnitude();
+    private Optional<Line2D> snapLine(Point2D mouse) {
+        List<Line2D> snappingCandidates = writtenLines.stream().sorted((a, b) -> {
+            float distToA = a.snap(mouse).minus(mouse).magnitude();
+            float distToB = b.snap(mouse).minus(mouse).magnitude();
 
             return Math.round(distToA - distToB);
         }).toList();
@@ -89,7 +89,7 @@ public class LevelBuilder extends BaseWorld {
 
         Optional<Point2D> mousePoint = mousePoint();
         mousePoint.ifPresent(e -> {
-            Point2D b = e.vec().minus(new Vector2D(5, 5)).point();
+            Point2D b = e.minus(new Vector2D(5, 5)).point();
             getFrame().setColor(Color.GREEN);
             getFrame().drawRect(b.x(), b.y(), 10, 10);
             currentPoints.add(e);
@@ -106,7 +106,7 @@ public class LevelBuilder extends BaseWorld {
             if (Greenfoot.isKeyDown("s")) {
                 writePoints();
 
-                lines(currentPoints, (a, b) -> writtenLines.add(new Line(a, b)));
+                lines(currentPoints, (a, b) -> writtenLines.add(new Line2D(a, b)));
                 currentPoints.clear();
             }
         });
@@ -141,7 +141,7 @@ public class LevelBuilder extends BaseWorld {
         if (currentPoints.isEmpty()) return mousePos;
 
         Point2D last = currentPoints.getLast();
-        double angle = last.vec().angle(mouse);
+        double angle = last.angle(mouse);
 
         if (angle < 0.125 || angle > 0.875 || (angle > 0.375 && angle < 0.525)) {
             return Optional.of(new Point2D(mouse.x(), last.y()));

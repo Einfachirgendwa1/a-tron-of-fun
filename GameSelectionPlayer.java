@@ -43,7 +43,7 @@ public class GameSelectionPlayer extends HumanoidPlayer {
 
     @Override
     protected boolean isMoving() {
-        return !vec().point().equals(targetPosition().point());
+        return !point().equals(targetPosition().point());
     }
 
     @Override
