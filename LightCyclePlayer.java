@@ -10,6 +10,10 @@ public class LightCyclePlayer extends Player {
     private ImageHolder cycleImage;
     private boolean onGrid = true;
 
+    {
+        defaultMovement = false;
+    }
+
     //Ermöglichen die Prüfung auf Kollisionen
     public boolean touchesTrail(Trail trail) {
         return intersects(trail);
@@ -83,7 +87,6 @@ public class LightCyclePlayer extends Player {
             result = direction % 4;
         }
 
-
         if (result == 3 || result == -1) {
             moveDown();
             cycleImage.setRotation(90);
@@ -97,7 +100,6 @@ public class LightCyclePlayer extends Player {
             moveLeft();
             cycleImage.setRotation(180);
         }
-
 
         if (!Greenfoot.isKeyDown("a") && !Greenfoot.isKeyDown("d")) {
             isPressed = false;
