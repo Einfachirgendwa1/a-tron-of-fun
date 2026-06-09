@@ -5,6 +5,8 @@ import java.util.function.Consumer;
 
 /**
  * Die Grid-Bugs Welt.
+ *
+ * @author Faris
  */
 public class GridBugsWorld extends BaseWorld {
     /**

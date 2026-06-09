@@ -20,6 +20,11 @@ public interface PathFinder {
      */
     List<Point2D> pathFind(Position2D start, Position2D end, Map<Point2D, ArrayList<Point2D>> set) throws NoPathException;
 
+    /**
+     * Eine Exception die geworfen wird, wenn ein Algorithmus keinen Path findet.
+     *
+     * @author Faris
+     */
     class NoPathException extends RuntimeException {
         Point2D start;
         Point2D end;

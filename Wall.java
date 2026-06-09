@@ -1,5 +1,8 @@
 import greenfoot.GreenfootImage;
 
+/**
+ * Eine Wand in TankLabyrinth und LightCycles.
+ */
 public class Wall extends BaseActor {
     private final Line2D line;
     private ImageHolder wallCollider;
@@ -36,9 +39,5 @@ public class Wall extends BaseActor {
     @Override
     public String toString() {
         return "Wall{" + "line=" + line + ", wallCollider=" + wallCollider + '}';
-    }
-
-    public Line2D getLine() {
-        return line;
     }
 }

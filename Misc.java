@@ -6,6 +6,11 @@ import greenfoot.MouseInfo;
 import java.util.Optional;
 import java.util.function.Function;
 
+/**
+ * Diverse Hilfsfunktionen.
+ *
+ * @author Faris
+ */
 public class Misc {
     public static final int worldWidth = 600;
     public static final int worldHeight = 400;

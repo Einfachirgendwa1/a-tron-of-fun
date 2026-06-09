@@ -7,6 +7,8 @@ import java.util.stream.Stream;
 
 /**
  * Ein Spieler mit menschlichen Animationen.
+ *
+ * @author Faris
  */
 public abstract class HumanoidPlayer extends Player {
     private static final GreenfootImage legsStand = new GreenfootImage("man_stand_legs.png");
@@ -104,9 +106,6 @@ public abstract class HumanoidPlayer extends Player {
         }
 
         double percentage = Misc.angleToMouse(this).orElse(0.);
-
-        // between 0 and 9
-        int i = (int) Math.round(percentage * 9);
 
         if (percentage <= 0.25) {
             setHorizontalFlip(false);

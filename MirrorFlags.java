@@ -1,5 +1,10 @@
 import greenfoot.GreenfootImage;
 
+/**
+ * Speichert, ob horizontal bzw. vertikal gespiegelt wurde.
+ *
+ * @author Faris
+ */
 public class MirrorFlags {
     private boolean horizontal = false;
     private boolean vertical = false;

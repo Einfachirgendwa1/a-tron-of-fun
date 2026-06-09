@@ -4,6 +4,11 @@ import greenfoot.GreenfootImage;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Der Spieler im TankLabyrinth Minispiel.
+ *
+ * @author Faris
+ */
 public class TankLabyrinthPlayer extends Player {
     private Point2D stopConsumed = Vector2D.ZERO.point();
     private Point2D currentDirection = Point2D.RIGHT;

@@ -4,6 +4,11 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Lädt die vom LevelBuilder erstellten Dateien zur runtime.
+ *
+ * @author Faris
+ */
 public class LevelLoader {
     public static Path filePath(Class<? extends BaseWorld> clazz, String tag) {
         return Path.of(clazz.getName() + "." + tag + "Data");

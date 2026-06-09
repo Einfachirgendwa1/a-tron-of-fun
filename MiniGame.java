@@ -2,6 +2,11 @@ import greenfoot.GreenfootImage;
 
 import java.util.function.Supplier;
 
+/**
+ * Ein Minispiel auf der {@link GameSelection} Welt.
+ *
+ * @author Faris
+ */
 public class MiniGame extends BaseActor {
     private final Supplier<BaseWorld> worldSupplier;
     private ImageHolder area;

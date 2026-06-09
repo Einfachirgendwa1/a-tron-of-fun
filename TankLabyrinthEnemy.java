@@ -3,6 +3,11 @@ import greenfoot.GreenfootImage;
 
 import java.util.List;
 
+/**
+ * Der gegnerische Panzer im {@link TankLabyrinthWorld} Minispiel.
+ *
+ * @author Faris
+ */
 public class TankLabyrinthEnemy extends Enemy {
     private final TankLabyrinthPlayer player;
     public PathFinder pathFinder;

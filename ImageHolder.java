@@ -1,6 +1,12 @@
 import greenfoot.Actor;
 import greenfoot.GreenfootImage;
 
+/**
+ * Speichert ein Bild.
+ * Wird von BaseActor benutzt, um mehrere images pro Actor zu haben.
+ *
+ * @see BaseActor
+ */
 public class ImageHolder extends Actor implements Position2D {
     private MirrorFlags mirrorFlags;
     private boolean isCollider = true;

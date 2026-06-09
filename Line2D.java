@@ -1,5 +1,11 @@
 import greenfoot.GreenfootImage;
 
+/**
+ * Ein Liniensegment im 2D Raum.
+ *
+ * @param start Der Start der Linie.
+ * @param end   Das Ende der Linie.
+ */
 public record Line2D(Point2D start, Point2D end) {
     public void draw(GreenfootImage image) {
         image.drawLine(start.x(), start.y(), end.x(), end.y());

@@ -4,6 +4,13 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
+/**
+ * Die zugehörige Welt für das TankLabyrinth Minispiel.
+ *
+ * @author Faris
+ * @see TankLabyrinthEnemy
+ * @see TankLabyrinthPlayer
+ */
 public class TankLabyrinthWorld extends BaseWorld {
     public static final Line2D[] pathData = LevelLoader.getLevelData(LevelLoader.filePath(
         TankLabyrinthWorld.class,

@@ -12,6 +12,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 
+/**
+ * Wurde benutzt um die Wände für GridBugs und TankLabyrinth zu erstellen.
+ *
+ * @author Faris
+ */
 @SuppressWarnings("unused")
 public class LevelBuilder extends BaseWorld {
     private final ArrayList<Point2D> currentPoints = new ArrayList<>();
